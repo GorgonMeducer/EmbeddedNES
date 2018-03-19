@@ -17,7 +17,7 @@ A portable NES simulator for embedded processors
     
     A Cortex-M7 Fast Model (a.k.a FVP) will be launched. If you don't see anything
     happened, please make sure "Models Cortex-M Debugger" is selected in the debugger
-    settings by following path:
+    settings by checking following path:
     
     Menu Project->Options for Target->Debug
     

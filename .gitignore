@@ -4,3 +4,12 @@ mps2_template/example/LiteNES/LiteNES-master.zip
 mps2_template/example/LiteNES/LiteNES_backup.zip
 *.iex
 mps2_template/example/build/mdk/Out/msp2_file_io_template.build_log.htm
+*.d
+*.o
+mps2_template/example/build/mdk/Out/Blinky_V2M-MPS2.dep
+mps2_template/example/build/mdk/Out/msp2_file_io_template.htm
+mps2_template/example/build/mdk/Out/msp2_file_io_template.lnp
+mps2_template/example/build/mdk/Out/msp2_file_io_template.map
+mps2_template/example/build/mdk/Out/msp2_file_io_template.hex
+mps2_template/example/build/mdk/Out/msp2_file_io_template.axf
+mps2_template/example/build/mdk/Out/startup_cmsdk_cm7.lst

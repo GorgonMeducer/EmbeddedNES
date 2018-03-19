@@ -196,7 +196,7 @@ void nes_flip_display(void)
 {
     static uint32_t s_wValue = 0;
     s_wValue++;
-    if (!(s_wValue & 0x3)) {
+    if (!(s_wValue & 0x1)) {
     #if __USE_TILE__
     uint32_t x = 0, y =0;
     for (y = 16; y < (SCREEN_HEIGHT >> 3); y++) {
