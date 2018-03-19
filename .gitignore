@@ -1,0 +1,6 @@
+
+*.crf
+mps2_template/example/LiteNES/LiteNES-master.zip
+mps2_template/example/LiteNES/LiteNES_backup.zip
+*.iex
+mps2_template/example/build/mdk/Out/msp2_file_io_template.build_log.htm
