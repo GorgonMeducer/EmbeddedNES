@@ -41,10 +41,11 @@ struct __core {
     byte  A, X, Y; // Registers
     byte  P; // Flag Register;
     
-    int op_value;
-    int op_address;             // Arguments for current instruction
-    int op_cycles;              // Additional instruction cycles used (e.g. when paging occurs)
-    uint32_t cpu_cycles;
+    uint_fast8_t op_value;
+    uint_fast16_t op_address;             // Arguments for current instruction
+    uint_fast32_t op_cycles;              // Additional instruction cycles used (e.g. when paging occurs)
+    uint_fast32_t wStallCycles;
+    uint_fast32_t cpu_cycles;
 };
 
 extern struct __core core;
@@ -72,18 +73,18 @@ void cpu_update_zn_flags(byte value);
 void cpu_trace_instruction(void);
 
 // CPU Adressing Modes
-void cpu_address_implied(void);
-void cpu_address_immediate(void);
-void cpu_address_zero_page(void);
-void cpu_address_zero_page_x(void);
-void cpu_address_zero_page_y(void);
-void cpu_address_absolute(void);
-void cpu_address_absolute_x(void);
-void cpu_address_absolute_y(void);
-void cpu_address_relative(void);
-void cpu_address_indirect(void);
-void cpu_address_indirect_x(void);
-void cpu_address_indirect_y(void);
+extern void cpu_address_implied(void);
+extern void cpu_address_immediate(void);
+extern void cpu_address_zero_page(void);
+extern void cpu_address_zero_page_x(void);
+extern void cpu_address_zero_page_y(void);
+extern void cpu_address_absolute(void);
+extern void cpu_address_absolute_x(void);
+extern void cpu_address_absolute_y(void);
+extern void cpu_address_relative(void);
+extern void cpu_address_indirect(void);
+extern void cpu_address_indirect_x(void);
+extern void cpu_address_indirect_y(void);
 
 
 
