@@ -322,6 +322,13 @@ inline uint_fast8_t ppu_io_read(uint_fast16_t address)
         case 4: return ppu_latch = PPU_SPRRAM[ppu.OAMADDR];
         case 7:
         {
+            /*
+                After each write to $2007, the address is incremented by either 
+                1 or 32 as dictated by bit 2 of $2000. The first read from $2007 
+                is invalid and the data will actually be buffered and returned 
+                on the next read. This does not apply to colour palettes.
+             */
+        
             byte data;
             
             if (ppu.PPUADDR < 0x3F00) {
@@ -334,10 +341,9 @@ inline uint_fast8_t ppu_io_read(uint_fast16_t address)
             
             if (ppu_2007_first_read) {
                 ppu_2007_first_read = false;
-            }
-            else {
+            } else {
                 ppu.PPUADDR += ppu_vram_address_increment();
-            }
+            } 
             return data;
         }
         default:
@@ -367,44 +373,65 @@ inline void ppu_io_write(uint_fast16_t address, uint_fast8_t data)
     
     ppu.PPUADDR &= 0x3FFF;
     switch(address) {
-        case 0: if (ppu.ready) ppu.PPUCTRL = data; break;
-        case 1: if (ppu.ready) ppu.PPUMASK = data; break;
-        case 3: ppu.OAMADDR = data; break;
-        case 4: PPU_SPRRAM[ppu.OAMADDR++] = data; break;
+        case 0: 
+            if (ppu.ready) ppu.PPUCTRL = data; 
+            break;
+            
+        case 1: 
+            if (ppu.ready) ppu.PPUMASK = data; 
+            break;
+            
+        case 3: 
+            ppu.OAMADDR = data; 
+            break;
+            
+        case 4: 
+            PPU_SPRRAM[ppu.OAMADDR++] = data; 
+            break;
+            
         case 5:
-        {
-            if (ppu.scroll_received_x)
+            if (ppu.scroll_received_x) {
                 ppu.PPUSCROLL_Y = data;
-            else
+            } else {
                 ppu.PPUSCROLL_X = data;
-
+            }
             ppu.scroll_received_x ^= 1;
             break;
-        }
-        case 6:
-        {
-            if (!ppu.ready)
+        
+        
+        /*
+         *  Since PPU memory uses 16-bit addresses but I/O registers are only 
+         *  8-bit, two writes to $2006 are required to set the address required. 
+         *  Data can then be read from or written to $2007.
+         */
+        case 6: 
+            if (!ppu.ready) {
                 return;
-
-            if (ppu.addr_received_high_byte)
+            }
+            if (ppu.addr_received_high_byte) {
                 ppu.PPUADDR = (ppu_addr_latch << 8) + data;
-            else
+            } else {
                 ppu_addr_latch = data;
-
+            }
             ppu.addr_received_high_byte ^= 1;
             ppu_2007_first_read = true;
             break;
-        }
+        
         case 7:
-        {
+            /*
+                After each write to $2007, the address is incremented by either 
+                1 or 32 as dictated by bit 2 of $2000. The first read from $2007 
+                is invalid and the data will actually be buffered and returned 
+                on the next read. This does not apply to colour palettes.
+             */
+        
             if (ppu.PPUADDR > 0x1FFF || ppu.PPUADDR < 0x4000) {
                 ppu_ram_write(ppu.PPUADDR ^ ppu.mirroring_xor, data);
                 ppu_ram_write(ppu.PPUADDR, data);
-            }
-            else {
+            } else {
                 ppu_ram_write(ppu.PPUADDR, data);
             }
-        }
+            //ppu.PPUADDR += ppu_vram_address_increment();
     }
     ppu_latch = data;
 }
