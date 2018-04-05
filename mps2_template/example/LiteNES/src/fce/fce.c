@@ -9,11 +9,11 @@
 NO_INIT PixelBuf bg, bbg, fg;
 
 typedef struct {
-    char signature[4];
-    byte prg_block_count;
-    byte chr_block_count;
-    word rom_type;
-    byte reserved[8];
+    uint8_t signature[4];
+    uint8_t prg_block_count;
+    uint8_t chr_block_count;
+    uint16_t rom_type;
+    uint8_t reserved[8];
 } ines_header;
 
 static ines_header fce_rom_header;

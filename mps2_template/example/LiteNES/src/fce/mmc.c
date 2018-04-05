@@ -4,8 +4,8 @@
 #include "app_platform.h"
 
 #ifndef MMC_MAX_PAGE_COUNT
-#   warning No defined MMC_MAX_PAGE_COUNT, default 4 is used. 
-#   define MMC_MAX_PAGE_COUNT               (4)
+#   warning No defined MMC_MAX_PAGE_COUNT, default 2 is used. 
+#   define MMC_MAX_PAGE_COUNT               (2)
 #endif
 
 byte mmc_id;

@@ -689,8 +689,9 @@ void cpu_run(int_fast32_t cycles)
         ptIns->cpu_op_address_mode();
         ptIns->cpu_op_handler();
     #endif
-        cycles -= ptIns->cpu_op_cycles + core.op_cycles;
-        core.cpu_cycles -= ptIns->cpu_op_cycles + core.op_cycles;
+        uint_fast32_t wCycleUsed = ptIns->cpu_op_cycles + core.op_cycles;
+        cycles -=           wCycleUsed;
+        core.cpu_cycles +=  wCycleUsed;
         core.op_cycles = 0;
     }
 
