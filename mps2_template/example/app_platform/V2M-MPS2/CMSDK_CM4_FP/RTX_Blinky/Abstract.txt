@@ -1,0 +1,29 @@
+The 'RTX_Blinky' project is a simple CMSIS RTOS Kernel based example for
+ARM 'Cortex-M4' microcontroller using ARM 'V2M-MPS2' Evaluation Board.
+Compliant to Cortex Microcontroller Software Interface Standard (CMSIS).
+
+Example functionality:
+ - Clock Settings:
+   - XTAL  =  50 MHz
+   - CCLK  =  25 MHz
+
+The simple RTX Kernel based example simulates the step-motor
+driver. Four LEDs are blinking simulating the activation of
+the four output driver stages:
+
+- phase A
+- phase B
+- phase C
+- phase D
+
+This example simulates Half step driver mode and
+CW rotation direction.
+
+
+The Blinky program is available in different targets:
+
+  Simulator:      configured for software Simulator
+
+  FastModels:     configured for FastModels MPS2 Simulator
+
+  V2M-MPS2:       configured for MPS2

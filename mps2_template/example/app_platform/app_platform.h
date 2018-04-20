@@ -36,7 +36,7 @@
 /*============================ MACROS ========================================*/
 /*============================ MACROFIED FUNCTIONS ===========================*/
 
-#define log(...)                                    \
+#define log_info(...)                               \
         do {                                        \
             printf(__VA_ARGS__);                    \
             stdout_flush();                         \
@@ -81,4 +81,13 @@ extern void retarget_stdin(file_io_stream_t *);
 
 extern void start_counter(void);
 extern int32_t stop_counter(void);
+
+
+
+extern void disable_blocking_style(void);
+
+extern void enable_blocking_style(void);
+
+extern bool is_blocking_style_enabled(void);
+
 #endif

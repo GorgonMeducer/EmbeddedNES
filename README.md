@@ -1,7 +1,23 @@
 # EmbeddedNES
 
-A portable NES simulator for embedded processors
+A portable NES simulator for embedded processors. 
 
+
+## Update Log
+
+- 20-04-2018 Support both LiteNES and JEG
+    
+    You can switching two emulator in MDK projects:
+    
+* V2M-MPS2-jeg for JEG
+
+    PPU looks good, but 6502 emulation part need to be rewritten. PPU performance could also be improved. 
+
+* V2M-MPS2-LiteNES.
+    
+    The performance has been improved. The PPU looks buggy and I decide to not use it any more.
+    
+   
 ## How to test it
     
     A MDK (https://www.keil.com/demo/eval/arm.htm) project has been provided:
@@ -24,6 +40,5 @@ A portable NES simulator for embedded processors
     
     If you are lucky enough to have a MPS2+ board, then you can debug it on the  real hardware. (Currently, it is extremely slow, I am working on it...)
     
-    After successfully launching the FVP, please reset the processor and press F5 to start the debug.
     
     Enjoy.

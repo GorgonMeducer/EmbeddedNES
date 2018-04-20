@@ -192,7 +192,7 @@
     } s_t##__NAME##StreamOutService;                                            \
     private void __NAME##_request_send(void)                                    \
     {                                                                           \
-        s_t##__NAME##StreamOutService.ptBlock = STREAM_OUT.Block.Exchange(      \
+        s_t##__NAME##StreamOutService.ptBlock = __NAME##.Block.Exchange(        \
             s_t##__NAME##StreamOutService.ptBlock);                             \
         __NAME##_stream_buffer_block_t *ptBlock =                               \
             s_t##__NAME##StreamOutService.ptBlock;                              \
@@ -203,11 +203,13 @@
                 BLOCK.Size.Get(ref_obj_as((*ptBlock), block_t));                \
             s_t##__NAME##StreamOutService.hwIndex = 0;                          \
                                                                                 \
+            SAFE_ATOM_CODE(                                                     \
             __NAME##_serial_port_enable_tx_cpl_interrupt();                     \
                                                                                 \
             __NAME##_serial_port_fill_byte(                                     \
                 s_t##__NAME##StreamOutService.pchBuffer                         \
                     [s_t##__NAME##StreamOutService.hwIndex++]);                 \
+            )                                                                   \
         }                                                                       \
     }                                                                           \
     void __NAME##_insert_serial_port_tx_cpl_event_handler(void)                 \
@@ -240,7 +242,7 @@
     }                                                                           \
     void __NAME##_output_stream_adapter_init(void)                              \
     {                                                                           \
-        NO_INIT private __NAME##_stream_buffer_block_t                           \
+        NO_INIT private __NAME##_stream_buffer_block_t                          \
                         s_tBlocks[__BLOCK_COUNT];                               \
         OUTPUT_STREAM_BUFFER_CFG(                                               \
             __NAME,                                                             \

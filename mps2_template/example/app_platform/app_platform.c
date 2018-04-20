@@ -108,8 +108,6 @@ void app_platform_1ms_event_handler(void)
 {
     counter_overflow();
     STREAM_IN_1ms_event_handler();
-    
-    
 }
 
 
@@ -188,6 +186,31 @@ void stdout_flush(void)
 }
   
   
+static volatile bool s_bBlockingStyle = true;
 
+
+void disable_blocking_style(void)
+{
+    SAFE_ATOM_CODE(
+        s_bBlockingStyle = false;
+        //__NVIC_EnableIRQ(SPI_0_1_IRQn);
+    )
+}
+
+void enable_blocking_style(void)
+{
+    SAFE_ATOM_CODE(
+
+        __NVIC_DisableIRQ(SPI_0_1_IRQn);
+        __NVIC_ClearPendingIRQ(SPI_0_1_IRQn);
+    
+        s_bBlockingStyle = true;
+    )
+}
+
+bool is_blocking_style_enabled(void)
+{
+    return s_bBlockingStyle;
+}
   
 /* EOF */

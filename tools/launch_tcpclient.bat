@@ -1,0 +1,1 @@
+@ .\IOStreamAgent.exe --port_type=TCPClient --port_settings="localhost:5000" --working_folder="..\\mps2_template\\example\\build\\mdk"

@@ -22,7 +22,7 @@ armcortexm7ct.cpi_div=0x1                             # (int   , run-time ) defa
 armcortexm7ct.master_id=0x0                           # (int   , init-time) default = '0x0'    : Master ID presented in bus transactions : [0x0..0xFFFFFFFF]
 armcortexm7ct.DP_FLOAT=1                              # (bool  , init-time) default = '1'      : Support 8-byte floats
 armcortexm7ct.scheduler_mode=0x0                      # (int   , init-time) default = '0x0'    : Control the interleaving of instructions in this processor (0=default long quantum, 1=low latency mode, short quantum and signal checking, 2=lock-breaking mode, long quantum with additional context switches near load-exclusive instructions, 3=ISSCompare) : [0x0..0x3]
-armcortexm7ct.has_writebuffer=0                       # (bool  , init-time) default = '0'      : Implement write accesses buffering before L1 cache. May affect ext_abort behaviour.
+#armcortexm7ct.has_writebuffer=0                       # (bool  , init-time) default = '0'      : Implement write accesses buffering before L1 cache. May affect ext_abort behaviour.
 armcortexm7ct.dcache-size=0x8000                      # (int   , init-time) default = '0x8000' : L1 D-cache size in bytes : [0x0..0x100000]
 armcortexm7ct.dcache-ways=0x4                         # (int   , init-time) default = '0x4'    : L1 D-cache ways (sets are implicit from size) : [0x1..0x40]
 armcortexm7ct.icache-size=0x8000                      # (int   , init-time) default = '0x8000' : L1 I-cache size in bytes : [0x0..0x100000]
@@ -166,13 +166,13 @@ fvp_mps2.sse200.iotss_internal_sram3.size=0x100000000  # (int   , init-time) def
 fvp_mps2.sse200.iotss_internal_sram3.fill1=0xDFDFDFCF  # (int   , init-time) default = '0xDFDFDFCF' : Fill pattern 1, initialise memory at start of simulation with alternating fill1, fill2 pattern
 fvp_mps2.sse200.iotss_internal_sram3.fill2=0xCFDFDFDF  # (int   , init-time) default = '0xCFDFDFDF' : Fill pattern 2, initialise memory at start of simulation with alternating fill1, fill2 pattern
 fvp_mps2.sse200.bus_error_warning_memory.read_data=0x0  # (int   , init-time) default = '0x0'    : Data to return on reads, if not aborting
-fvp_mps2.sse200.exclusive_monitor_iotss_internal_sram.enable_component=1  # (bool  , init-time) default = '1'      : Enable component
-fvp_mps2.sse200.exclusive_monitor_iotss_internal_sram.number_of_monitors=0x8  # (int   , init-time) default = '0x8'    : Number of monitors : [0x1..0xFFFFFFFF]
-fvp_mps2.sse200.exclusive_monitor_iotss_internal_sram.log2_granule_size=0x0  # (int   , init-time) default = '0x0'    : log2 of address granule size : [0x0..0xB]
-fvp_mps2.sse200.exclusive_monitor_iotss_internal_sram.monitor_non_excl_stores=0  # (bool  , init-time) default = '0'      : Monitor non-exclusive stores from the same master
-fvp_mps2.sse200.exclusive_monitor_iotss_internal_sram.match_secure_state=1  # (bool  , init-time) default = '1'      : Treat the secure state like an address bit
-fvp_mps2.sse200.exclusive_monitor_iotss_internal_sram.shareability_domain=0x3  # (int   , init-time) default = '0x3'    : Maximum shareability domain of interest, transactions outside of the domain will pass through un-monitored (0-non-shared, 1-inner, 2-outer, 3-system) : [0x0..0x3]
-fvp_mps2.sse200.exclusive_monitor_iotss_internal_sram.apply_access_width_criteria_to_non_excl_stores=1  # (bool  , init-time) default = '1'      : Apply the given exclusive store width matching criteria to non-exclusive stores
+#fvp_mps2.sse200.exclusive_monitor_iotss_internal_sram.enable_component=1  # (bool  , init-time) default = '1'      : Enable component
+#fvp_mps2.sse200.exclusive_monitor_iotss_internal_sram.number_of_monitors=0x8  # (int   , init-time) default = '0x8'    : Number of monitors : [0x1..0xFFFFFFFF]
+#fvp_mps2.sse200.exclusive_monitor_iotss_internal_sram.log2_granule_size=0x0  # (int   , init-time) default = '0x0'    : log2 of address granule size : [0x0..0xB]
+#fvp_mps2.sse200.exclusive_monitor_iotss_internal_sram.monitor_non_excl_stores=0  # (bool  , init-time) default = '0'      : Monitor non-exclusive stores from the same master
+#fvp_mps2.sse200.exclusive_monitor_iotss_internal_sram.match_secure_state=1  # (bool  , init-time) default = '1'      : Treat the secure state like an address bit
+#fvp_mps2.sse200.exclusive_monitor_iotss_internal_sram.shareability_domain=0x3  # (int   , init-time) default = '0x3'    : Maximum shareability domain of interest, transactions outside of the domain will pass through un-monitored (0-non-shared, 1-inner, 2-outer, 3-system) : [0x0..0x3]
+#fvp_mps2.sse200.exclusive_monitor_iotss_internal_sram.apply_access_width_criteria_to_non_excl_stores=1  # (bool  , init-time) default = '1'      : Apply the given exclusive store width matching criteria to non-exclusive stores
 fvp_mps2.mps2_secure_control_register_block.FLASH_BLOCK_CFG=0x3  # (int   , init-time) default = '0x3'    : Flash Block size configuration : [0x0..0x31]
 fvp_mps2.mps2_secure_control_register_block.SRAM_BLOCK_CFG=0x3  # (int   , init-time) default = '0x3'    : SRAM Block size configuration : [0x0..0x31]
 fvp_mps2.mps2_secure_control_register_block.FLASH_WATERMARK_SUPPORTED=1  # (bool  , init-time) default = '1'      : Flash Watermark supported

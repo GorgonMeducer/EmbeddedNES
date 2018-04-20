@@ -75,7 +75,7 @@
 
 //      <o>The block size <16-65535>
 //      <i>Specifying the block buffer size.
-#define IO_STREAM_BLOCK_BUFFER_ITEM_SIZE    1024
+#define IO_STREAM_BLOCK_BUFFER_ITEM_SIZE    2048
 
 //      <o>The maximum number of telegraphs in telegraph pool <1-65535>
 //      <i>Specifying the telegraph pool size
