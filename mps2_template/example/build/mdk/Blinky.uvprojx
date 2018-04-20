@@ -1059,52 +1059,52 @@
             <File>
               <FileName>cartridge.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\jeg-master\cartridge.c</FilePath>
+              <FilePath>..\..\jeg\cartridge.c</FilePath>
             </File>
             <File>
               <FileName>cpu6502.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\jeg-master\cpu6502.c</FilePath>
+              <FilePath>..\..\jeg\cpu6502.c</FilePath>
             </File>
             <File>
               <FileName>cpu6502_debug.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\jeg-master\cpu6502_debug.c</FilePath>
+              <FilePath>..\..\jeg\cpu6502_debug.c</FilePath>
             </File>
             <File>
               <FileName>cpu6502_opcodes.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\jeg-master\cpu6502_opcodes.c</FilePath>
+              <FilePath>..\..\jeg\cpu6502_opcodes.c</FilePath>
             </File>
             <File>
               <FileName>nes.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\jeg-master\nes.c</FilePath>
+              <FilePath>..\..\jeg\nes.c</FilePath>
             </File>
             <File>
               <FileName>ppu.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\jeg-master\ppu.c</FilePath>
+              <FilePath>..\..\jeg\ppu.c</FilePath>
             </File>
             <File>
               <FileName>ui.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\jeg-master\ui.c</FilePath>
+              <FilePath>..\..\jeg\ui.c</FilePath>
             </File>
             <File>
               <FileName>fce.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\..\jeg-master\fce.h</FilePath>
+              <FilePath>..\..\jeg\fce.h</FilePath>
             </File>
             <File>
               <FileName>hal.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\..\jeg-master\hal.h</FilePath>
+              <FilePath>..\..\jeg\hal.h</FilePath>
             </File>
             <File>
               <FileName>fce.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\jeg-master\fce.c</FilePath>
+              <FilePath>..\..\jeg\fce.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1456,7 +1456,7 @@
               <MiscControls>--wchar32  --loop_optimization_level=2 --no_unaligned_access</MiscControls>
               <Define>__USE_LCD __USE_TIMER0 __USE_FPGA USE_JEG  __USER_DEFINED_APP_CFG_H__ GLCD_MIRROR_Y=0</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\app_platform;..\..\jeg-master</IncludePath>
+              <IncludePath>..\..\app_platform;..\..\jeg</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -2178,37 +2178,37 @@
             <File>
               <FileName>cartridge.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\jeg-master\cartridge.c</FilePath>
+              <FilePath>..\..\jeg\cartridge.c</FilePath>
             </File>
             <File>
               <FileName>cpu6502.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\jeg-master\cpu6502.c</FilePath>
+              <FilePath>..\..\jeg\cpu6502.c</FilePath>
             </File>
             <File>
               <FileName>cpu6502_debug.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\jeg-master\cpu6502_debug.c</FilePath>
+              <FilePath>..\..\jeg\cpu6502_debug.c</FilePath>
             </File>
             <File>
               <FileName>cpu6502_opcodes.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\jeg-master\cpu6502_opcodes.c</FilePath>
+              <FilePath>..\..\jeg\cpu6502_opcodes.c</FilePath>
             </File>
             <File>
               <FileName>nes.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\jeg-master\nes.c</FilePath>
+              <FilePath>..\..\jeg\nes.c</FilePath>
             </File>
             <File>
               <FileName>ppu.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\jeg-master\ppu.c</FilePath>
+              <FilePath>..\..\jeg\ppu.c</FilePath>
             </File>
             <File>
               <FileName>ui.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\jeg-master\ui.c</FilePath>
+              <FilePath>..\..\jeg\ui.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>2</UseCPPCompiler>
@@ -2264,17 +2264,17 @@
             <File>
               <FileName>fce.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\..\jeg-master\fce.h</FilePath>
+              <FilePath>..\..\jeg\fce.h</FilePath>
             </File>
             <File>
               <FileName>hal.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\..\jeg-master\hal.h</FilePath>
+              <FilePath>..\..\jeg\hal.h</FilePath>
             </File>
             <File>
               <FileName>fce.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\jeg-master\fce.c</FilePath>
+              <FilePath>..\..\jeg\fce.c</FilePath>
             </File>
           </Files>
         </Group>
