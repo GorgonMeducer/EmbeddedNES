@@ -9,13 +9,13 @@ A portable NES simulator for embedded processors.
     
     You can switching two emulator in MDK projects:
     
-* V2M-MPS2-jeg for JEG
+    * V2M-MPS2-jeg for JEG
 
-    PPU looks good, but 6502 emulation part need to be rewritten. PPU performance could also be improved. 
+        PPU looks good, but 6502 emulation part need to be rewritten. PPU performance could also be improved. 
 
-* V2M-MPS2-LiteNES.
+    * V2M-MPS2-LiteNES.
     
-    The performance has been improved. The PPU looks buggy and I decide to not use it any more.
+        The performance has been improved. The PPU looks buggy and I decide to not use it any more.
     
    
 ## How to test it
