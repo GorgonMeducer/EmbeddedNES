@@ -179,7 +179,7 @@ void nes_flush_buf(PixelBuf  * __restrict pbuff) {
         (*ptTile)[7 - y & 0x07][x & 0x07].tColor = s_tColorMap[p->c];
         //s_tScreenBuffer[SCREEN_HEIGHT - y - 1][x].tColor = s_tColorMap[p->c];
     #else
-        //y = SCREEN_HEIGHT - y - 1;
+        y = SCREEN_HEIGHT - y - 1;
         s_tScreenBuffer[y][x].tColor = s_tColorMap[p->c];
     #endif
     }

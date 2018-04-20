@@ -1,5 +1,5 @@
 Dependencies for Project 'Blinky', Target 'V2M-MPS2-LiteNES': (DO NOT MODIFY !)
-F (..\..\LiteNES\src\hal.c)(0x5ADA158B)(--c99 -c --cpu Cortex-M7.fp.sp -D__MICROLIB -g -W -O3 -Otime --apcs=interwork --split_sections --enum_is_int -I ..\..\LiteNES -I ..\..\LiteNES\src\fce -I ..\..\LiteNES\include -I ..\..\app_platform --wchar32  --loop_optimization_level=2 --no_unaligned_access-I.\RTE\Device\CMSDK_CM7_SP-I.\RTE\_V2M-MPS2-LiteNES-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Driver\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.6.0\Board-IC:\Keil_v5\ARM\PACK\Keil\V2M-MPS2_CMx_BSP\1.6.0\Boards\ARM\V2M-MPS2\Common-IC:\Keil_v5\ARM\PACK\Keil\V2M-MPS2_CMx_BSP\1.6.0\Device\CMSDK_CM7\Include-D__UVISION_VERSION="525" -D_RTE_ -DCMSDK_CM7_SP -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_LITE_NES -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="0"-o .\out\hal.o --omf_browse .\out\hal.crf --depend .\out\hal.d)
+F (..\..\LiteNES\src\hal.c)(0x5ADA1B84)(--c99 -c --cpu Cortex-M7.fp.sp -D__MICROLIB -g -W -O3 -Otime --apcs=interwork --split_sections --enum_is_int -I ..\..\LiteNES -I ..\..\LiteNES\src\fce -I ..\..\LiteNES\include -I ..\..\app_platform --wchar32  --loop_optimization_level=2 --no_unaligned_access-I.\RTE\Device\CMSDK_CM7_SP-I.\RTE\_V2M-MPS2-LiteNES-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Driver\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.6.0\Board-IC:\Keil_v5\ARM\PACK\Keil\V2M-MPS2_CMx_BSP\1.6.0\Boards\ARM\V2M-MPS2\Common-IC:\Keil_v5\ARM\PACK\Keil\V2M-MPS2_CMx_BSP\1.6.0\Device\CMSDK_CM7\Include-D__UVISION_VERSION="525" -D_RTE_ -DCMSDK_CM7_SP -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_LITE_NES -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="0"-o .\out\hal.o --omf_browse .\out\hal.crf --depend .\out\hal.d)
 I (..\..\LiteNES\include\hal.h)(0x5AAED2DE)
 I (..\..\LiteNES\include\nes.h)(0x5AAADBED)
 I (..\..\app_platform\app_platform.h)(0x5AD9DE9E)
@@ -359,7 +359,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\assert.h)(0x599F2F9A)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599F2F9C)
 F (..\..\app_cfg.h)(0x5AD9B458)()
 F (.\Abstract.txt)(0x59F59CC5)()
-F (..\..\..\..\README.md)(0x5AB234ED)()
+F (..\..\..\..\README.md)(0x5ADA1B4E)()
 F (..\..\..\sources\gmsi\utilities\ooc.c)(0x5A2927F0)()
 F (..\..\..\sources\gmsi\utilities\arm\signal.c)(0x5A37A963)()
 F (..\..\..\sources\gmsi\gmsi.c)(0x5A158824)()
