@@ -17,7 +17,9 @@
 
 /*============================ INCLUDES ======================================*/
 #include ".\app_platform\app_platform.h"
+
 #include "fce.h"
+
 #include <assert.h>
 #include <string.h>
 /*============================ MACROS ========================================*/
@@ -172,13 +174,13 @@ private void show_progress(void)
 
 NO_INIT static uint8_t s_cROMBuffer[NES_ROM_BUFFER_SIZE * 1024];
 
-static bool load_nes_rom(uint8_t *pchBuffer, uint32_t wSize)
+static int_fast32_t load_nes_rom(uint8_t *pchBuffer, uint32_t wSize)
 {
     if (NULL == pchBuffer || wSize < (32*1024)) {
         return false;
     }
     uint32_t wTotalSize = 0;
-    log("Loading NES ROM...");
+    log_info("Loading NES ROM...");
     file_io_stream_t * ptInput = FILE_IO.Channel.Open(
                             "Input",
                             "PATH:" NES_ROM_PATH,
@@ -186,7 +188,9 @@ static bool load_nes_rom(uint8_t *pchBuffer, uint32_t wSize)
                             FILE_IO_BINARY_STREAM
                          );
 
-    assert(NULL != ptInput);
+    if (NULL == ptInput) {
+        return -1;
+    }
     
     while (!FILE_IO.Channel.EndOfStream(ptInput)) {
         
@@ -194,7 +198,7 @@ static bool load_nes_rom(uint8_t *pchBuffer, uint32_t wSize)
         int32_t nSize = FILE_IO.Channel.Read(ptInput, pchBuffer, wSize);
         
         if (nSize == -1) {
-            log("Error\r\n");
+            log_info("Error\r\n");
             break;
         } else if (0 == nSize) {
             continue;
@@ -206,10 +210,10 @@ static bool load_nes_rom(uint8_t *pchBuffer, uint32_t wSize)
     }
     
     FILE_IO.Channel.Close(ptInput);
-    log("OK\r\n ROM SIZE: %d Bytes\r\n", wTotalSize);
+    log_info("OK\r\n ROM SIZE: %d Bytes\r\n", wTotalSize);
     
     
-    return true;
+    return wTotalSize;
 }
 
 int main (void) 
@@ -227,24 +231,25 @@ int main (void)
     retarget_stdout(ptLog);
     
     do {
-        if (!load_nes_rom(s_cROMBuffer, sizeof(s_cROMBuffer))) {
+        int_fast32_t nSize = load_nes_rom(s_cROMBuffer, sizeof(s_cROMBuffer));
+        if (nSize < 0) {
             break;
         }
         
-        if (fce_load_rom((char *)s_cROMBuffer) != 0){
+        if (fce_load_rom((char *)s_cROMBuffer, nSize) != 0){
             break;
         }
         
-        log("Initialise NES Simulator...\r\n")
+        log_info("Initialise NES Simulator...\r\n")
         fce_init();
-        log("Game Start...\r\n")
+        log_info("Game Start...\r\n")
         fce_run();
         
         FILE_IO.Channel.Close(ptLog);
         while(1);
     } while(false);
     
-    log("Error: Invalid or unsupported rom.\r\n")
+    log_info("Error: Invalid or unsupported rom.\r\n")
     
     FILE_IO.Channel.Close(ptLog);
 

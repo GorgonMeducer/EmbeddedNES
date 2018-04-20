@@ -56,7 +56,6 @@ To port this project, replace the following functions by your own:
 */
 #include "hal.h"
 #include "fce.h"
-#include "common.h"
 #include "app_platform.h"
 
 
@@ -122,6 +121,7 @@ void nes_set_bg_color(int c)
     
 }
 
+#if defined(USE_LITE_NES)
 /* Flush the pixel buffer */
 void nes_flush_buf(PixelBuf  * __restrict pbuff) {
     
@@ -179,13 +179,31 @@ void nes_flush_buf(PixelBuf  * __restrict pbuff) {
         (*ptTile)[7 - y & 0x07][x & 0x07].tColor = s_tColorMap[p->c];
         //s_tScreenBuffer[SCREEN_HEIGHT - y - 1][x].tColor = s_tColorMap[p->c];
     #else
-        y = SCREEN_HEIGHT - y - 1;
+        //y = SCREEN_HEIGHT - y - 1;
         s_tScreenBuffer[y][x].tColor = s_tColorMap[p->c];
     #endif
     }
     #endif
     
 }
+#elif defined(USE_JEG)
+
+extern void nes_flip_display(void);
+
+void update_frame(frame_t *ptFrame) 
+{
+    int_fast32_t x = 0, y = 0;
+    
+    for (; y < SCREEN_HEIGHT; y++) {
+        int_fast32_t nTempY = SCREEN_HEIGHT - y - 1;
+        for (x = 0; x < SCREEN_WIDTH; x++) {
+            s_tScreenBuffer[nTempY][x].tColor = s_tColorMap[ptFrame->chPixels[y][x]];
+        }
+    }
+   
+    nes_flip_display();
+}
+#endif
 
 /* Initialization:
    (1) start a 1/FPS Hz timer. 
@@ -194,13 +212,19 @@ void nes_hal_init(void)
 {
     //! initialise LCD
     GLCD_Initialize();
+    GLCD_SetBackgroundColor(GLCD_COLOR_BLACK);
+    //disable_blocking_style();
     GLCD_ClearScreen();
+    
+    
     GLCD_FrameBufferAccess(true);
+    
+    
     do {
         //! initialise color map
         uint32_t n = 0;
         for (;n < UBOUND(s_tColorMap);n++) {
-            pal color = palette[n];
+            pal_t color = palette[n];
             s_tColorMap[n].B = color.b >> 3;
             s_tColorMap[n].G = color.g >> 2;
             s_tColorMap[n].R = color.r >> 3;
@@ -212,9 +236,9 @@ void nes_hal_init(void)
    Timer ensures this function is called FPS times a second. */
 void nes_flip_display(void)
 {
-    static uint32_t s_wValue = 0;
-    s_wValue++;
-    if (!(s_wValue & 0x1)) {
+    //static uint32_t s_wValue = 0;
+    //s_wValue++;
+    //if (!(s_wValue & 0x1)) {
     #if __USE_TILE__
     uint32_t x = 0, y =0;
     for (y = 16; y < (SCREEN_HEIGHT >> 3); y++) {
@@ -225,7 +249,7 @@ void nes_flip_display(void)
     #else
         GLCD_DrawBitmap((320-SCREEN_WIDTH)>>1,0,SCREEN_WIDTH,SCREEN_HEIGHT, (uint8_t *)s_tScreenBuffer);
     #endif
-    }
+    //}
 }
 
 /* Query a button's state.
