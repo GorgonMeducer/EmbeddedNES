@@ -19,6 +19,8 @@ A portable NES simulator for embedded processors.
     
    
 ## How to test it
+
+    Download the latest version of jeg from https://github.com/semiversus/jeg and unzip all the files under EmbeddedNES\mps2_template\example\jeg folder.
     
     A MDK (https://www.keil.com/demo/eval/arm.htm) project has been provided:
     
