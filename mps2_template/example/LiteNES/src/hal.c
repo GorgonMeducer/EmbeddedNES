@@ -195,9 +195,9 @@ void update_frame(frame_t *ptFrame)
     int_fast32_t x = 0, y = 0;
     
     for (; y < SCREEN_HEIGHT; y++) {
-        int_fast32_t nTempY = SCREEN_HEIGHT - y - 1;
+        //int_fast32_t nTempY = SCREEN_HEIGHT - y - 1;
         for (x = 0; x < SCREEN_WIDTH; x++) {
-            s_tScreenBuffer[nTempY][x].tColor = s_tColorMap[ptFrame->chPixels[y][x]];
+            s_tScreenBuffer[y][x].tColor = s_tColorMap[ptFrame->chPixels[y][x]];
         }
     }
    
@@ -235,9 +235,9 @@ void nes_hal_init(void)
    Timer ensures this function is called FPS times a second. */
 void nes_flip_display(void)
 {
-    static uint32_t s_wValue = 0;
-    s_wValue++;
-    if (!(s_wValue & 0x3)) {
+    //static uint32_t s_wValue = 0;
+    //s_wValue++;
+    //if (!(s_wValue & 0x3)) {
     #if __USE_TILE__
     uint32_t x = 0, y =0;
     for (y = 16; y < (SCREEN_HEIGHT >> 3); y++) {
@@ -248,7 +248,7 @@ void nes_flip_display(void)
     #else
         GLCD_DrawBitmap((320-SCREEN_WIDTH)>>1,0,SCREEN_WIDTH,SCREEN_HEIGHT, (uint8_t *)s_tScreenBuffer);
     #endif
-    }
+    //}
 }
 
 /* Query a button's state.

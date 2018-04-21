@@ -1,5 +1,6 @@
 #include "cartridge.h"
 #include <stdio.h>
+#include <string.h>
 
 int cartridge_setup(cartridge_t *cartridge, uint8_t *data, uint32_t size) {
   // check minimum size (header is 16 bytes)
@@ -12,8 +13,8 @@ int cartridge_setup(cartridge_t *cartridge, uint8_t *data, uint32_t size) {
     return 2;
   }
 
-  cartridge->prg_size=16384*data[4];
-  cartridge->chr_size=8192*data[5];
+  cartridge->prg_size=0x4000*data[4];
+  cartridge->chr_size=0x2000*data[5];
   cartridge->mirror=(data[6]&0x01)+((data[6]>>2)&0x02);
 
   if (data[7]=='D' && data[8]=='i' && data[9]=='s' && data[10]=='k' && data[11]=='D' &&
@@ -34,9 +35,7 @@ int cartridge_setup(cartridge_t *cartridge, uint8_t *data, uint32_t size) {
     return 4;
   }
 
-  for (int i=0; i<0x2000; i++) {
-    cartridge->io_data[i]=0;
-  }
+  memset(cartridge->io_data, 0, 0x2000);
 
   cartridge->prg_memory=data+(data[6]&0x04?512:0)+16; // skip header and trainer data
   if (cartridge->chr_size) {
@@ -45,11 +44,14 @@ int cartridge_setup(cartridge_t *cartridge, uint8_t *data, uint32_t size) {
   else {
     cartridge->chr_memory=cartridge->chr_data;
     cartridge->chr_size=0x2000;
-    for (int i=0; i<0x2000; i++) {
-      cartridge->chr_memory[i]=0;
-    }
-  }
+    
+    memset(cartridge->chr_memory, 0, 0x2000);
 
+  }
+  
+  //! generate mask
+  cartridge->chr_size--;
+  cartridge->prg_size--;
   return 0;
 }
 
@@ -60,10 +62,11 @@ uint_fast8_t cartridge_read_prg(cartridge_t *cartridge, uint_fast16_t adr)
 {
 
     if (adr>=0x8000) {
-        return cartridge->prg_memory[(adr-0x8000) % cartridge->prg_size];
+        return cartridge->prg_memory[adr & cartridge->prg_size];
+        //return cartridge->prg_memory[(adr-0x8000) & cartridge->prg_size];
     } 
     
-    return cartridge->io_data[adr-0x6000];
+    return cartridge->io_data[adr & 0x1FFF];
 
 }
 
@@ -72,27 +75,34 @@ uint_fast16_t cartridge_readw_prg(cartridge_t *cartridge, uint_fast16_t adr)
 {
 
     if (adr>=0x8000) {
-        return *(uint16_t *)&cartridge->prg_memory[(adr-0x8000) % cartridge->prg_size];
+        return *(uint16_t *)&cartridge->prg_memory[adr & cartridge->prg_size];
     } 
     
-    return cartridge->io_data[adr-0x6000];
+    return cartridge->io_data[adr & 0x1FFF];
 
 }
 
 void cartridge_write_prg(cartridge_t *cartridge, int adr, int value) {
   if (adr>=0x8000) {
-    cartridge->prg_memory[(adr-0x8000)%cartridge->prg_size]=value;
+    cartridge->prg_memory[ adr & cartridge->prg_size]=value;
+  } else {
+    cartridge->io_data[adr & 0x1fff]=value;
   }
-  else {
-    cartridge->io_data[adr-0x6000]=value;
-  }
+}
+
+uint8_t *cartridge_get_prg_src_address(cartridge_t *cartridge, uint_fast16_t hwAddress)
+{
+    if (hwAddress>=0x8000) {
+        return &(cartridge->prg_memory[ hwAddress & cartridge->prg_size]);
+    } 
+    return  &(cartridge->io_data[hwAddress & 0x1fff]);
 }
 
 // access ppu memory bus
 int cartridge_read_chr(cartridge_t *cartridge, int adr) {
-  return cartridge->chr_memory[adr%cartridge->chr_size];
+  return cartridge->chr_memory[adr & cartridge->chr_size];
 }
 
 void cartridge_write_chr(cartridge_t *cartridge, int adr, int value) {
-  cartridge->chr_memory[adr%cartridge->chr_size]=value;
+  cartridge->chr_memory[adr & cartridge->chr_size ] = value;
 }

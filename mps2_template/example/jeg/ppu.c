@@ -1,6 +1,7 @@
 #include "ppu.h"
 #include "nes.h"
 #include <stdio.h>
+#include <string.h>
 
 #define PPUCTRL_NAMETABLE 3
 #define PPUCTRL_INCREMENT 4
@@ -39,119 +40,123 @@ void ppu_setup_video(ppu_t *ppu, uint8_t *video_frame_data) {
 }
 
 void ppu_reset(ppu_t *ppu) {
-  ppu->last_cycle_number=0;
-  ppu->cycle=340;
-  ppu->scanline=240;
-  ppu->ppuctrl=0;
-  ppu->ppustatus=0;
-  ppu->t=0;
-  ppu->ppumask=0;
-  ppu->oam_address=0;
-  ppu->register_data=0;
-  ppu->name_table_byte=0;
-  if (ppu->video_frame_data) {
-    for (int i=0; i<256*240; i++) {
-      ppu->video_frame_data[i]=0;
+    ppu->last_cycle_number=0;
+    ppu->cycle=340;
+    ppu->scanline=240;
+    ppu->ppuctrl=0;
+    ppu->ppustatus=0;
+    ppu->t=0;
+    ppu->ppumask=0;
+    ppu->oam_address=0;
+    ppu->register_data=0;
+    ppu->name_table_byte=0;
+
+    if (NULL != ppu->video_frame_data) {
+        memset(ppu->video_frame_data, 0, 256*240);
     }
-  }
 }
 
-int ppu_read(ppu_t *ppu, int adr) {
-  int value, buffered;
+uint_fast8_t ppu_read(ppu_t *ppu, uint_fast16_t hwAddress) 
+{
+    int value, buffered;
 
-  switch (adr) {
-    case 0x2002:
-      ppu_update(ppu);
-      value=(ppu->register_data&0x1F)|(ppu->ppustatus&(PPUSTATUS_VBLANK|PPUSTATUS_SPRITE_ZERO_HIT|PPUSTATUS_SPRITE_OVERFLOW));
-      ppu->ppustatus&=~PPUSTATUS_VBLANK; // disable vblank flag
-      ppu->w=0;
-      break;
-    case 0x2004:
-      value=ppu->oam_data[ppu->oam_address];
-      break;
-    case 0x2007:
-      value=ppu->read(ppu->nes, ppu->v);
-      if (ppu->v%0x4000<0x3F00) {
-        buffered=ppu->buffered_data;
-        ppu->buffered_data=value;
-        value=buffered;
-      }
-      else {
-        ppu->buffered_data=ppu->read(ppu->nes, ppu->v - 0x1000);
-      }
-      ppu->v+=((ppu->ppuctrl&PPUCTRL_INCREMENT)==0)?1:32;
-      break;
-    default:
-      value=ppu->register_data;
-      break;
-  }
-  return value;
+    switch (hwAddress & 0x07) {
+        case 2:
+            ppu_update(ppu);
+            value=      (ppu->register_data&0x1F)
+                    |   (ppu->ppustatus & (     PPUSTATUS_VBLANK
+                                            |   PPUSTATUS_SPRITE_ZERO_HIT
+                                            |   PPUSTATUS_SPRITE_OVERFLOW));
+                                            
+            ppu->ppustatus &= ~PPUSTATUS_VBLANK; // disable vblank flag
+            ppu->w=0;
+            break;
+            
+        case 4:
+            value=ppu->oam_data[ppu->oam_address];
+            break;
+            
+        case 7:
+            value=ppu->read(ppu->nes, ppu->v);
+            if (ppu->v%0x4000<0x3F00) {
+                buffered=ppu->buffered_data;
+                ppu->buffered_data=value;
+                value=buffered;
+            } else {
+                ppu->buffered_data=ppu->read(ppu->nes, ppu->v - 0x1000);
+            }
+            ppu->v+=((ppu->ppuctrl&PPUCTRL_INCREMENT)==0)?1:32;
+            break;
+            
+        default:
+            value=ppu->register_data;
+            break;
+    }
+    return value;
 }
 
-void ppu_write(ppu_t *ppu, int adr, int value) {
-  int address_temp;
+void ppu_dma_access(ppu_t *ppu, uint_fast8_t chData)
+{
+    uint_fast16_t address_temp = chData << 8;
 
-  ppu->register_data=value;
-
-  switch (adr) {
-    case 0x2000:
-      ppu->ppuctrl=value;
-      ppu->t=(ppu->t&0xF3FF)|((value&0x03)<<10);
-      break;
-    case 0x2001:
-      ppu->ppumask=value;
-      break;
-    case 0x2003:
-      ppu->oam_address=value;
-      break;
-    case 0x2004:
-      ppu->oam_data[ppu->oam_address]=value;
-      ppu->oam_address++;
-      break;
-    case 0x2005:
-      ppu_update(ppu);
-      if (ppu->w==0) {
-        ppu->t=(ppu->t&0xFFE0)|(value>>3);
-        ppu->x=value&0x07;
-        ppu->w=1;
-      }
-      else {
-        ppu->t=(ppu->t&0x8FFF)|((value&0x07)<<12);
-        ppu->t=(ppu->t&0xFC1F)|((value&0xF8)<<2);
-        ppu->w=0;
-      }
-      break;
-    case 0x2006:
-      if (ppu->w==0) {
-        ppu->t=(ppu->t&0x80FF)|((value&0x3F)<<8);
-        ppu->w=1;
-      }
-      else {
-        ppu->t=(ppu->t&0xFF00)|value;
-        ppu->v=ppu->t;
-        ppu->w=0;
-      }
-      break;
-    case 0x2007:
-      ppu->write(ppu->nes, ppu->v, value);
-      ppu->v+=((ppu->ppuctrl&PPUCTRL_INCREMENT)==0)?1:32;
-      break;
-    case 0x4014:
-      address_temp=value<<8;
-      for(int i=0; i<256; i++) {
-        int v=ppu->nes->cpu.read(ppu->nes, address_temp);
-        ppu->oam_data[ppu->oam_address+i]=v;
-        address_temp++;
-      }
-      ppu->nes->cpu.stall_cycles+=513;
-      if (ppu->nes->cpu.cycle_number%2) {
+    uint8_t *pchSrc = ppu->nes->cpu.fnDMAGetSourceAddress(ppu->nes, address_temp);
+    memcpy(&(ppu->oam_data[ppu->oam_address]), pchSrc, 256);
+    
+    ppu->nes->cpu.stall_cycles += 513;
+    if (ppu->nes->cpu.cycle_number & 0x01) {
         ppu->nes->cpu.stall_cycles++;
-      }
-      break;
-    default:
-      // TODO: should not happen
-      break;
-  }
+    }
+}
+
+void ppu_write(ppu_t *ppu, uint_fast16_t hwAddress, uint_fast8_t chData) 
+{
+    int address_temp;
+
+    ppu->register_data = chData;
+
+    switch (hwAddress & 7) {
+        case 0:
+            ppu->ppuctrl=chData;
+            ppu->t = (ppu->t & 0xF3FF) | ((chData & 0x03) <<10 );
+            break;
+        case 1:
+            ppu->ppumask=chData;
+            break;
+        case 3:
+            ppu->oam_address=chData;
+            break;
+        case 4:
+            ppu->oam_data[ppu->oam_address] = chData;
+            ppu->oam_address++;
+            break;
+        case 5:
+            ppu_update(ppu);
+            if (0 == ppu->w) {
+                ppu->t = ( ppu->t & 0xFFE0 ) | ( chData>>3 );
+                ppu->x = chData & 0x07;
+                ppu->w = 1;
+            } else {
+                ppu->t = (ppu->t & 0x8FFF) | ((chData&0x07)<<12);
+                ppu->t = (ppu->t & 0xFC1F) | ((chData&0xF8)<<2);
+                ppu->w = 0;
+            }
+            break;
+        case 6:
+            if (0 == ppu->w) {
+                ppu->t = (ppu->t&0x80FF) | ((chData&0x3F)<<8);
+                ppu->w = 1;
+            } else {
+                ppu->t = (ppu->t&0xFF00) | chData;
+                ppu->v = ppu->t;
+                ppu->w = 0;
+            }
+            break;
+        case 7:
+            ppu->write(ppu->nes, ppu->v, chData);
+            ppu->v += (0 == (ppu->ppuctrl & PPUCTRL_INCREMENT)) ? 1:32;
+            break;
+    }
+
 }
 
 inline uint32_t fetch_sprite_pattern(ppu_t *ppu, int i, int row) {
@@ -161,13 +166,12 @@ inline uint32_t fetch_sprite_pattern(ppu_t *ppu, int i, int row) {
   uint16_t address;
 
   if ((ppu->ppuctrl&PPUCTRL_SPRITE_SIZE)==0) {
-    if ((attributes&0x80)==0x80) {
+    if ((attributes&0x80)) {
       row=7-row;
     }
     address=0x1000*(ppu->ppuctrl&PPUCTRL_SPRITE_TABLE?1:0)+tile*16+row;
-  }
-  else {
-    if ((attributes&0x80)==0x80) {
+  } else {
+    if ((attributes&0x80)) {
       row=15-row;
     }
     table=tile&0x01;
@@ -176,7 +180,7 @@ inline uint32_t fetch_sprite_pattern(ppu_t *ppu, int i, int row) {
       tile++;
       row-=8;
     }
-    address=0x1000*(table)+tile*16+row;
+    address = 0x1000*(table)+tile*16+row;
   }
   int low_tile_byte=ppu->read(ppu->nes, address);
   int high_tile_byte=ppu->read(ppu->nes, address+8);
