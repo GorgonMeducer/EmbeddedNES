@@ -17,9 +17,9 @@ typedef struct ppu_t {
   int cycle;
   int scanline;
 
-  int palette[32];
-  int name_table[2048];
-  int oam_data[256];
+  uint_fast8_t palette[32];
+  uint8_t name_table[2048];
+  uint8_t oam_data[256];
 
   // ppu registers
   int v; // current vram address (15bit)
@@ -40,9 +40,9 @@ typedef struct ppu_t {
   // sprite temporary variables
   int sprite_count;
   uint32_t sprite_patterns[8];
-  int sprite_positions[8];
-  int sprite_priorities[8];
-  int sprite_indicies[8];
+  uint_fast8_t sprite_positions[8];
+  uint_fast8_t sprite_priorities[8];
+  uint_fast8_t sprite_indicies[8];
 
   // memory accessable registers
   int ppuctrl;
@@ -64,9 +64,15 @@ void ppu_setup_video(ppu_t *ppu, uint8_t *video_frame_data);
 
 void ppu_reset(ppu_t *ppu);
 
-int ppu_read(ppu_t *ppu, int adr); // read data [8bit] from address [16bit]
-void ppu_write(ppu_t *ppu, int adr, int value); // write data [8bit] to address [16bit]
+//! \brief read data [8bit] from address [16bit]
+extern uint_fast8_t ppu_read(ppu_t *ppu, uint_fast16_t hwAddress) ; 
 
-int ppu_update(ppu_t *ppu); // update ppu to current cpu cycle, return number of cpu cycles to next frame
+//! \brief write data [8bit] to address [16bit]
+extern void ppu_write(ppu_t *ppu, uint_fast16_t hwAddress, uint_fast8_t chData); 
+
+//! \bridef dedicated PPU DMA access 
+extern void ppu_dma_access(ppu_t *ppu, uint_fast8_t chData);
+
+extern int ppu_update(ppu_t *ppu); // update ppu to current cpu cycle, return number of cpu cycles to next frame
 
 #endif

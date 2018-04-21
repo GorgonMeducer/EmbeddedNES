@@ -24,6 +24,6 @@ typedef struct opcode_tbl_entry_t {
   int page_cross_cycles;
 } opcode_tbl_entry_t;
 
-extern opcode_tbl_entry_t opcode_tbl[];
+extern const opcode_tbl_entry_t opcode_tbl[];
 
 #endif

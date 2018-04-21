@@ -21,7 +21,8 @@ int cartridge_setup(cartridge_t *cartridge, uint8_t *data, uint32_t size);
 extern uint_fast8_t cartridge_read_prg(cartridge_t *cartridge, uint_fast16_t adr);
 extern uint_fast16_t cartridge_readw_prg(cartridge_t *cartridge, uint_fast16_t adr);
 
-void cartridge_write_prg(cartridge_t *cartridge, int adr, int value);
+extern void cartridge_write_prg(cartridge_t *cartridge, int adr, int value);
+extern uint8_t *cartridge_get_prg_src_address(cartridge_t *cartridge, uint_fast16_t hwAddress);
 
 // access ppu memory bus
 int cartridge_read_chr(cartridge_t *cartridge, int adr);

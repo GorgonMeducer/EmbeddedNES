@@ -5,16 +5,50 @@
 #include <stdint.h>
 #include <string.h>
 
-#define SET_FLAGS(v) do{ \
-    cpu->status_C=(v)&0x01; \
-    cpu->status_Z=((v)>>1)&0x01; \
-    cpu->status_I=((v)>>2)&0x01; \
-    cpu->status_D=((v)>>3)&0x01; \
-    cpu->status_B=((v)>>4)&0x01; \
-    cpu->status_U=((v)>>5)&0x01; \
-    cpu->status_V=((v)>>6)&0x01; \
-    cpu->status_N=((v)>>7)&0x01; \
-  } while(0)
+
+#define SET_FLAGS(v)        do {cpu->chStatus = (v);} while(0)
+#define GET_FLAGS()         (cpu->chStatus)
+
+#define __BV(__N)           ((uint32_t)1<<(__N))
+
+#define RECALC_ZN(v)                                                            \
+            do{                                                                 \
+                cpu->status_Z=(v)?0:1;                                          \
+                cpu->status_N=(v)&0x80?1:0;                                     \
+            } while(0)
+
+#define PUSH(v)                                                                 \
+    do {                                                                        \
+        cpu->write(cpu->reference, 0x100|cpu->reg_SP, (v)&0xFF);                \
+        cpu->reg_SP--;                                                          \
+        if (cpu->reg_SP<0) {                                                    \
+            cpu->reg_SP=0xFF;                                                   \
+        }                                                                       \
+    } while(0)
+
+
+#define READ16(adr)     (cpu->readw(cpu->reference, adr))
+#define READ16BUG(adr)  (   (cpu->read(     cpu->reference, adr))               \
+                        |   ((cpu->read(    cpu->reference,     ((adr)&0xFF00)  \
+                                                            +   (((adr)+1)&0xFF)\
+                                       )<<8)))
+
+#define PAGE_DIFFERS(a,b) (((a)&0xFF00)!=((b)&0xFF00))
+
+#define BRANCH(c)                                                               \
+    do {                                                                        \
+        if (c) {                                                                \
+            cycles_passed+=PAGE_DIFFERS(cpu->reg_PC, address)?2:1;              \
+            cpu->reg_PC=address;                                                \
+        }                                                                       \
+    } while(0)
+
+#define COMPARE(a, b)                                                           \
+    do {                                                                        \
+        RECALC_ZN((a)-(b));                                                     \
+        cpu->status_C= (a)>=(b)?1:0;                                            \
+    } while(0)
+
 
 bool cpu6502_init(cpu6502_t *ptCPU, cpu6502_cfg_t *ptCFG) 
 {
@@ -25,16 +59,17 @@ bool cpu6502_init(cpu6502_t *ptCPU, cpu6502_cfg_t *ptCFG)
                     ||  (NULL == ptCFG->read)
                     ||  (NULL == ptCFG->write)
                     ||  (NULL == ptCFG->readw)
-                    ||  (NULL == ptCFG->writew)) {
+                    ||  (NULL == ptCFG->writew)
+                    ||  (NULL == ptCFG->fnDMAGetSourceAddress)) {
             break;
         }
     
-        ptCPU->reference =  ptCFG->reference;
-        ptCPU->read =       ptCFG->read;
-        ptCPU->write =      ptCFG->write;
-        ptCPU->readw =       ptCFG->readw;
-        ptCPU->writew =      ptCFG->writew;
-    
+        ptCPU->reference =              ptCFG->reference;
+        ptCPU->read =                   ptCFG->read;
+        ptCPU->write =                  ptCFG->write;
+        ptCPU->readw =                  ptCFG->readw;
+        ptCPU->writew =                 ptCFG->writew;
+        ptCPU->fnDMAGetSourceAddress =  ptCFG->fnDMAGetSourceAddress;
         return true;
     } while(false);
 
@@ -43,128 +78,20 @@ bool cpu6502_init(cpu6502_t *ptCPU, cpu6502_cfg_t *ptCFG)
 
 void cpu6502_reset(cpu6502_t *cpu) {
   // load program counter with address stored at 0xFFFC (low byte) and 0xFFFD (high byte)
-  cpu->reg_A=0;
-  cpu->reg_X=0;
-  cpu->reg_Y=0;
-  cpu->reg_PC=cpu->read(cpu->reference, 0xFFFC)+(cpu->read(cpu->reference, 0xFFFD)<<8);
-  cpu->reg_SP=0xFD; // reset stack pointer
-  SET_FLAGS(0x24); // set following status flags: UNUSED, INTERRUPT
-  cpu->cycle_number=0;
-  cpu->interrupt_pending=INTERRUPT_NONE;
-  cpu->stall_cycles=0;
+    cpu->reg_A = 0;
+    cpu->reg_X = 0;
+    cpu->reg_Y = 0;
+    cpu->reg_PC = cpu->readw(cpu->reference, 0xFFFC);
+    cpu->reg_SP = 0xFD; // reset stack pointer
+    SET_FLAGS(0x24); // set following status flags: UNUSED, INTERRUPT
+    cpu->cycle_number = 0;
+    cpu->interrupt_pending = INTERRUPT_NONE;
+    cpu->stall_cycles = 0;
 }
 
-#define RECALC_ZN(v) do{ \
-    cpu->status_Z=(v)?0:1; \
-    cpu->status_N=(v)&0x80?1:0; \
-  } while(0)
-
-#define GET_FLAGS() ((cpu->status_N<<7)|(cpu->status_V<<6)|(cpu->status_U<<5)| \
-  (cpu->status_B<<4)|(cpu->status_D<<3)|(cpu->status_I<<2)|(cpu->status_Z<<1)| \
-  cpu->status_C)
-
-#define PUSH(v) do { \
-    cpu->write(cpu->reference, 0x100|cpu->reg_SP, (v)&0xFF); \
-    cpu->reg_SP--; \
-    if (cpu->reg_SP<0) { \
-      cpu->reg_SP=0xFF; \
-    } \
-  } while(0)
-
-#if 0
-#define READ16(adr) (cpu->read(cpu->reference, adr)|(cpu->read(cpu->reference, (adr)+1)<<8))
-
-#define READ16BUG(adr) (cpu->read(cpu->reference, adr)|((cpu->read(cpu->reference,  ((adr)&0xFF00) + (((adr)+1)&0xFF ) )<<8)))
-#else
-#define READ16(adr)     (cpu->readw(cpu->reference, adr))
-#define READ16BUG(adr)  (cpu->read(cpu->reference, adr)|((cpu->read(cpu->reference,  ((adr)&0xFF00) + (((adr)+1)&0xFF ) )<<8)))
-#endif
-
-#define PAGE_DIFFERS(a,b) (((a)&0xFF00)!=((b)&0xFF00))
-
-#define BRANCH(c) do { \
-    if (c) { \
-      cycles_passed+=PAGE_DIFFERS(cpu->reg_PC, address)?2:1; \
-      cpu->reg_PC=address; \
-    } \
-  } while(0)
-
-#define COMPARE(a, b) do { \
-    RECALC_ZN((a)-(b)); \
-    cpu->status_C= (a)>=(b)?1:0; \
-  } while(0)
-
-
-
-uint_fast16_t address_mode_ADR_ABSOLUTE(cpu6502_t *cpu, uint_fast16_t address) 
-{
-    address=READ16(cpu->reg_PC+1);
-}
-
-/*
-uint_fast16_t address_mode_ADR_ABSOLUTE_X(cpu6502_t *cpu, uint_fast16_t address) 
-{
-    address=READ16(cpu->reg_PC+1)+cpu->reg_X;
-    if (PAGE_DIFFERS(address-cpu->reg_X, address)) {
-        cycles_passed+=opcode.page_cross_cycles;
-        cpu->read(cpu->reference, address-0x100); // dummy read
-    }
-}
-
-      case ADR_ABSOLUTE_Y:
-        address=READ16(cpu->reg_PC+1)+cpu->reg_Y;
-        if (PAGE_DIFFERS(address-cpu->reg_Y, address)) {
-          cycles_passed+=opcode.page_cross_cycles;
-          cpu->read(cpu->reference, address-0x100); // dummy read
-        }
-        break;
-      case ADR_ACCUMULATOR:
-        cpu->read(cpu->reference, cpu->reg_PC+1); // dummy read
-        address=0;
-        break;
-      case ADR_IMMEDIATE:
-        address=cpu->reg_PC+1;
-        break;
-      case ADR_IMPLIED:
-        cpu->read(cpu->reference, cpu->reg_PC+1); // dummy read
-        address=0;
-        break;
-      case ADR_INDEXED_INDIRECT:
-        address=READ16BUG((cpu->read(cpu->reference, cpu->reg_PC+1)+cpu->reg_X)&0xFF);
-        break;
-      case ADR_INDIRECT:
-        address=READ16BUG(READ16(cpu->reg_PC+1));
-        break;
-      case ADR_INDIRECT_INDEXED:
-        address=READ16BUG(cpu->read(cpu->reference, cpu->reg_PC+1))+cpu->reg_Y;
-        if (PAGE_DIFFERS(address-cpu->reg_Y, address)) {
-          cycles_passed+=opcode.page_cross_cycles;
-          cpu->read(cpu->reference, address-0x100); // dummy read
-        }
-        break;
-      case ADR_RELATIVE:
-        address=cpu->read(cpu->reference, cpu->reg_PC+1);
-        if (address<0x80) {
-          address+=cpu->reg_PC+2;
-        }
-        else {
-          address+=cpu->reg_PC+2-0x100;
-        }
-        break;
-      case ADR_ZERO_PAGE:
-        address=cpu->read(cpu->reference, cpu->reg_PC+1)&0xFF;
-        break;
-      case ADR_ZERO_PAGE_X:
-        address=(cpu->read(cpu->reference, cpu->reg_PC+1)+cpu->reg_X)&0xFF;
-        break;
-      case ADR_ZERO_PAGE_Y:
-        address=(cpu->read(cpu->reference, cpu->reg_PC+1)+cpu->reg_Y)&0xFF;
-        break;
-    }
-*/
 
 int cpu6502_run(cpu6502_t *cpu, int cycles_to_run) {
-  opcode_tbl_entry_t *ptOpcode;
+  const opcode_tbl_entry_t *ptOpcode;
   int cycles_passed; // cycles used in one iteration
   int address=0; // calculated address for memory interaction
   int temp_value, temp_value2; // temporary value used for calculation
@@ -203,28 +130,28 @@ int cpu6502_run(cpu6502_t *cpu, int cycles_to_run) {
         address=READ16(cpu->reg_PC+1);
         break;
       case ADR_ABSOLUTE_X:
-        address=READ16(cpu->reg_PC+1)+cpu->reg_X;
+        address = READ16(cpu->reg_PC+1)+cpu->reg_X;
         if (PAGE_DIFFERS(address-cpu->reg_X, address)) {
           cycles_passed+=ptOpcode->page_cross_cycles;
-          cpu->read(cpu->reference, address-0x100); // dummy read
+          //cpu->read(cpu->reference, address-0x100); // dummy read
         }
         break;
       case ADR_ABSOLUTE_Y:
-        address=READ16(cpu->reg_PC+1)+cpu->reg_Y;
+        address = READ16(cpu->reg_PC+1)+cpu->reg_Y;
         if (PAGE_DIFFERS(address-cpu->reg_Y, address)) {
           cycles_passed+=ptOpcode->page_cross_cycles;
-          cpu->read(cpu->reference, address-0x100); // dummy read
+          //cpu->read(cpu->reference, address-0x100); // dummy read
         }
         break;
       case ADR_ACCUMULATOR:
-        cpu->read(cpu->reference, cpu->reg_PC+1); // dummy read
+        //cpu->read(cpu->reference, cpu->reg_PC+1); // dummy read
         address=0;
         break;
       case ADR_IMMEDIATE:
         address=cpu->reg_PC+1;
         break;
       case ADR_IMPLIED:
-        cpu->read(cpu->reference, cpu->reg_PC+1); // dummy read
+        //cpu->read(cpu->reference, cpu->reg_PC+1); // dummy read
         address=0;
         break;
       case ADR_INDEXED_INDIRECT:
@@ -237,7 +164,7 @@ int cpu6502_run(cpu6502_t *cpu, int cycles_to_run) {
         address=READ16BUG(cpu->read(cpu->reference, cpu->reg_PC+1))+cpu->reg_Y;
         if (PAGE_DIFFERS(address-cpu->reg_Y, address)) {
           cycles_passed+=ptOpcode->page_cross_cycles;
-          cpu->read(cpu->reference, address-0x100); // dummy read
+          //cpu->read(cpu->reference, address-0x100); // dummy read
         }
         break;
       case ADR_RELATIVE:
@@ -377,16 +304,13 @@ int cpu6502_run(cpu6502_t *cpu, int cycles_to_run) {
         break;
       case OP_DEX:
         cpu->reg_X--;
-        if (cpu->reg_X<0) {
-          cpu->reg_X=0xFF;
-        }
+        cpu->reg_X &= 0xFF;
+
         RECALC_ZN(cpu->reg_X);
         break;
       case OP_DEY:
         cpu->reg_Y--;
-        if (cpu->reg_Y<0) {
-          cpu->reg_Y=0xFF;
-        }
+        cpu->reg_Y &= 0xFF;
         RECALC_ZN(cpu->reg_Y);
         break;
       case OP_EOR:
@@ -403,16 +327,13 @@ int cpu6502_run(cpu6502_t *cpu, int cycles_to_run) {
         break;
       case OP_INX:
         cpu->reg_X++;
-        if (cpu->reg_X>255) {
-          cpu->reg_X=0x00;
-        }
+        cpu->reg_X &= 0xFF;
+
         RECALC_ZN(cpu->reg_X);
         break;
       case OP_INY:
         cpu->reg_Y++;
-        if (cpu->reg_Y>255) {
-          cpu->reg_Y=0x00;
-        }
+        cpu->reg_Y &= 0xFF;
         RECALC_ZN(cpu->reg_Y);
         break;
       case OP_JMP:

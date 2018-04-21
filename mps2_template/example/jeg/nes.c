@@ -6,60 +6,63 @@
 
 static uint_fast8_t cpu6502_bus_read (void *ref, uint_fast16_t address) 
 {
-  nes_t* nes=(nes_t *)ref;
-  int value;
+    nes_t* nes=(nes_t *)ref;
+    int value;
 
-  if (address<0x2000) {
-    return nes->ram_data[address & 0x7FF];
-  }
-  else if (address<0x4000) {
-    return ppu_read(&nes->ppu, 0x2000 + (address & 0x07));
-  }
-  else if (address==0x4014) {
-    return ppu_read(&nes->ppu, address);
-  }
-  else if (address==0x4016) {
-    value=nes->controller_shift_reg[0]&1;
-    nes->controller_shift_reg[0]=(nes->controller_shift_reg[0]>>1)|0x80;
-    return value;
-  }
-  else if (address==0x4017) {
-    value=nes->controller_shift_reg[1]&1;
-    nes->controller_shift_reg[1]=(nes->controller_shift_reg[1]>>1)|0x80;
-    return value;
-  }
-  else if (address>=0x6000) {
-    return cartridge_read_prg(&nes->cartridge, address);
-  }
-  else {
+    if (address<0x2000) {
+        return nes->ram_data[address & 0x7FF];
+        
+    } else if (address>=0x6000) {
+        return cartridge_read_prg(&nes->cartridge, address);
+        
+    } else if (address<0x4000) {
+        return ppu_read(&nes->ppu, address);
+        
+    } /*else if (address==0x4014) {
+        return ppu_read(&nes->ppu, address);
+        
+    } */ else if (address==0x4016) {
+        value=nes->controller_shift_reg[0]&1;
+        nes->controller_shift_reg[0]=(nes->controller_shift_reg[0]>>1)|0x80;
+        return value;
+        
+    } else if (address==0x4017) {
+        value=nes->controller_shift_reg[1]&1;
+        nes->controller_shift_reg[1]=(nes->controller_shift_reg[1]>>1)|0x80;
+        return value;
+    }
+
     // TODO: log this event
     return 0;
-  }
+    
 }
 
 static void cpu6502_bus_write (void *ref, uint_fast16_t address, uint_fast8_t value) 
 {
-  nes_t* nes=(nes_t *)ref;
+    nes_t* nes=(nes_t *)ref;
 
-  if (address<0x2000) {
-    nes->ram_data[address & 0x7FF] = value;
-  }
-  else if (address<0x4000) {
-    ppu_write(&nes->ppu, 0x2000+ (address & 0x07), value);
-  }
-  else if (address==0x4014) {
-    ppu_write(&nes->ppu, address, value);
-  }
-  else if (address==0x4016 && value&0x01) {
-    nes->controller_shift_reg[0]=nes->controller_data[0];
-    nes->controller_shift_reg[1]=nes->controller_data[1];
-  }
-  else if (address>=0x6000) {
-    cartridge_write_prg(&nes->cartridge, address, value);
-  }
-  else {
+    if (address<0x2000) {
+        nes->ram_data[address & 0x7FF] = value;
+        
+    } else if (address<0x4000) {
+        ppu_write(&nes->ppu, address, value);
+        
+    } else if (address==0x4014) {
+        //ppu_write(&nes->ppu, address, value);
+        ppu_dma_access(&nes->ppu, value);
+        
+    } else if (address==0x4016 && value&0x01) {
+        nes->controller_shift_reg[0]=nes->controller_data[0];
+        nes->controller_shift_reg[1]=nes->controller_data[1];
+        
+    } else if (address>=0x6000) {
+        cartridge_write_prg(&nes->cartridge, address, value);
+        
+    } 
+    
     // TODO: log this event
-  }
+    
+    
 }
 
 static uint_fast16_t cpu6502_bus_readw (void *ref, uint_fast16_t hwAddress) 
@@ -78,7 +81,22 @@ static uint_fast16_t cpu6502_bus_readw (void *ref, uint_fast16_t hwAddress)
 
 static void cpu6502_bus_writew (void *ref, uint_fast16_t hwAddress, uint_fast16_t hwValue) 
 {
+    // it is not used...
+}
+
+static uint8_t *cpu6502_dma_get_source_address(void *ref, uint_fast16_t hwAddress)
+{
     
+    nes_t* nes=(nes_t *)ref;
+    
+    if ( hwAddress<0x2000 ) {
+        return &(nes->ram_data[hwAddress & 0x7FF]);
+    } else  if (hwAddress>=0x6000) {
+        return cartridge_get_prg_src_address(&nes->cartridge, hwAddress);
+    } else {
+        return NULL;
+    }
+
 }
 
 const int mirror_lookup[20]={0,0,1,1,0,1,0,1,0,0,0,0,1,1,1,1,0,1,2,3};
@@ -137,6 +155,7 @@ bool nes_init(nes_t *ptNES)
                 &cpu6502_bus_write,
                 &cpu6502_bus_readw,
                 &cpu6502_bus_writew,
+                &cpu6502_dma_get_source_address,
             };
             if (! cpu6502_init(&ptNES->cpu, &tCFG)) {
                 break;
