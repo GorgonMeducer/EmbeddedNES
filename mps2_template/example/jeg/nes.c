@@ -1,7 +1,7 @@
 #include "nes.h"
 #include "cpu6502_debug.h"
 #include <string.h>
-
+#include <stdbool.h>
 
 
 static uint_fast8_t cpu6502_bus_read (void *ref, uint_fast16_t address) 
@@ -140,14 +140,18 @@ static void ppu_bus_write (nes_t *nes, int address, int value)
     }
 }
 
-bool nes_init(nes_t *ptNES) 
+
+
+bool nes_init(nes_t *ptNES, nes_cfg_t *ptCFG) 
 { 
  
     bool bResult = false;
     do {
-        if (NULL == ptNES) {
+        if (NULL == ptNES || NULL == ptCFG) {
             break;
-        } 
+        } else if (NULL == ptCFG->fnDrawPixel) {
+            break;
+        }
         {
             cpu6502_cfg_t tCFG = {
                 ptNES,
@@ -161,9 +165,18 @@ bool nes_init(nes_t *ptNES)
                 break;
             }
         } 
-
-  
-        ppu_init(&ptNES->ppu, ptNES, ppu_bus_read, ppu_bus_write);
+        {
+            ppu_cfg_t tCFG = {
+                ptNES,
+                ppu_bus_read,
+                ppu_bus_write,
+                ptCFG->fnDrawPixel,
+                ptCFG->ptTag,
+            };
+            if (ppu_init(&ptNES->ppu, &tCFG)) {
+                break;
+            }
+        }
         
         bResult = true;
     } while(false);
@@ -185,10 +198,11 @@ int nes_setup_rom(nes_t *nes, uint8_t *data, uint32_t size) {
   }
   return result;
 }
-
+/*
 void nes_setup_video(nes_t *nes, uint8_t *video_frame_data) {
   ppu_setup_video(&nes->ppu, video_frame_data);
 }
+*/
 
 void nes_reset(nes_t *nes) {
   cpu6502_reset(&nes->cpu);

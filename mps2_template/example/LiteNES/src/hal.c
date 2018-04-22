@@ -59,7 +59,7 @@ To port this project, replace the following functions by your own:
 #include "app_platform.h"
 
 
-#define __USE_TILE__        (false)
+#define __USE_TILE__        (true)
 
 /* Color coding (16-bit):
      15..11 = R4..0 (Red)
@@ -95,6 +95,7 @@ void wait_for_frame(void)
     //__nop();
 }
 
+#if defined(USE_LITE_NES)
 /* Set background color. RGB value of c is defined in fce.h */
 void nes_set_bg_color(int c)
 {
@@ -120,6 +121,7 @@ void nes_set_bg_color(int c)
     } while(wCount);
     
 }
+#endif
 
 #if defined(USE_LITE_NES)
 /* Flush the pixel buffer */
@@ -188,20 +190,36 @@ void nes_flush_buf(PixelBuf  * __restrict pbuff) {
 }
 #elif defined(USE_JEG)
 
-extern void nes_flip_display(void);
+extern void nes_flip_display(frame_t *ptFrame);
+
+extern void draw_pixels(void *ptTag, uint_fast8_t y, uint_fast8_t x, uint_fast8_t chColor)
+{
+    frame_t *ptThis = (frame_t *)ptTag;
+    //y = SCREEN_HEIGHT - y - 1;
+    
+#if __USE_TILE__
+    tile_t *ptTile = &s_tScreenBuffer[y>>3][x >> 3];
+    uint_fast8_t chTileY = 7 - (y & 0x07);
+    uint_fast8_t chTileX = x & 0x07;
+    color_t tColor = s_tColorMap[chColor];
+    color_t *ptTarget = &((*ptTile)[chTileY][chTileX].tColor);
+    
+    if ((*ptTarget).hwValue != tColor.hwValue) {
+        this.wDirtyMatrix[y>>3] |= 1 << (x >> 3);
+    }
+    *ptTarget = tColor;    
+    
+#else
+    s_tScreenBuffer[y][x].tColor = s_tColorMap[chColor];
+#endif
+    
+}
 
 void update_frame(frame_t *ptFrame) 
 {
-    int_fast32_t x = 0, y = 0;
     
-    for (; y < SCREEN_HEIGHT; y++) {
-        //int_fast32_t nTempY = SCREEN_HEIGHT - y - 1;
-        for (x = 0; x < SCREEN_WIDTH; x++) {
-            s_tScreenBuffer[y][x].tColor = s_tColorMap[ptFrame->chPixels[y][x]];
-        }
-    }
-   
-    nes_flip_display();
+
+    nes_flip_display(ptFrame);
 }
 #endif
 
@@ -233,6 +251,35 @@ void nes_hal_init(void)
 
 /* Update screen at FPS rate by allegro's drawing function. 
    Timer ensures this function is called FPS times a second. */
+   
+#if defined(USE_JEG)
+void nes_flip_display(frame_t *ptThis)
+{
+    
+    //static uint32_t s_wValue = 0;
+    //s_wValue++;
+    //if (!(s_wValue & 0x3)) {
+    #if __USE_TILE__
+    uint32_t x = 0, y =0;
+    for (y = 0; y < (SCREEN_HEIGHT >> 3); y++) {
+        uint32_t wMask = this.wDirtyMatrix[y];
+        if (0 == wMask) {
+            continue;
+        }
+        for (x = 0; x < (SCREEN_WIDTH >> 3); x++) {
+            if (!(wMask & (1<<x))) {
+                continue;
+            }
+            GLCD_DrawBitmap(((320-SCREEN_WIDTH)>>1) + x * 8, y * 8, 8,8, (uint8_t *)&s_tScreenBuffer[y][x]);
+        }
+        this.wDirtyMatrix[y] = 0;
+    }
+    #else
+        GLCD_DrawBitmap((320-SCREEN_WIDTH)>>1,0,SCREEN_WIDTH,SCREEN_HEIGHT, (uint8_t *)s_tScreenBuffer);
+    #endif
+    //}
+}
+#else
 void nes_flip_display(void)
 {
     //static uint32_t s_wValue = 0;
@@ -240,8 +287,9 @@ void nes_flip_display(void)
     //if (!(s_wValue & 0x3)) {
     #if __USE_TILE__
     uint32_t x = 0, y =0;
-    for (y = 16; y < (SCREEN_HEIGHT >> 3); y++) {
+    for (y = 0; y < (SCREEN_HEIGHT >> 3); y++) {
         for (x = 0; x < (SCREEN_WIDTH >> 3); x++) {
+            
             GLCD_DrawBitmap(((320-SCREEN_WIDTH)>>1) + x * 8, y * 8, 8,8, (uint8_t *)&s_tScreenBuffer[y][x]);
         }
     }
@@ -250,7 +298,7 @@ void nes_flip_display(void)
     #endif
     //}
 }
-
+#endif
 /* Query a button's state.
    Returns 1 if button #b is pressed. */
 uint_fast8_t nes_key_state(uint_fast8_t b)
