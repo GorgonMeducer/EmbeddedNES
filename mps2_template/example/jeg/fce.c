@@ -105,8 +105,9 @@ void fce_init(void)
     this.tFrame.hwHeight = SCREEN_HEIGHT;
     this.tFrame.hwWidth = SCREEN_WIDTH;
     
-    nes_setup_video(&this.tNESConsole, this.tFrame.chBuffer);
+    //nes_setup_video(&this.tNESConsole, this.tFrame.chBuffer);
 }
+
 
 int32_t fce_load_rom(uint8_t *pchROM, uint_fast32_t wSize)
 {
@@ -115,7 +116,15 @@ int32_t fce_load_rom(uint8_t *pchROM, uint_fast32_t wSize)
         if (NULL == pchROM) {
             break;
         }
-        nes_init(&this.tNESConsole);
+        {
+            const nes_cfg_t tCFG = {
+                &draw_pixels,
+                &this.tFrame,
+            };
+            if (nes_init(&this.tNESConsole, (nes_cfg_t *)&tCFG)) {
+                break;
+            }
+        }
         return nes_setup_rom(&this.tNESConsole, pchROM, wSize);
     } while(false);
     

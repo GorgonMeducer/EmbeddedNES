@@ -24,22 +24,42 @@
 #define PPUSTATUS_SPRITE_ZERO_HIT 64
 #define PPUSTATUS_VBLANK 128
 
-void ppu_init(ppu_t *ppu, nes_t *nes, ppu_read_func_t read, ppu_write_func_t write) {
-  ppu->nes=nes;
-  ppu->read=read;
-  ppu->write=write;
-  ppu->video_frame_data=0;
-  ppu_reset(ppu);
+bool ppu_init(ppu_t *ppu, ppu_cfg_t *ptCFG) 
+{
+    bool bResult = false;
+    do {
+        if (NULL == ppu || NULL == ptCFG) {
+            break;
+        } else if (     (NULL == ptCFG->ptNES)
+                    ||  (NULL == ptCFG->fnRead)
+                    ||  (NULL == ptCFG->fnWrite)
+                    ||  (NULL == ptCFG->fnDrawPixel)) {
+            break;
+        }
+        
+        ppu->nes=ptCFG->ptNES;
+        ppu->read=ptCFG->fnRead;
+        ppu->write=ptCFG->fnWrite;
+        ppu->fnDrawPixel = ptCFG->fnDrawPixel;
+        ppu->ptTag = ptCFG->ptTag;
+        //ppu->video_frame_data=0;
+        ppu_reset(ppu);
+            
+    
+        bResult = true;
+    } while(false);
+    return bResult;
 }
-
+/*
 void ppu_setup_video(ppu_t *ppu, uint8_t *video_frame_data) {
-  ppu->video_frame_data=video_frame_data;
-  for (int i=0; i<256*240; i++) {
-    ppu->video_frame_data[i]=0;
-  }
-}
+    ppu->video_frame_data=video_frame_data;
 
-void ppu_reset(ppu_t *ppu) {
+    memset(ppu->video_frame_data, 0, 256*240);
+}
+*/
+
+void ppu_reset(ppu_t *ppu) 
+{
     ppu->last_cycle_number=0;
     ppu->cycle=340;
     ppu->scanline=240;
@@ -51,9 +71,11 @@ void ppu_reset(ppu_t *ppu) {
     ppu->register_data=0;
     ppu->name_table_byte=0;
 
+/*
     if (NULL != ppu->video_frame_data) {
         memset(ppu->video_frame_data, 0, 256*240);
     }
+*/
 }
 
 uint_fast8_t ppu_read(ppu_t *ppu, uint_fast16_t hwAddress) 
@@ -213,6 +235,8 @@ inline uint32_t fetch_sprite_pattern(ppu_t *ppu, int i, int row) {
 #define VISIBLE_CYCLE (ppu->cycle>=1 && ppu->cycle<=256)
 #define FETCH_CYCLE (PRE_FETCH_CYCLE || VISIBLE_CYCLE)
 
+extern void draw_pixels(uint_fast8_t y, uint_fast8_t x, uint_fast8_t chColor);
+
 int ppu_update(ppu_t *ppu) {
   // tick
   // TODO: every second frame is shorter
@@ -289,9 +313,10 @@ int ppu_update(ppu_t *ppu) {
           if (color>=16 && color%4==0) {
             color-=16;
           }
-          if (ppu->video_frame_data) {
-            ppu->video_frame_data[ppu->scanline*256+ppu->cycle-1]=ppu->palette[color];
-          }
+          //if (ppu->video_frame_data) {
+            ppu->fnDrawPixel(ppu->ptTag, ppu->scanline, ppu->cycle-1, ppu->palette[color]);
+            //ppu->video_frame_data[ppu->scanline*256+ppu->cycle-1]=ppu->palette[color];
+          //}
         }
 
         if (RENDER_LINE && FETCH_CYCLE) {
@@ -408,3 +433,4 @@ int ppu_update(ppu_t *ppu) {
 
   return (341*262-((ppu->scanline+21)%262)*341-ppu->cycle)/3+1;
 }
+
