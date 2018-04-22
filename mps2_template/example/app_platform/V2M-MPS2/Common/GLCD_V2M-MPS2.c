@@ -420,7 +420,7 @@ static void delay_ms (int ms) {
   \param[in]   byte  data to transmit
   \returns     byte read while sending
 */
-static uint8_t spi_tran (uint8_t byte) 
+static void spi_tran (uint8_t byte) 
 {
 #if USE_BLOCKING_TRANSFER == ENABLED
 

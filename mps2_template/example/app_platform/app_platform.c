@@ -46,6 +46,11 @@ static struct {
 /*============================ IMPLEMENTATION ================================*/
 
  #if __IS_COMPILER_ARM_COMPILER_6__
+ 
+ /*
+ -fms-extensions -Wno-microsoft-anon-tag -Wno-nonportable-include-path -Wno-tautological-constant-out-of-range-compare
+  */
+ 
 __asm(".global __use_no_semihosting\n\t");
 __asm(".global __ARM_use_no_argv\n\t");
 

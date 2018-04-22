@@ -181,7 +181,7 @@ void ppu_write(ppu_t *ppu, uint_fast16_t hwAddress, uint_fast8_t chData)
 
 }
 
-inline uint32_t fetch_sprite_pattern(ppu_t *ppu, int i, int row) {
+uint32_t fetch_sprite_pattern(ppu_t *ppu, int i, int row) {
     int tile=ppu->oam_data[i*4+1];
     int attributes=ppu->oam_data[i*4+2];
     int table;

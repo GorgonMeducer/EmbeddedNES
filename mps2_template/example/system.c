@@ -168,6 +168,14 @@ private void show_progress(void)
     }
 }
 */
+
+/*
+For compiler 5
+--wchar32  --loop_optimization_level=2 --no_unaligned_access
+
+For compiler 6
+
+ */
 /*----------------------------------------------------------------------------
   Main function
  *----------------------------------------------------------------------------*/
@@ -236,7 +244,7 @@ int main (void)
             break;
         }
         
-        if (fce_load_rom((char *)s_cROMBuffer, nSize) != 0){
+        if (fce_load_rom((uint8_t *)s_cROMBuffer, nSize) != 0){
             break;
         }
         

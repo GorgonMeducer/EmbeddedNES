@@ -10,6 +10,7 @@
 #   define this        (*ptThis)
 #endif
 
+#define NES_PROFILINE       DISABLED
 
 const pal_t palette[64] = {
 	{ 0x80, 0x80, 0x80 },
@@ -96,9 +97,6 @@ NO_INIT static fce_t s_tFCE;
 void fce_init(void)
 {
     fce_t *ptThis = &s_tFCE;
-    //memset(&s_tNESConsole, 0, sizeof(nes_t));
-
-    
 
     nes_hal_init();
     
@@ -106,7 +104,6 @@ void fce_init(void)
     this.tFrame.hwWidth = SCREEN_WIDTH;
     this.chController[0] = 0;
     this.chController[1] = 0;
-    //nes_setup_video(&this.tNESConsole, this.tFrame.chBuffer);
 }
 
 
