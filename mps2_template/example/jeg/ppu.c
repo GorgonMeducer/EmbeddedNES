@@ -100,7 +100,7 @@ uint_fast8_t ppu_read(ppu_t *ppu, uint_fast16_t hwAddress)
             
         case 7:
             value=ppu->read(ppu->nes, ppu->v);
-            if (ppu->v%0x4000<0x3F00) {
+            if ((ppu->v & 0x3FFF) < 0x3F00) {
                 buffered=ppu->buffered_data;
                 ppu->buffered_data=value;
                 value=buffered;
@@ -182,49 +182,58 @@ void ppu_write(ppu_t *ppu, uint_fast16_t hwAddress, uint_fast8_t chData)
 }
 
 inline uint32_t fetch_sprite_pattern(ppu_t *ppu, int i, int row) {
-  int tile=ppu->oam_data[i*4+1];
-  int attributes=ppu->oam_data[i*4+2];
-  int table;
-  uint16_t address;
+    int tile=ppu->oam_data[i*4+1];
+    int attributes=ppu->oam_data[i*4+2];
+    int table;
+    uint16_t address;
 
-  if ((ppu->ppuctrl&PPUCTRL_SPRITE_SIZE)==0) {
-    if ((attributes&0x80)) {
-      row=7-row;
+    if ((ppu->ppuctrl&PPUCTRL_SPRITE_SIZE)==0) {
+        if ((attributes&0x80)) {
+            row=7-row;
+        }
+        address=0x1000*(ppu->ppuctrl&PPUCTRL_SPRITE_TABLE?1:0)+tile*16+row;
+    } else {
+        if ((attributes&0x80)) {
+            row=15-row;
+        }
+        table=tile&0x01;
+        tile&=0xFE;
+        
+        if (row>7) {
+            tile++;
+            row-=8;
+        }
+        address = 0x1000*(table)+tile*16+row;
     }
-    address=0x1000*(ppu->ppuctrl&PPUCTRL_SPRITE_TABLE?1:0)+tile*16+row;
-  } else {
-    if ((attributes&0x80)) {
-      row=15-row;
-    }
-    table=tile&0x01;
-    tile&=0xFE;
-    if (row>7) {
-      tile++;
-      row-=8;
-    }
-    address = 0x1000*(table)+tile*16+row;
-  }
-  int low_tile_byte=ppu->read(ppu->nes, address);
-  int high_tile_byte=ppu->read(ppu->nes, address+8);
-  uint32_t data=0;
-  for (int j=0; j<8; j++) {
+    
+    int low_tile_byte=ppu->read(ppu->nes, address);
+    int high_tile_byte=ppu->read(ppu->nes, address+8);
+    uint32_t data=0;
+  
     int p1, p2;
-    if ((attributes&0x40)==0x40) {
-      p1=(low_tile_byte&0x01);
-      p2=(high_tile_byte&0x01)<<1;
-      low_tile_byte>>=1;
-      high_tile_byte>>=1;
+    if (attributes&0x40) {
+        for (int j=0; j<8; j++) {
+            p1=(low_tile_byte&0x01);
+            p2=(high_tile_byte&0x01)<<1;
+            low_tile_byte>>=1;
+            high_tile_byte>>=1;
+            
+            data<<=4;
+            data|=((attributes&3)<<2)|p1|p2;
+        }
+    } else {
+        for (int j=0; j<8; j++) {
+            p1=(low_tile_byte&0x80)>>7;
+            p2=(high_tile_byte&0x80)>>6;
+            low_tile_byte<<=1;
+            high_tile_byte<<=1;
+
+            data<<=4;
+            data|=((attributes&3)<<2)|p1|p2;
+        }
     }
-    else {
-      p1=(low_tile_byte&0x80)>>7;
-      p2=(high_tile_byte&0x80)>>6;
-      low_tile_byte<<=1;
-      high_tile_byte<<=1;
-    }
-    data<<=4;
-    data|=((attributes&3)<<2)|p1|p2;
-  }
-  return data;
+
+    return data;
 }
 
 #define RENDERING_ENABLED (ppu->ppumask&(PPUMASK_SHOW_BACKGROUND|PPUMASK_SHOW_SPRITES))
@@ -234,8 +243,6 @@ inline uint32_t fetch_sprite_pattern(ppu_t *ppu, int i, int row) {
 #define PRE_FETCH_CYCLE (ppu->cycle>=321 && ppu->cycle<=336)
 #define VISIBLE_CYCLE (ppu->cycle>=1 && ppu->cycle<=256)
 #define FETCH_CYCLE (PRE_FETCH_CYCLE || VISIBLE_CYCLE)
-
-extern void draw_pixels(uint_fast8_t y, uint_fast8_t x, uint_fast8_t chColor);
 
 int ppu_update(ppu_t *ppu) {
   // tick
@@ -322,7 +329,7 @@ int ppu_update(ppu_t *ppu) {
         if (RENDER_LINE && FETCH_CYCLE) {
           uint32_t data=0;
           ppu->tile_data<<=4;
-          switch (ppu->cycle%8) {
+          switch (ppu->cycle & 0x07) {
             case 1: // fetch name table byte
               ppu->name_table_byte=ppu->read(ppu->nes, 0x2000|(ppu->v&0x0FFF));
               break;

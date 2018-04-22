@@ -104,7 +104,8 @@ void fce_init(void)
     
     this.tFrame.hwHeight = SCREEN_HEIGHT;
     this.tFrame.hwWidth = SCREEN_WIDTH;
-    
+    this.chController[0] = 0;
+    this.chController[1] = 0;
     //nes_setup_video(&this.tNESConsole, this.tFrame.chBuffer);
 }
 
@@ -139,8 +140,28 @@ void fce_run(void)
     fce_t *ptThis = &s_tFCE;
     
     while(true) {
+     
         nes_set_controller(&this.tNESConsole, this.chController[0], this.chController[0]);
+#if NES_PROFILINE == ENABLED
+        start_counter();
+
+        nes_iterate_frame(&this.tNESConsole);
+        int nTimeEmulator = stop_counter();
+        start_counter();
+        update_frame(&this.tFrame);
+        int nTimeRefresh = stop_counter();
+        int nTotal = nTimeEmulator+nTimeRefresh;
+        
+        log_info("NES: %8d %3d \t Refresh: %8d %3d\t %8d %8d ms\r",
+                 nTimeEmulator,
+                (nTimeEmulator * 100 + nTotal / 2)/nTotal,
+                 nTimeRefresh,
+                (nTimeRefresh*100 + nTotal / 2)/nTotal,
+                nTotal,
+                (int32_t)((uint64_t)((uint64_t)nTotal * 1000) / SystemCoreClock));
+#else
         nes_iterate_frame(&this.tNESConsole);
         update_frame(&this.tFrame);
+#endif
     }
 }

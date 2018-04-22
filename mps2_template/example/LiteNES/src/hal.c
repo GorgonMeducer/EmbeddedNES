@@ -192,10 +192,10 @@ void nes_flush_buf(PixelBuf  * __restrict pbuff) {
 
 extern void nes_flip_display(frame_t *ptFrame);
 
-extern void draw_pixels(void *ptTag, uint_fast8_t y, uint_fast8_t x, uint_fast8_t chColor)
+void draw_pixels(void *ptTag, uint_fast8_t y, uint_fast8_t x, uint_fast8_t chColor)
 {
     frame_t *ptThis = (frame_t *)ptTag;
-    //y = SCREEN_HEIGHT - y - 1;
+    y = SCREEN_HEIGHT - y - 1;
     
 #if __USE_TILE__
     tile_t *ptTile = &s_tScreenBuffer[y>>3][x >> 3];
