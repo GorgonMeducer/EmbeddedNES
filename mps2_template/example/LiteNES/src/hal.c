@@ -83,6 +83,7 @@ typedef struct {
 typedef pixel_t tile_t[8][8];
 
 NO_INIT static tile_t s_tScreenBuffer[SCREEN_HEIGHT >> 3][SCREEN_WIDTH >> 3];
+NO_INIT static pixel_t s_tLineBuffer[SCREEN_HEIGHT][SCREEN_WIDTH];
 #else
 NO_INIT static pixel_t s_tScreenBuffer[SCREEN_HEIGHT][SCREEN_WIDTH];
 #endif
@@ -192,7 +193,7 @@ void nes_flush_buf(PixelBuf  * __restrict pbuff) {
 
 extern void nes_flip_display(frame_t *ptFrame);
 
-extern void draw_pixels(void *ptTag, uint_fast8_t y, uint_fast8_t x, uint_fast8_t chColor)
+void draw_pixels(void *ptTag, uint_fast8_t y, uint_fast8_t x, uint_fast8_t chColor)
 {
     frame_t *ptThis = (frame_t *)ptTag;
     //y = SCREEN_HEIGHT - y - 1;
@@ -207,13 +208,40 @@ extern void draw_pixels(void *ptTag, uint_fast8_t y, uint_fast8_t x, uint_fast8_
     if ((*ptTarget).hwValue != tColor.hwValue) {
         this.wDirtyMatrix[y>>3] |= 1 << (x >> 3);
     }
-    *ptTarget = tColor;    
-    
+    *ptTarget = tColor;   
+
+#if LINE_ACCELERATION == ENABLED    
+    s_tLineBuffer[(y & ~0x07) + (7 - (y & 0x07))][x].tColor = tColor;
+#endif
 #else
     s_tScreenBuffer[y][x].tColor = s_tColorMap[chColor];
 #endif
     
 }
+#if LINE_ACCELERATION == ENABLED 
+NO_INIT static uint8_t s_MaskNumbersLookupTable[256];
+
+static uint_fast8_t NumberOfOnesInAByte(uint_fast8_t chByte)
+{
+    uint_fast8_t n = 8;
+    uint_fast8_t chNumber = 0;
+    do {
+        if (chByte & 0x01) {
+            chNumber++;
+        }
+        chByte >>= 1;
+    } while(--n);
+    
+    return chNumber;
+}
+
+static void init_lookup_table(void)
+{
+    for (uint_fast8_t n = 0; n <= 255; n++) {
+        s_MaskNumbersLookupTable[n] = NumberOfOnesInAByte(n);
+    }
+}
+#endif
 
 void update_frame(frame_t *ptFrame) 
 {
@@ -236,7 +264,10 @@ void nes_hal_init(void)
     
     GLCD_FrameBufferAccess(true);
     
-    
+#if LINE_ACCELERATION == ENABLED 
+    init_lookup_table();
+#endif
+
     do {
         //! initialise color map
         uint32_t n = 0;
@@ -260,20 +291,48 @@ void nes_flip_display(frame_t *ptThis)
     //s_wValue++;
     //if (!(s_wValue & 0x3)) {
     #if __USE_TILE__
+    
     uint32_t x = 0, y =0;
     for (y = 0; y < (SCREEN_HEIGHT >> 3); y++) {
         uint32_t wMask = this.wDirtyMatrix[y];
         if (0 == wMask) {
             continue;
         }
+    #if LINE_ACCELERATION == ENABLED 
+        
+        uint8_t chMaskCounts[] = {
+            s_MaskNumbersLookupTable[((uint8_t *)&wMask)[0]] + s_MaskNumbersLookupTable[((uint8_t *)&wMask)[1]],
+            s_MaskNumbersLookupTable[((uint8_t *)&wMask)[2]] + s_MaskNumbersLookupTable[((uint8_t *)&wMask)[3]],
+            
+        };
+        uint_fast8_t chTotal =  s_MaskNumbersLookupTable[((uint8_t *)&wMask)[0]] +
+                                s_MaskNumbersLookupTable[((uint8_t *)&wMask)[1]] +
+                                s_MaskNumbersLookupTable[((uint8_t *)&wMask)[2]] +
+                                s_MaskNumbersLookupTable[((uint8_t *)&wMask)[3]];
+        if (chTotal >= 16) {
+            GLCD_DrawBitmap((320-SCREEN_WIDTH)>>1,y*8,SCREEN_WIDTH,8, (uint8_t *)s_tLineBuffer[y*8]);
+        } else {
+            for (x = 0; x < (SCREEN_WIDTH >> 3); x++) {
+                if (!(wMask & (1<<x))) {
+                    continue;
+                }
+                GLCD_DrawBitmap(((320-SCREEN_WIDTH)>>1) + x * 8, y * 8, 8,8, (uint8_t *)&s_tScreenBuffer[y][x]);
+            }
+        }
+    #else
         for (x = 0; x < (SCREEN_WIDTH >> 3); x++) {
             if (!(wMask & (1<<x))) {
                 continue;
             }
             GLCD_DrawBitmap(((320-SCREEN_WIDTH)>>1) + x * 8, y * 8, 8,8, (uint8_t *)&s_tScreenBuffer[y][x]);
         }
+    #endif
+        
+        
         this.wDirtyMatrix[y] = 0;
     }
+    
+    
     #else
         GLCD_DrawBitmap((320-SCREEN_WIDTH)>>1,0,SCREEN_WIDTH,SCREEN_HEIGHT, (uint8_t *)s_tScreenBuffer);
     #endif

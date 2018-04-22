@@ -1139,8 +1139,9 @@
       <TargetName>V2M-MPS2-jeg</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
-      <uAC6>0</uAC6>
+      <pArmCC>6090000::V6.9::.\ARMCLANG</pArmCC>
+      <pCCUsed>6090000::V6.9::.\ARMCLANG</pCCUsed>
+      <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>CMSDK_CM7_SP</Device>
@@ -1209,10 +1210,10 @@
             <nStopB2X>0</nStopB2X>
           </BeforeMake>
           <AfterMake>
-            <RunUserProg1>0</RunUserProg1>
-            <RunUserProg2>0</RunUserProg2>
-            <UserProg1Name></UserProg1Name>
-            <UserProg2Name></UserProg2Name>
+            <RunUserProg1>1</RunUserProg1>
+            <RunUserProg2>1</RunUserProg2>
+            <UserProg1Name>cmd.exe /c copy  /B .\out\msp2_file_io_template.axf H:\SOFTWARE\game.axf</UserProg1Name>
+            <UserProg2Name>cmd.exe /c copy /B .\reboot.txt  H:\</UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
             <nStopA1X>0</nStopA1X>
@@ -1440,7 +1441,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>4</Optim>
+            <Optim>5</Optim>
             <oTime>1</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -1449,7 +1450,7 @@
             <PlainCh>0</PlainCh>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
-            <wLevel>1</wLevel>
+            <wLevel>3</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>1</uC99>
@@ -1463,8 +1464,8 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls>--wchar32  --loop_optimization_level=2 --no_unaligned_access</MiscControls>
-              <Define>__USE_LCD __USE_TIMER0 __USE_FPGA USE_JEG  __USER_DEFINED_APP_CFG_H__ GLCD_MIRROR_Y=0</Define>
+              <MiscControls>-Omax -fms-extensions -Wno-microsoft-anon-tag -Wno-nonportable-include-path -Wno-tautological-constant-out-of-range-compare</MiscControls>
+              <Define>__USE_LCD __USE_TIMER0 __USE_FPGA USE_JEG  __USER_DEFINED_APP_CFG_H__ GLCD_MIRROR_Y=1</Define>
               <Undefine></Undefine>
               <IncludePath>..\..\app_platform;..\..\jeg</IncludePath>
             </VariousControls>
@@ -1514,57 +1515,6 @@
               <FileName>hal.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\LiteNES\src\hal.c</FilePath>
-              <FileOption>
-                <CommonProperty>
-                  <UseCPPCompiler>2</UseCPPCompiler>
-                  <RVCTCodeConst>0</RVCTCodeConst>
-                  <RVCTZI>0</RVCTZI>
-                  <RVCTOtherData>0</RVCTOtherData>
-                  <ModuleSelection>0</ModuleSelection>
-                  <IncludeInBuild>2</IncludeInBuild>
-                  <AlwaysBuild>2</AlwaysBuild>
-                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
-                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
-                  <PublicsOnly>2</PublicsOnly>
-                  <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
-                  <ComprImg>1</ComprImg>
-                </CommonProperty>
-                <FileArmAds>
-                  <Cads>
-                    <interw>2</interw>
-                    <Optim>4</Optim>
-                    <oTime>2</oTime>
-                    <SplitLS>2</SplitLS>
-                    <OneElfS>2</OneElfS>
-                    <Strict>2</Strict>
-                    <EnumInt>2</EnumInt>
-                    <PlainCh>2</PlainCh>
-                    <Ropi>2</Ropi>
-                    <Rwpi>2</Rwpi>
-                    <wLevel>0</wLevel>
-                    <uThumb>2</uThumb>
-                    <uSurpInc>2</uSurpInc>
-                    <uC99>2</uC99>
-                    <uGnu>2</uGnu>
-                    <useXO>2</useXO>
-                    <v6Lang>0</v6Lang>
-                    <v6LangP>0</v6LangP>
-                    <vShortEn>2</vShortEn>
-                    <vShortWch>2</vShortWch>
-                    <v6Lto>2</v6Lto>
-                    <v6WtE>2</v6WtE>
-                    <v6Rtti>2</v6Rtti>
-                    <VariousControls>
-                      <MiscControls></MiscControls>
-                      <Define></Define>
-                      <Undefine></Undefine>
-                      <IncludePath></IncludePath>
-                    </VariousControls>
-                  </Cads>
-                </FileArmAds>
-              </FileOption>
             </File>
             <File>
               <FileName>system.c</FileName>
@@ -2380,8 +2330,8 @@
       <api Capiversion="1.00" Cclass="Board Support" Cgroup="Graphic LCD" exclusive="0">
         <package name="MDK-Middleware" schemaVersion="1.0" url="http://www.keil.com/pack/" vendor="Keil" version="6.2.0"/>
         <targetInfos>
-          <targetInfo name="V2M-MPS2-LiteNES"/>
-          <targetInfo name="V2M-MPS2-jeg"/>
+          <targetInfo excluded="1" name="V2M-MPS2-LiteNES" versionMatchMode=""/>
+          <targetInfo excluded="1" name="V2M-MPS2-jeg" versionMatchMode=""/>
         </targetInfos>
       </api>
       <api Capiversion="1.00" Cclass="Board Support" Cgroup="LED" exclusive="0">
@@ -2407,36 +2357,36 @@
       </api>
     </apis>
     <components>
-      <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.0.2" condition="ARMv6_7_8-M Device">
-        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.2.0"/>
+      <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.1.1" condition="ARMv6_7_8-M Device">
+        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.3.0"/>
         <targetInfos>
           <targetInfo name="V2M-MPS2-LiteNES"/>
           <targetInfo name="V2M-MPS2-jeg"/>
         </targetInfos>
       </component>
-      <component Cbundle="ARM Compiler" Cclass="Compiler" Cgroup="I/O" Csub="STDIN" Cvariant="User" Cvendor="Keil" Cversion="1.2.1" condition="ARMCC Cortex-M">
-        <package name="ARM_Compiler" schemaVersion="1.4.9" url="http://www.keil.com/pack/" vendor="Keil" version="1.3.3"/>
+      <component Cbundle="ARM Compiler" Cclass="Compiler" Cgroup="I/O" Csub="STDIN" Cvariant="User" Cvendor="Keil" Cversion="1.4.0" condition="ARMCC Cortex-M">
+        <package name="ARM_Compiler" schemaVersion="1.4.9" url="http://www.keil.com/pack/" vendor="Keil" version="1.4.0"/>
         <targetInfos>
           <targetInfo name="V2M-MPS2-LiteNES"/>
           <targetInfo name="V2M-MPS2-jeg"/>
         </targetInfos>
       </component>
-      <component Cbundle="ARM Compiler" Cclass="Compiler" Cgroup="I/O" Csub="STDOUT" Cvariant="User" Cvendor="Keil" Cversion="1.2.1" condition="ARMCC Cortex-M" isTargetSpecific="1">
-        <package name="ARM_Compiler" schemaVersion="1.4.9" url="http://www.keil.com/pack/" vendor="Keil" version="1.3.3"/>
+      <component Cbundle="ARM Compiler" Cclass="Compiler" Cgroup="I/O" Csub="STDOUT" Cvariant="User" Cvendor="Keil" Cversion="1.4.0" condition="ARMCC Cortex-M" isTargetSpecific="1">
+        <package name="ARM_Compiler" schemaVersion="1.4.9" url="http://www.keil.com/pack/" vendor="Keil" version="1.4.0"/>
         <targetInfos>
           <targetInfo name="V2M-MPS2-LiteNES"/>
           <targetInfo name="V2M-MPS2-jeg"/>
         </targetInfos>
       </component>
-      <component Cbundle="V2M-MPS2" Cclass="Board Support" Cgroup="Buttons" Cvendor="Keil" Cversion="2.0.0" condition="V2M-MPS2 Common">
-        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.1.1"/>
+      <component Capiversion="1.0.0" Cbundle="V2M-MPS2" Cclass="Board Support" Cgroup="Buttons" Cvendor="Keil" Cversion="2.0.0" condition="V2M-MPS2 Common">
+        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.6.0"/>
         <targetInfos>
           <targetInfo name="V2M-MPS2-LiteNES"/>
           <targetInfo name="V2M-MPS2-jeg"/>
         </targetInfos>
       </component>
       <component Cbundle="V2M-MPS2" Cclass="Board Support" Cgroup="Common" Cvendor="Keil" Cversion="2.0.0" condition="CMSDK CMSIS Device">
-        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.1.1"/>
+        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.6.0"/>
         <targetInfos>
           <targetInfo name="V2M-MPS2-LiteNES"/>
           <targetInfo name="V2M-MPS2-jeg"/>
@@ -2445,19 +2395,19 @@
       <component Capiversion="1.0.0" Cbundle="V2M-MPS2" Cclass="Board Support" Cgroup="Graphic LCD" Cvendor="Keil" Cversion="2.0.0" condition="V2M-MPS2 Common">
         <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.6.0"/>
         <targetInfos>
-          <targetInfo excluded="1" name="V2M-MPS2-LiteNES"/>
+          <targetInfo excluded="1" name="V2M-MPS2-LiteNES" versionMatchMode=""/>
           <targetInfo excluded="1" name="V2M-MPS2-jeg" versionMatchMode=""/>
         </targetInfos>
       </component>
-      <component Cbundle="V2M-MPS2" Cclass="Board Support" Cgroup="LED" Cvendor="Keil" Cversion="2.0.0" condition="V2M-MPS2 Common">
-        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.1.1"/>
+      <component Capiversion="1.0.0" Cbundle="V2M-MPS2" Cclass="Board Support" Cgroup="LED" Cvendor="Keil" Cversion="2.0.0" condition="V2M-MPS2 Common">
+        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.6.0"/>
         <targetInfos>
           <targetInfo name="V2M-MPS2-LiteNES"/>
           <targetInfo name="V2M-MPS2-jeg"/>
         </targetInfos>
       </component>
-      <component Cbundle="V2M-MPS2" Cclass="Board Support" Cgroup="Touchscreen" Cvendor="Keil" Cversion="2.0.0" condition="V2M-MPS2 Common">
-        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.1.1"/>
+      <component Capiversion="1.0.0" Cbundle="V2M-MPS2" Cclass="Board Support" Cgroup="Touchscreen" Cvendor="Keil" Cversion="2.0.0" condition="V2M-MPS2 Common">
+        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.6.0"/>
         <targetInfos>
           <targetInfo name="V2M-MPS2-LiteNES"/>
           <targetInfo name="V2M-MPS2-jeg"/>

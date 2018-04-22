@@ -192,7 +192,7 @@
     } s_t##__NAME##StreamOutService;                                            \
     private void __NAME##_request_send(void)                                    \
     {                                                                           \
-        s_t##__NAME##StreamOutService.ptBlock = __NAME##.Block.Exchange(        \
+        s_t##__NAME##StreamOutService.ptBlock = __NAME.Block.Exchange(        \
             s_t##__NAME##StreamOutService.ptBlock);                             \
         __NAME##_stream_buffer_block_t *ptBlock =                               \
             s_t##__NAME##StreamOutService.ptBlock;                              \

@@ -10,6 +10,7 @@
 #   define this        (*ptThis)
 #endif
 
+#define NES_PROFILINE       DISABLED
 
 const pal_t palette[64] = {
 	{ 0x80, 0x80, 0x80 },
@@ -96,16 +97,13 @@ NO_INIT static fce_t s_tFCE;
 void fce_init(void)
 {
     fce_t *ptThis = &s_tFCE;
-    //memset(&s_tNESConsole, 0, sizeof(nes_t));
-
-    
 
     nes_hal_init();
     
     this.tFrame.hwHeight = SCREEN_HEIGHT;
     this.tFrame.hwWidth = SCREEN_WIDTH;
-    
-    //nes_setup_video(&this.tNESConsole, this.tFrame.chBuffer);
+    this.chController[0] = 0;
+    this.chController[1] = 0;
 }
 
 
@@ -139,8 +137,28 @@ void fce_run(void)
     fce_t *ptThis = &s_tFCE;
     
     while(true) {
+     
         nes_set_controller(&this.tNESConsole, this.chController[0], this.chController[0]);
+#if NES_PROFILINE == ENABLED
+        start_counter();
+
+        nes_iterate_frame(&this.tNESConsole);
+        int nTimeEmulator = stop_counter();
+        start_counter();
+        update_frame(&this.tFrame);
+        int nTimeRefresh = stop_counter();
+        int nTotal = nTimeEmulator+nTimeRefresh;
+        
+        log_info("NES: %8d %3d \t Refresh: %8d %3d\t %8d %8d ms\r",
+                 nTimeEmulator,
+                (nTimeEmulator * 100 + nTotal / 2)/nTotal,
+                 nTimeRefresh,
+                (nTimeRefresh*100 + nTotal / 2)/nTotal,
+                nTotal,
+                (int32_t)((uint64_t)((uint64_t)nTotal * 1000) / SystemCoreClock));
+#else
         nes_iterate_frame(&this.tNESConsole);
         update_frame(&this.tFrame);
+#endif
     }
 }

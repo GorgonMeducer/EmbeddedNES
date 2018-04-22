@@ -105,7 +105,7 @@
 #define NES_ROM_BUFFER_SIZE                 50
 //      <o>ROM Path
 //      <i>The path of NES rom in host pc.
-//#define NES_ROM_PATH                        "..\\..\\LiteNES\\ROMS\\Super Tank (Battle City Pirate) (J) [p1].nes"
+#define NES_ROM_PATH                        "..\\..\\LiteNES\\ROMS\\Super Tank (Battle City Pirate) (J) [p1].nes"
 //  </h>
 
 
