@@ -9,10 +9,10 @@
 
 
 typedef struct {
-    union{
+    /*union{
         uint8_t chBuffer[SCREEN_HEIGHT*SCREEN_WIDTH];
         uint8_t chPixels[SCREEN_HEIGHT][SCREEN_WIDTH];
-    };
+    };*/
     uint32_t wDirtyMatrix[SCREEN_HEIGHT >> 3];
     uint16_t hwWidth;
     uint16_t hwHeight;
