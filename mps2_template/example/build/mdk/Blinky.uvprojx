@@ -1119,6 +1119,16 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>rom</GroupName>
+          <Files>
+            <File>
+              <FileName>Super_Tank.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\..\LiteNES\roms\Super_Tank.s</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::Board Support</GroupName>
         </Group>
         <Group>
@@ -1210,8 +1220,8 @@
             <nStopB2X>0</nStopB2X>
           </BeforeMake>
           <AfterMake>
-            <RunUserProg1>1</RunUserProg1>
-            <RunUserProg2>1</RunUserProg2>
+            <RunUserProg1>0</RunUserProg1>
+            <RunUserProg2>0</RunUserProg2>
             <UserProg1Name>cmd.exe /c copy  /B .\out\msp2_file_io_template.axf H:\SOFTWARE\game.axf</UserProg1Name>
             <UserProg2Name>cmd.exe /c copy /B .\reboot.txt  H:\</UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
@@ -1268,10 +1278,10 @@
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
-          <pFcarmGrp></pFcarmGrp>
+          <pFcarmGrp>Source Files</pFcarmGrp>
           <pFcArmRoot></pFcArmRoot>
           <FcArmLst>0</FcArmLst>
         </Utilities>
@@ -1464,7 +1474,7 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls>-Omax -fms-extensions -Wno-microsoft-anon-tag -Wno-nonportable-include-path -Wno-tautological-constant-out-of-range-compare</MiscControls>
+              <MiscControls>-Omax -fno-short-wchar -fms-extensions -Wno-microsoft-anon-tag -Wno-nonportable-include-path -Wno-tautological-constant-out-of-range-compare</MiscControls>
               <Define>__USE_LCD __USE_TIMER0 __USE_FPGA USE_JEG  __USER_DEFINED_APP_CFG_H__ GLCD_MIRROR_Y=1</Define>
               <Undefine></Undefine>
               <IncludePath>..\..\app_platform;..\..\jeg</IncludePath>
@@ -2296,6 +2306,16 @@
               <FileName>cpu6502_opcodes.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\jeg\cpu6502_opcodes.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>rom</GroupName>
+          <Files>
+            <File>
+              <FileName>Super_Tank.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\..\LiteNES\roms\Super_Tank.s</FilePath>
             </File>
           </Files>
         </Group>

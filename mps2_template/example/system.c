@@ -228,25 +228,38 @@ int main (void)
 {
     system_init();
     app_init();
-              
+    
+    extern const uint8_t NES_ROM_1[];
+    extern const uint32_t NES_ROM_1_Length;
+    
     file_io_stream_t *ptLog = FILE_IO.Channel.Open(
                             "Log",
                             "STDOUT",
                             FILE_IO_OUTPUT          |
                             FILE_IO_TEXT_STREAM
                          );
-    assert(NULL != ptLog);
-    retarget_stdout(ptLog);
+    if (NULL != ptLog) {
+        retarget_stdout(ptLog);
+    }
     
     do {
-        int_fast32_t nSize = load_nes_rom(s_cROMBuffer, sizeof(s_cROMBuffer));
-        if (nSize < 0) {
-            break;
+        
+        if (NULL != ptLog) {
+            int_fast32_t nSize = load_nes_rom(s_cROMBuffer, sizeof(s_cROMBuffer));
+            if (nSize < 0) {
+                break;
+            }
+            
+            if (fce_load_rom((uint8_t *)s_cROMBuffer, nSize) != 0){
+                break;
+            }
+        } else {
+            if (fce_load_rom((uint8_t *)NES_ROM_1, NES_ROM_1_Length) != 0){
+                break;
+            }
         }
         
-        if (fce_load_rom((uint8_t *)s_cROMBuffer, nSize) != 0){
-            break;
-        }
+        
         
         log_info("Initialise NES Simulator...\r\n")
         fce_init();
