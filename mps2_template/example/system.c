@@ -243,8 +243,12 @@ int main (void)
     }
     
     do {
-        
-        if (NULL != ptLog) {
+        bool bLoadingSuccess = false;
+        do {
+            if (NULL == ptLog) {
+                break;
+            }
+            
             int_fast32_t nSize = load_nes_rom(s_cROMBuffer, sizeof(s_cROMBuffer));
             if (nSize < 0) {
                 break;
@@ -253,13 +257,16 @@ int main (void)
             if (fce_load_rom((uint8_t *)s_cROMBuffer, nSize) != 0){
                 break;
             }
-        } else {
+            
+            bLoadingSuccess = true;
+        } while(false);
+        
+        if (!bLoadingSuccess) {
+            //! use default
             if (fce_load_rom((uint8_t *)NES_ROM_1, NES_ROM_1_Length) != 0){
                 break;
             }
-        }
-        
-        
+        }        
         
         log_info("Initialise NES Simulator...\r\n")
         fce_init();

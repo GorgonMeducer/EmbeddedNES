@@ -77,7 +77,7 @@ typedef struct {
         uint8_t *pchSrc;
         void *pObj;
     };
-    uint_fast16_t hwSize;       //!< stream size
+    uint_fast32_t wSize;       //!< stream size
 } mem_block_t;
 //! @}
 
@@ -88,7 +88,7 @@ typedef struct {
     //!< read a byte
     bool (*ReadByte)(uint8_t *pchByte);
     //!< write a byte
-    bool (*WriteByte)(uint8_t chByte);
+    bool (*WriteByte)(uint_fast8_t chByte);
     
     bool (*Flush)(void);
 } i_byte_pipe_t;
@@ -101,7 +101,7 @@ typedef struct {
         //!< read a byte
         bool (*ReadByte)(uint8_t *pchByte);
         //!< write a byte
-        bool (*WriteByte)(uint8_t chByte);
+        bool (*WriteByte)(uint_fast8_t chByte);
         
         bool (*Flush)(void);
     } LowLevelInterface; 
@@ -160,40 +160,40 @@ typedef struct
     
     struct {
         file_io_stream_t *(*Open)       (   const char *pchName, const char *pchDescriptor, uint16_t wFeature);
-        bool        (*Close)            (   file_io_stream_t *ptChannel);
+        bool            (*Close)            (   file_io_stream_t *ptChannel);
         
-        int32_t     (*ReadByte)         (   file_io_stream_t *ptObj);
-        bool        (*WriteByte)        (   file_io_stream_t *ptObj, 
-                                            uint8_t chByte);   
-        int32_t     (*Read)             (   file_io_stream_t *ptObj, 
+        int_fast32_t    (*ReadByte)         (   file_io_stream_t *ptObj);
+        bool            (*WriteByte)        (   file_io_stream_t *ptObj, 
+                                            uint_fast8_t chByte);   
+        int_fast32_t    (*Read)             (   file_io_stream_t *ptObj, 
                                             uint8_t *pchSrc, 
-                                            uint_fast16_t hwSize);
-        bool        (*Write)            (   file_io_stream_t *ptObj, 
+                                            uint_fast32_t wSize);
+        bool            (*Write)            (   file_io_stream_t *ptObj, 
                                             uint8_t *pchSrc, 
-                                            uint_fast16_t hwSize);
-        int32_t     (*ReadLine)         (   file_io_stream_t *ptObj, 
+                                            uint_fast32_t wSize);
+        int_fast32_t    (*ReadLine)         (   file_io_stream_t *ptObj, 
                                             uint8_t *pchSrc, 
-                                            uint_fast16_t hwSize);
-        bool        (*WriteLine)        (   file_io_stream_t *ptObj, 
+                                            uint_fast32_t wSize);
+        bool            (*WriteLine)        (   file_io_stream_t *ptObj, 
                                             uint8_t *pchSrc, 
-                                            uint_fast16_t hwSize);
-        bool        (*Flush)            (   file_io_stream_t *ptObj);
+                                            uint_fast32_t wSize);
+        bool            (*Flush)            (   file_io_stream_t *ptObj);
         file_io_stream_status_t  
-                    (*Status)           (   file_io_stream_t *ptObj);
-        bool        (*EndOfStream)      (   file_io_stream_t *ptObj);
+                        (*Status)           (   file_io_stream_t *ptObj);
+        bool            (*EndOfStream)      (   file_io_stream_t *ptObj);
     } Channel;
 } i_file_io_t;
 //! @}
 
 typedef struct {
-    int32_t (*IsMatch) (    const char *pchStr, 
-                            const char *pchPattern);
+    int_fast32_t (*IsMatch) (   const char *pchStr, 
+                                const char *pchPattern);
 
-    int32_t (*Extract) (    const char *pchStr,
-                            const char *pchPattern, 
-                            uint_fast8_t chGroup, 
-                            uint8_t *pchSrc, 
-                            uint_fast16_t hwSize);
+    int_fast32_t (*Extract) (   const char *pchStr,
+                                const char *pchPattern, 
+                                uint_fast8_t chGroup, 
+                                uint8_t *pchSrc, 
+                                uint_fast32_t wSize);
 } i_regex_t;
     
 /*============================ GLOBAL VARIABLES ==============================*/

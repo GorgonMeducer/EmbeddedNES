@@ -79,9 +79,15 @@ extern void stdout_flush(void);
  */ 
 extern void retarget_stdin(file_io_stream_t *);
 
-extern void start_counter(void);
-extern int32_t stop_counter(void);
 
+/*! \brief start performance counter (cycle accurate)
+ */
+extern void start_counter(void);
+
+/*! \brief stop performance counter (cycle accurate)
+ *! \retval cycle elapsed. 
+ */
+extern int32_t stop_counter(void);
 
 
 extern void disable_blocking_style(void);

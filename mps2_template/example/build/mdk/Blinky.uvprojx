@@ -1220,8 +1220,8 @@
             <nStopB2X>0</nStopB2X>
           </BeforeMake>
           <AfterMake>
-            <RunUserProg1>0</RunUserProg1>
-            <RunUserProg2>0</RunUserProg2>
+            <RunUserProg1>1</RunUserProg1>
+            <RunUserProg2>1</RunUserProg2>
             <UserProg1Name>cmd.exe /c copy  /B .\out\msp2_file_io_template.axf H:\SOFTWARE\game.axf</UserProg1Name>
             <UserProg2Name>cmd.exe /c copy /B .\reboot.txt  H:\</UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
@@ -1971,6 +1971,21 @@
               <FileName>generic_io_lib_armv7-m_speed.lib</FileName>
               <FileType>4</FileType>
               <FilePath>..\..\app_platform\generic_io_lib_armv7-m_speed.lib</FilePath>
+            </File>
+            <File>
+              <FileName>GLCD_Fonts.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\app_platform\V2M-MPS2\Common\GLCD_Fonts.c</FilePath>
+            </File>
+            <File>
+              <FileName>GLCD_V2M-MPS2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\app_platform\V2M-MPS2\Common\GLCD_V2M-MPS2.c</FilePath>
+            </File>
+            <File>
+              <FileName>generic_io_stream.lib</FileName>
+              <FileType>4</FileType>
+              <FilePath>..\..\app_platform\generic_io_stream.lib</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>2</UseCPPCompiler>
@@ -1990,21 +2005,6 @@
                 </CommonProperty>
                 <FileArmAds/>
               </FileOption>
-            </File>
-            <File>
-              <FileName>GLCD_Fonts.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\app_platform\V2M-MPS2\Common\GLCD_Fonts.c</FilePath>
-            </File>
-            <File>
-              <FileName>GLCD_V2M-MPS2.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\app_platform\V2M-MPS2\Common\GLCD_V2M-MPS2.c</FilePath>
-            </File>
-            <File>
-              <FileName>generic_io_stream.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>..\..\app_platform\generic_io_stream.lib</FilePath>
             </File>
           </Files>
         </Group>

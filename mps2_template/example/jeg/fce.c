@@ -90,7 +90,7 @@ typedef struct {
 } fce_t;
 
 
-NO_INIT static fce_t s_tFCE;
+static NO_INIT fce_t s_tFCE;
 
 
 
@@ -99,6 +99,8 @@ void fce_init(void)
     fce_t *ptThis = &s_tFCE;
 
     nes_hal_init();
+    
+    memset(&(this.tFrame), 0, sizeof(frame_t));
     
     this.tFrame.hwHeight = SCREEN_HEIGHT;
     this.tFrame.hwWidth = SCREEN_WIDTH;
