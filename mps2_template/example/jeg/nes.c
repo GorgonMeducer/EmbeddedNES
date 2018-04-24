@@ -33,7 +33,6 @@ static uint_fast8_t cpu6502_bus_read (void *ref, uint_fast16_t address)
         return value;
     }
 
-    // TODO: log this event
     return 0;
     
 }
@@ -49,7 +48,6 @@ static void cpu6502_bus_write (void *ref, uint_fast16_t address, uint_fast8_t va
         ppu_write(&nes->ppu, address, value);
         
     } else if (address==0x4014) {
-        //ppu_write(&nes->ppu, address, value);
         ppu_dma_access(&nes->ppu, value);
         
     } else if (address==0x4016 && value&0x01) {
@@ -60,12 +58,9 @@ static void cpu6502_bus_write (void *ref, uint_fast16_t address, uint_fast8_t va
         cartridge_write_prg(&nes->cartridge, address, value);
         
     } 
-    
-    // TODO: log this event
-    
-    
 }
 
+#if JEG_USE_EXTRA_16BIT_BUS_ACCESS == ENABLED
 static uint_fast16_t cpu6502_bus_readw (void *ref, uint_fast16_t hwAddress) 
 {
     nes_t* nes=(nes_t *)ref;
@@ -84,7 +79,9 @@ static void cpu6502_bus_writew (void *ref, uint_fast16_t hwAddress, uint_fast16_
 {
     // it is not used...
 }
+#endif
 
+#if JEG_USE_DMA_MEMORY_COPY_ACCELERATION == ENABLED
 static uint8_t *cpu6502_dma_get_source_address(void *ref, uint_fast16_t hwAddress)
 {
     
@@ -99,6 +96,7 @@ static uint8_t *cpu6502_dma_get_source_address(void *ref, uint_fast16_t hwAddres
     }
 
 }
+#endif
 
 const int mirror_lookup[20]={0,0,1,1,0,1,0,1,0,0,0,0,1,1,1,1,0,1,2,3};
 
