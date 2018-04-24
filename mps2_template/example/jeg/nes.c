@@ -2,6 +2,7 @@
 #include "cpu6502_debug.h"
 #include <string.h>
 #include <stdbool.h>
+#include "jeg_cfg.h"
 
 
 static uint_fast8_t cpu6502_bus_read (void *ref, uint_fast16_t address) 
@@ -142,29 +143,50 @@ static void ppu_bus_write (nes_t *nes, int address, int value)
 
 
 
+#if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
 bool nes_init(nes_t *ptNES, nes_cfg_t *ptCFG) 
+#else
+void nes_init(nes_t *ptNES)
+#endif
 { 
  
     bool bResult = false;
     do {
-        if (NULL == ptNES || NULL == ptCFG) {
+    #if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
+        if (    NULL == ptNES 
+            ||  NULL == ptCFG) {
             break;
         } else if (NULL == ptCFG->fnDrawPixel) {
             break;
         }
+    #else
+        if ( NULL == ptNES ) {
+            break;
+        }
+    #endif
+    #if JEG_USE_DMA_MEMORY_COPY_ACCELERATION == ENABLED ||                          \
+        JEG_USE_EXTRA_16BIT_BUS_ACCESS       == ENABLED
         {
             cpu6502_cfg_t tCFG = {
                 ptNES,
                 &cpu6502_bus_read,
                 &cpu6502_bus_write,
+            #if JEG_USE_EXTRA_16BIT_BUS_ACCESS == ENABLED
                 &cpu6502_bus_readw,
                 &cpu6502_bus_writew,
+            #endif
+            #if JEG_USE_DMA_MEMORY_COPY_ACCELERATION == ENABLED
                 &cpu6502_dma_get_source_address,
+            #endif
             };
             if (! cpu6502_init(&ptNES->cpu, &tCFG)) {
                 break;
             }
         } 
+    #else
+        cpu6502_init(&ptNES->cpu, ptNES, &cpu6502_bus_read, &cpu6502_bus_write);
+    #endif
+    #if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
         {
             ppu_cfg_t tCFG = {
                 ptNES,
@@ -177,11 +199,16 @@ bool nes_init(nes_t *ptNES, nes_cfg_t *ptCFG)
                 break;
             }
         }
+    #else
+        ppu_init(&ptNES->ppu, ptNES, ppu_bus_read, ppu_bus_write);
+    #endif
         
         bResult = true;
     } while(false);
     
+#if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
     return bResult;
+#endif
 }
 
 int nes_setup_rom(nes_t *nes, uint8_t *data, uint32_t size) {
@@ -198,11 +225,13 @@ int nes_setup_rom(nes_t *nes, uint8_t *data, uint32_t size) {
   }
   return result;
 }
-/*
-void nes_setup_video(nes_t *nes, uint8_t *video_frame_data) {
-  ppu_setup_video(&nes->ppu, video_frame_data);
+
+#if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == DISABLED
+void nes_setup_video(nes_t *nes, uint8_t *video_frame_data) 
+{
+    ppu_setup_video(&nes->ppu, video_frame_data);
 }
-*/
+#endif
 
 void nes_reset(nes_t *nes) {
   cpu6502_reset(&nes->cpu);

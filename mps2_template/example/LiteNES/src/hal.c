@@ -58,8 +58,11 @@ To port this project, replace the following functions by your own:
 #include "fce.h"
 #include "app_platform.h"
 
-
+#if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
 #define __USE_TILE__        (true)
+#else
+#define __USE_TILE__        (false)
+#endif
 
 /* Color coding (16-bit):
      15..11 = R4..0 (Red)
@@ -245,7 +248,17 @@ static void init_lookup_table(void)
 
 void update_frame(frame_t *ptFrame) 
 {
+#if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == DISABLED
+
+    uint_fast8_t chX, chY;
     
+    for (chY = 0; chY < SCREEN_HEIGHT; chY++) {
+        for (chX = 0; chX < SCREEN_WIDTH; chX++) {
+            //uint_fast8_t y = SCREEN_HEIGHT - chY - 1;
+            s_tScreenBuffer[chY][chX].tColor = s_tColorMap[ptFrame->chPixels[chY][chX]];
+        }
+    }
+#endif
 
     nes_flip_display(ptFrame);
 }

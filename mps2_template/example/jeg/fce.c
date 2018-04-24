@@ -5,6 +5,7 @@
 #include <stdbool.h>
 //#include "app_platform.h"
 #include "hal.h"
+#include "jeg_cfg.h"
 
 #ifndef this
 #   define this        (*ptThis)
@@ -106,6 +107,9 @@ void fce_init(void)
     this.tFrame.hwWidth = SCREEN_WIDTH;
     this.chController[0] = 0;
     this.chController[1] = 0;
+#if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == DISABLED
+    nes_setup_video(&this.tNESConsole, this.tFrame.chBuffer);
+#endif
 }
 
 
@@ -116,6 +120,7 @@ int32_t fce_load_rom(uint8_t *pchROM, uint_fast32_t wSize)
         if (NULL == pchROM) {
             break;
         }
+    #if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
         {
             const nes_cfg_t tCFG = {
                 &draw_pixels,
@@ -125,6 +130,9 @@ int32_t fce_load_rom(uint8_t *pchROM, uint_fast32_t wSize)
                 break;
             }
         }
+    #else
+        nes_init(&this.tNESConsole);
+    #endif
         return nes_setup_rom(&this.tNESConsole, pchROM, wSize);
     } while(false);
     

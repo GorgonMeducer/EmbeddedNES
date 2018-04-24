@@ -6,11 +6,8 @@
 #include "ppu.h"
 #include "cpu6502.h"
 #include "cartridge.h"
+#include "jeg_cfg.h"
 
-typedef struct {
-    ppu_draw_pixel_func_t *fnDrawPixel;
-    void *ptTag;
-}nes_cfg_t;
 
 typedef struct nes_t {
   cpu6502_t cpu;
@@ -21,10 +18,19 @@ typedef struct nes_t {
   uint8_t ram_data[0x800];
 } nes_t;
 
-extern bool nes_init(nes_t *, nes_cfg_t *);
-extern int nes_setup_rom(nes_t *, uint8_t *, uint32_t );
+#if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
+typedef struct {
+    ppu_draw_pixel_func_t *fnDrawPixel;
+    void *ptTag;
+}nes_cfg_t;
 
-//extern void nes_setup_video(nes_t *, uint8_t *);
+extern bool nes_init(nes_t *, nes_cfg_t *);
+#else
+extern void nes_init(nes_t *ptNES);
+#endif
+extern int_fast32_t nes_setup_rom(nes_t *, uint8_t *, uint_fast32_t );
+
+extern void nes_setup_video(nes_t *, uint8_t *);
 
 extern void nes_reset(nes_t *);
 
