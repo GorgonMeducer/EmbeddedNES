@@ -138,7 +138,7 @@ I (C:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.6.0\Board\Board_GLCD.h)(0x5877704C)
 I (C:\Keil_v5\ARM\PACK\Keil\V2M-MPS2_CMx_BSP\1.6.0\Boards\ARM\V2M-MPS2\Common\GLCD_Config.h)(0x563795A2)
 I (..\..\app_platform\.\stdout_USART.h)(0x59F59CC5)
 I (..\..\app_platform\.\file_io.h)(0x5ADDEB31)
-I (..\..\jeg\jeg_cfg.h)(0x5ADF1E57)
+I (..\..\jeg\jeg_cfg.h)(0x5ADF28C6)
 I (..\..\jeg\fce.h)(0x5ADA10B5)
 F (..\..\system.c)(0x5ADDEC3D)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m7 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -c-fno-rtti -flto -funsigned-char-D__MICROLIB -gdwarf-3 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ../../app_platform -I ../../jeg -Omax -fno-short-wchar -fms-extensions -Wno-microsoft-anon-tag -Wno-nonportable-include-path -Wno-tautological-constant-out-of-range-compare-I./RTE/Device/CMSDK_CM7_SP-I./RTE/_V2M-MPS2-jeg-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Driver/Include-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Include-IC:/Keil_v5/ARM/PACK/Keil/MDK-Middleware/7.6.0/Board-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Boards/ARM/V2M-MPS2/Common-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Device/CMSDK_CM7/Include-D__UVISION_VERSION="525" -D_RTE_ -DCMSDK_CM7_SP -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1"-o ./out/system.o -MD)
 I (..\..\.\app_platform\app_platform.h)(0x5ADDEF35)
@@ -1711,41 +1711,41 @@ I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599F2F9C)
 F (..\..\LiteNES\src\fce\cartridge.h)(0x5ADA5BA0)()
 F (..\..\LiteNES\src\fce\ppu_new.c)(0x5ADCFA07)()
 F (..\..\LiteNES\src\fce\ppu_new.h)(0x5AB2335D)()
-F (..\..\jeg\cartridge.c)(0x5ADF2396)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m7 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -c-fno-rtti -flto -funsigned-char-D__MICROLIB -gdwarf-3 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ../../app_platform -I ../../jeg -Omax -fno-short-wchar -fms-extensions -Wno-microsoft-anon-tag -Wno-nonportable-include-path -Wno-tautological-constant-out-of-range-compare-I./RTE/Device/CMSDK_CM7_SP-I./RTE/_V2M-MPS2-jeg-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Driver/Include-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Include-IC:/Keil_v5/ARM/PACK/Keil/MDK-Middleware/7.6.0/Board-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Boards/ARM/V2M-MPS2/Common-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Device/CMSDK_CM7/Include-D__UVISION_VERSION="525" -D_RTE_ -DCMSDK_CM7_SP -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1"-o ./out/cartridge.o -MD)
-I (..\..\jeg\cartridge.h)(0x5ADF2186)
+F (..\..\jeg\cartridge.c)(0x5ADF2861)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m7 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -c-fno-rtti -flto -funsigned-char-D__MICROLIB -gdwarf-3 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ../../app_platform -I ../../jeg -Omax -fno-short-wchar -fms-extensions -Wno-microsoft-anon-tag -Wno-nonportable-include-path -Wno-tautological-constant-out-of-range-compare-I./RTE/Device/CMSDK_CM7_SP-I./RTE/_V2M-MPS2-jeg-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Driver/Include-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Include-IC:/Keil_v5/ARM/PACK/Keil/MDK-Middleware/7.6.0/Board-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Boards/ARM/V2M-MPS2/Common-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Device/CMSDK_CM7/Include-D__UVISION_VERSION="525" -D_RTE_ -DCMSDK_CM7_SP -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1"-o ./out/cartridge.o -MD)
+I (..\..\jeg\cartridge.h)(0x5ADF2886)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x5AA6A3AA)
-I (..\..\jeg\jeg_cfg.h)(0x5ADF1E57)
+I (..\..\jeg\jeg_cfg.h)(0x5ADF28C6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdio.h)(0x5AA6A3AA)
 I (C:\Keil_v5\ARM\ARMCLANG\include\string.h)(0x5AA6A3AA)
 F (..\..\jeg\cpu6502.c)(0x5ADF1A35)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m7 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -c-fno-rtti -flto -funsigned-char-D__MICROLIB -gdwarf-3 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ../../app_platform -I ../../jeg -Omax -fno-short-wchar -fms-extensions -Wno-microsoft-anon-tag -Wno-nonportable-include-path -Wno-tautological-constant-out-of-range-compare-I./RTE/Device/CMSDK_CM7_SP-I./RTE/_V2M-MPS2-jeg-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Driver/Include-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Include-IC:/Keil_v5/ARM/PACK/Keil/MDK-Middleware/7.6.0/Board-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Boards/ARM/V2M-MPS2/Common-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Device/CMSDK_CM7/Include-D__UVISION_VERSION="525" -D_RTE_ -DCMSDK_CM7_SP -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1"-o ./out/cpu6502.o -MD)
 I (..\..\jeg\cpu6502.h)(0x5ADF19FB)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x5AA6A3AA)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdbool.h)(0x5AA6A3AA)
-I (..\..\jeg\jeg_cfg.h)(0x5ADF1E57)
+I (..\..\jeg\jeg_cfg.h)(0x5ADF28C6)
 I (..\..\jeg\cpu6502_opcodes.h)(0x5ADEFDA1)
 I (..\..\jeg\cpu6502_debug.h)(0x5ADEFD9E)
 I (C:\Keil_v5\ARM\ARMCLANG\include\string.h)(0x5AA6A3AA)
 F (..\..\jeg\cpu6502_opcodes.c)(0x5ADEFDA7)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m7 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -c-fno-rtti -flto -funsigned-char-D__MICROLIB -gdwarf-3 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ../../app_platform -I ../../jeg -Omax -fno-short-wchar -fms-extensions -Wno-microsoft-anon-tag -Wno-nonportable-include-path -Wno-tautological-constant-out-of-range-compare-I./RTE/Device/CMSDK_CM7_SP-I./RTE/_V2M-MPS2-jeg-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Driver/Include-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Include-IC:/Keil_v5/ARM/PACK/Keil/MDK-Middleware/7.6.0/Board-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Boards/ARM/V2M-MPS2/Common-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Device/CMSDK_CM7/Include-D__UVISION_VERSION="525" -D_RTE_ -DCMSDK_CM7_SP -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1"-o ./out/cpu6502_opcodes.o -MD)
 I (..\..\jeg\cpu6502_opcodes.h)(0x5ADEFDA1)
-I (..\..\jeg\jeg_cfg.h)(0x5ADF1E57)
-F (..\..\jeg\nes.c)(0x5ADF1A92)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m7 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -c-fno-rtti -flto -funsigned-char-D__MICROLIB -gdwarf-3 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ../../app_platform -I ../../jeg -Omax -fno-short-wchar -fms-extensions -Wno-microsoft-anon-tag -Wno-nonportable-include-path -Wno-tautological-constant-out-of-range-compare-I./RTE/Device/CMSDK_CM7_SP-I./RTE/_V2M-MPS2-jeg-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Driver/Include-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Include-IC:/Keil_v5/ARM/PACK/Keil/MDK-Middleware/7.6.0/Board-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Boards/ARM/V2M-MPS2/Common-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Device/CMSDK_CM7/Include-D__UVISION_VERSION="525" -D_RTE_ -DCMSDK_CM7_SP -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1"-o ./out/nes.o -MD)
+I (..\..\jeg\jeg_cfg.h)(0x5ADF28C6)
+F (..\..\jeg\nes.c)(0x5ADF276E)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m7 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -c-fno-rtti -flto -funsigned-char-D__MICROLIB -gdwarf-3 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ../../app_platform -I ../../jeg -Omax -fno-short-wchar -fms-extensions -Wno-microsoft-anon-tag -Wno-nonportable-include-path -Wno-tautological-constant-out-of-range-compare-I./RTE/Device/CMSDK_CM7_SP-I./RTE/_V2M-MPS2-jeg-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Driver/Include-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Include-IC:/Keil_v5/ARM/PACK/Keil/MDK-Middleware/7.6.0/Board-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Boards/ARM/V2M-MPS2/Common-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Device/CMSDK_CM7/Include-D__UVISION_VERSION="525" -D_RTE_ -DCMSDK_CM7_SP -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1"-o ./out/nes.o -MD)
 I (..\..\jeg\nes.h)(0x5ADF1931)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x5AA6A3AA)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdbool.h)(0x5AA6A3AA)
 I (..\..\jeg\ppu.h)(0x5ADF1B6A)
-I (..\..\jeg\jeg_cfg.h)(0x5ADF1E57)
+I (..\..\jeg\jeg_cfg.h)(0x5ADF28C6)
 I (..\..\jeg\cpu6502.h)(0x5ADF19FB)
-I (..\..\jeg\cartridge.h)(0x5ADF2186)
+I (..\..\jeg\cartridge.h)(0x5ADF2886)
 I (..\..\jeg\cpu6502_debug.h)(0x5ADEFD9E)
 I (C:\Keil_v5\ARM\ARMCLANG\include\string.h)(0x5AA6A3AA)
 F (..\..\jeg\ppu.c)(0x5ADF1696)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m7 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -c-fno-rtti -flto -funsigned-char-D__MICROLIB -gdwarf-3 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ../../app_platform -I ../../jeg -Omax -fno-short-wchar -fms-extensions -Wno-microsoft-anon-tag -Wno-nonportable-include-path -Wno-tautological-constant-out-of-range-compare-I./RTE/Device/CMSDK_CM7_SP-I./RTE/_V2M-MPS2-jeg-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Driver/Include-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Include-IC:/Keil_v5/ARM/PACK/Keil/MDK-Middleware/7.6.0/Board-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Boards/ARM/V2M-MPS2/Common-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Device/CMSDK_CM7/Include-D__UVISION_VERSION="525" -D_RTE_ -DCMSDK_CM7_SP -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1"-o ./out/ppu.o -MD)
 I (..\..\jeg\ppu.h)(0x5ADF1B6A)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x5AA6A3AA)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdbool.h)(0x5AA6A3AA)
-I (..\..\jeg\jeg_cfg.h)(0x5ADF1E57)
+I (..\..\jeg\jeg_cfg.h)(0x5ADF28C6)
 I (..\..\jeg\nes.h)(0x5ADF1931)
 I (..\..\jeg\cpu6502.h)(0x5ADF19FB)
-I (..\..\jeg\cartridge.h)(0x5ADF2186)
+I (..\..\jeg\cartridge.h)(0x5ADF2886)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdio.h)(0x5AA6A3AA)
 I (C:\Keil_v5\ARM\ARMCLANG\include\string.h)(0x5AA6A3AA)
 F (..\..\jeg\ui.c)(0x5ADA48DC)()
@@ -1756,9 +1756,9 @@ I (..\..\jeg\nes.h)(0x5ADF1931)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x5AA6A3AA)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdbool.h)(0x5AA6A3AA)
 I (..\..\jeg\ppu.h)(0x5ADF1B6A)
-I (..\..\jeg\jeg_cfg.h)(0x5ADF1E57)
+I (..\..\jeg\jeg_cfg.h)(0x5ADF28C6)
 I (..\..\jeg\cpu6502.h)(0x5ADF19FB)
-I (..\..\jeg\cartridge.h)(0x5ADF2186)
+I (..\..\jeg\cartridge.h)(0x5ADF2886)
 I (..\..\jeg\cpu6502_debug.h)(0x5ADEFD9E)
 I (C:\Keil_v5\ARM\ARMCLANG\include\string.h)(0x5AA6A3AA)
 I (..\..\jeg\hal.h)(0x5ADEFF6D)
@@ -1900,7 +1900,7 @@ I (..\..\app_platform\.\file_io.h)(0x5ADDEB31)
 F (..\..\jeg\cpu6502.h)(0x5ADF19FB)()
 F (..\..\jeg\cpu6502_debug.h)(0x5ADEFD9E)()
 F (..\..\jeg\cpu6502_opcodes.h)(0x5ADEFDA1)()
-F (..\..\jeg\jeg_cfg.h)(0x5ADF1E57)()
+F (..\..\jeg\jeg_cfg.h)(0x5ADF28C6)()
 F (..\..\LiteNES\roms\Super_Tank.s)(0x5ADDA8C9)(--cpu Cortex-M7.fp.sp -g --pd "__MICROLIB SETA 1"-I.\RTE\Device\CMSDK_CM7_SP-I.\RTE\_V2M-MPS2-jeg-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Driver\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.6.0\Board-IC:\Keil_v5\ARM\PACK\Keil\V2M-MPS2_CMx_BSP\1.6.0\Boards\ARM\V2M-MPS2\Common-IC:\Keil_v5\ARM\PACK\Keil\V2M-MPS2_CMx_BSP\1.6.0\Device\CMSDK_CM7\Include--pd "__UVISION_VERSION SETA 525"--pd "_RTE_ SETA 1"--pd "CMSDK_CM7_SP SETA 1"--list .\out\super_tank.lst--xref -o .\out\super_tank.o--depend .\out\super_tank.d)
 I (..\..\LiteNES\roms\Super)(0x00000000)
 I (Tank)(0x00000000)

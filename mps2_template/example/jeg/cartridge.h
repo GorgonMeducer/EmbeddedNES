@@ -20,13 +20,20 @@ extern int_fast32_t cartridge_setup(cartridge_t *cartridge, uint8_t *data, uint_
 
 // access cpu memory bus
 extern uint_fast8_t cartridge_read_prg(cartridge_t *cartridge, uint_fast16_t adr);
-extern uint_fast16_t cartridge_readw_prg(cartridge_t *cartridge, uint_fast16_t adr);
+extern uint_fast8_t cartridge_read_chr(cartridge_t *cartridge, uint_fast16_t adr);
 
-extern void cartridge_write_prg(cartridge_t *cartridge, uint_fast16_t adr, uint_fast8_t value);
+
+#if JEG_USE_EXTRA_16BIT_BUS_ACCESS       == ENABLED
+extern uint_fast16_t cartridge_readw_prg(cartridge_t *cartridge, uint_fast16_t adr);
+#endif
+
+#if JEG_USE_DMA_MEMORY_COPY_ACCELERATION == ENABLED
 extern uint8_t *cartridge_get_prg_src_address(cartridge_t *cartridge, uint_fast16_t hwAddress);
+#endif
 
 // access ppu memory bus
-extern uint_fast8_t cartridge_read_chr(cartridge_t *cartridge, uint_fast16_t adr);
+
+extern void cartridge_write_prg(cartridge_t *cartridge, uint_fast16_t adr, uint_fast8_t value);
 extern void cartridge_write_chr(cartridge_t *cartridge, uint_fast16_t adr, uint_fast8_t value);
 
 #endif

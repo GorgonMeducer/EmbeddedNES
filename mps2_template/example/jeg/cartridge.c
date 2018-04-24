@@ -62,7 +62,7 @@ int cartridge_setup(cartridge_t *cartridge, uint8_t *data, uint32_t size) {
     return 0;
 }
 
-
+#if JEG_USE_DMA_MEMORY_COPY_ACCELERATION == ENABLED
 uint8_t *cartridge_get_prg_src_address(cartridge_t *cartridge, uint_fast16_t hwAddress)
 {
     if (hwAddress>=0x8000) {
@@ -70,6 +70,7 @@ uint8_t *cartridge_get_prg_src_address(cartridge_t *cartridge, uint_fast16_t hwA
     } 
     return  &(cartridge->io_data[hwAddress & 0x1fff]);
 }
+#endif
 
 //! \brief access cpu memory bus
 uint_fast8_t cartridge_read_prg(cartridge_t *cartridge, uint_fast16_t adr) {
@@ -80,6 +81,17 @@ uint_fast8_t cartridge_read_prg(cartridge_t *cartridge, uint_fast16_t adr) {
     
     return cartridge->io_data[adr & 0x1FFF];
 }
+
+#if JEG_USE_EXTRA_16BIT_BUS_ACCESS       == ENABLED
+uint_fast16_t cartridge_readw_prg(cartridge_t *cartridge, uint_fast16_t adr)
+{
+    if (adr >= 0x8000) {
+        return *(uint16_t *)&(cartridge->prg_memory[adr & cartridge->prg_adr_mask]);
+    }    
+    
+    return *(uint16_t *)&(cartridge->io_data[adr & 0x1FFF]);
+}
+#endif
 
 void cartridge_write_prg(cartridge_t *cartridge, uint_fast16_t adr, uint_fast8_t value) 
 {
