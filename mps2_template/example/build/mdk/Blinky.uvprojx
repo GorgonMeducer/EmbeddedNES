@@ -1116,6 +1116,11 @@
               <FileType>5</FileType>
               <FilePath>..\..\jeg\cpu6502_opcodes.h</FilePath>
             </File>
+            <File>
+              <FileName>jeg_cfg.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\jeg\jeg_cfg.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -2306,6 +2311,11 @@
               <FileName>cpu6502_opcodes.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\jeg\cpu6502_opcodes.h</FilePath>
+            </File>
+            <File>
+              <FileName>jeg_cfg.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\jeg\jeg_cfg.h</FilePath>
             </File>
           </Files>
         </Group>
