@@ -19,10 +19,7 @@ static uint_fast8_t cpu6502_bus_read (void *ref, uint_fast16_t address)
     } else if (address<0x4000) {
         return ppu_read(&nes->ppu, address);
         
-    } /*else if (address==0x4014) {
-        return ppu_read(&nes->ppu, address);
-        
-    } */ else if (address==0x4016) {
+    } else if (address==0x4016) {
         value=nes->controller_shift_reg[0]&1;
         nes->controller_shift_reg[0]=(nes->controller_shift_reg[0]>>1)|0x80;
         return value;
@@ -32,9 +29,7 @@ static uint_fast8_t cpu6502_bus_read (void *ref, uint_fast16_t address)
         nes->controller_shift_reg[1]=(nes->controller_shift_reg[1]>>1)|0x80;
         return value;
     }
-
     return 0;
-    
 }
 
 static void cpu6502_bus_write (void *ref, uint_fast16_t address, uint_fast8_t value) 
@@ -56,7 +51,6 @@ static void cpu6502_bus_write (void *ref, uint_fast16_t address, uint_fast8_t va
         
     } else if (address>=0x6000) {
         cartridge_write_prg(&nes->cartridge, address, value);
-        
     } 
 }
 
@@ -139,18 +133,18 @@ static void ppu_bus_write (nes_t *nes, int address, int value)
     }
 }
 
-
-
 #if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
 bool nes_init(nes_t *ptNES, nes_cfg_t *ptCFG) 
 #else
 void nes_init(nes_t *ptNES)
 #endif
 { 
- 
-    bool bResult = false;
+ #if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
+ bool bResult = false;
+ #endif
     do {
     #if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
+        
         if (    NULL == ptNES 
             ||  NULL == ptCFG) {
             break;
@@ -197,11 +191,11 @@ void nes_init(nes_t *ptNES)
                 break;
             }
         }
+        bResult = true;
     #else
         ppu_init(&ptNES->ppu, ptNES, ppu_bus_read, ppu_bus_write);
     #endif
         
-        bResult = true;
     } while(false);
     
 #if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
@@ -209,7 +203,7 @@ void nes_init(nes_t *ptNES)
 #endif
 }
 
-int nes_setup_rom(nes_t *nes, uint8_t *data, uint32_t size) {
+int_fast32_t nes_setup_rom(nes_t *nes, uint8_t *data, uint_fast32_t size) {
   int result;
 
   nes->controller_data[0]=0;

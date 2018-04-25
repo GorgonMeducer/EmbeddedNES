@@ -20,11 +20,11 @@ typedef uint8_t *cpu6502_dma_get_src_addr(void *, uint_fast16_t hwAddress);
 #endif
 
 typedef struct cpu6502_t {
-    // internal registers
-    uint_fast8_t reg_A; // accumulator [8Bit]
-    uint_fast8_t reg_X; // x register [8Bit]
-    uint_fast8_t reg_Y; // y register [8Bit]
-    uint_fast8_t reg_SP; // stack pointer [8Bit]
+    // internal registers (16bit is needed for correct overflow handling)
+    int_fast16_t reg_A; // accumulator [8Bit]
+    int_fast16_t reg_X; // x register [8Bit]
+    int_fast16_t reg_Y; // y register [8Bit]
+    int_fast16_t reg_SP; // stack pointer [8Bit]
     uint_fast16_t reg_PC; // program counter [16Bit]
 
     // status flags

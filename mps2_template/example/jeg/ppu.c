@@ -49,7 +49,7 @@ bool ppu_init(ppu_t *ppu, ppu_cfg_t *ptCFG)
     #endif
         ppu_reset(ppu);
             
-    
+        
         bResult = true;
     } while(false);
     return bResult;
@@ -85,7 +85,7 @@ void ppu_reset(ppu_t *ppu)
     ppu->oam_address=0;
     ppu->register_data=0;
     ppu->name_table_byte=0;
-
+    
 #if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == DISABLED
     if (NULL != ppu->video_frame_data) {
         memset(ppu->video_frame_data, 0, 256*240);
@@ -149,6 +149,7 @@ void ppu_dma_access(ppu_t *ppu, uint_fast8_t chData)
     if (ppu->nes->cpu.cycle_number & 0x01) {
         ppu->nes->cpu.stall_cycles++;
     }
+    ppu->bOAMUpdated = true;
 }
 
 void ppu_write(ppu_t *ppu, uint_fast16_t hwAddress, uint_fast8_t chData) 
@@ -171,6 +172,7 @@ void ppu_write(ppu_t *ppu, uint_fast16_t hwAddress, uint_fast8_t chData)
         case 4:
             ppu->oam_data[ppu->oam_address] = chData;
             ppu->oam_address++;
+            ppu->bOAMUpdated = true;
             break;
         case 5:
             ppu_update(ppu);
@@ -256,6 +258,95 @@ uint32_t fetch_sprite_pattern(ppu_t *ppu, int i, int row)
     }
 
     return data;
+}
+
+
+static void sort_sprite_order_list(ppu_t *ptPPU)
+{
+    //! a very simple & stupid sorting algorithm 
+    uint_fast8_t chIndex = 0, n;
+
+    if (!ptPPU->bOAMUpdated) {
+        return ;
+    }
+    ptPPU->bOAMUpdated = false;
+    
+    //! initialise the list
+    for (;chIndex < 64; chIndex++) {
+        ptPPU->SpriteYOrderList.List[chIndex].chIndex = chIndex;
+        ptPPU->SpriteYOrderList.List[chIndex].chY = ptPPU->SpriteInfo[chIndex].chY;
+    }
+    
+    //! sort the list
+    for (chIndex = 0; chIndex < 64; chIndex++) {
+        uint_fast16_t hwMin = 0xFFFF;
+        uint_fast16_t hwMinIndex = chIndex;
+        for (n = chIndex; n < 64; n++) {        
+            if (ptPPU->SpriteYOrderList.List[n].chY < hwMin) {
+                hwMinIndex = n;
+                hwMin = ptPPU->SpriteYOrderList.List[n].chY;
+            } 
+        }
+        
+        if (hwMin >= 240) {
+            //! no need to do it.
+            break;
+        } else if (chIndex == hwMinIndex) {
+            continue;
+        }  
+        
+        //! swap
+        
+        do {
+            uint_fast8_t chTempIndex = ptPPU->SpriteYOrderList.List[hwMinIndex].chIndex;
+            
+            ptPPU->SpriteYOrderList.List[hwMinIndex].chIndex = ptPPU->SpriteYOrderList.List[chIndex].chIndex; 
+            ptPPU->SpriteYOrderList.List[hwMinIndex].chY = ptPPU->SpriteYOrderList.List[chIndex].chY;
+            
+            ptPPU->SpriteYOrderList.List[chIndex].chIndex = chTempIndex;
+            ptPPU->SpriteYOrderList.List[chIndex].chY = hwMin;
+        } while(false);
+    }
+    
+    ptPPU->SpriteYOrderList.chVisibleCount = chIndex;
+    ptPPU->SpriteYOrderList.chCurrent = 0;
+}
+
+static inline uint_fast8_t fetch_sprite_info_on_specified_line(ppu_t *ptPPU, uint_fast32_t nScanLine)
+{
+    uint_fast8_t chCount = 0;
+    uint_fast8_t chSpriteSize = ((ptPPU->ppuctrl & PPUCTRL_SPRITE_SIZE) ? 16 : 8);
+
+    //! initialise sprite Y order sort list
+    sort_sprite_order_list(ptPPU);
+
+    for(int_fast32_t j = ptPPU->SpriteYOrderList.chCurrent; j < ptPPU->SpriteYOrderList.chVisibleCount; j++) {
+        uint_fast8_t chIndex = ptPPU->SpriteYOrderList.List[j].chIndex;
+        
+        int_fast32_t row = nScanLine - ptPPU->SpriteYOrderList.List[j].chY;
+        if (row < 0) {
+            continue;
+        } else if (row >= chSpriteSize) {
+            //! don't check previous sprites
+            ptPPU->SpriteYOrderList.chCurrent++;
+            continue;
+        }
+        
+        if (chCount < JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE) {
+            ptPPU->sprite_patterns[chCount]   = fetch_sprite_pattern(ptPPU, chIndex, row);
+            ptPPU->sprite_positions[chCount]  = ptPPU->SpriteInfo[chIndex].chPosition; 
+            ptPPU->sprite_priorities[chCount] = ptPPU->SpriteInfo[chIndex].Attributes.Priority;
+            ptPPU->sprite_indicies[chCount]   = chIndex;
+            chCount++;
+        } else {
+            break;
+        }
+    }
+
+    if (chCount > 8) {
+        ptPPU->ppustatus |= PPUSTATUS_SPRITE_OVERFLOW;
+    }
+    return chCount;
 }
 
 #define RENDERING_ENABLED       (ppu->ppumask & (   PPUMASK_SHOW_BACKGROUND     \
@@ -430,9 +521,9 @@ int_fast32_t ppu_update(ppu_t *ppu)
                 if (    FETCH_CYCLE 
                     &&  ((ppu->cycle & 0x07) == 0) ) {
                     //! increment x
-                    if ((ppu->v & 0x001F) == 31) {
+                    if ((ppu->v & 0x001F) == 31) {                              //!< wraps from 31 to 0, bit 10 is switched
                         ppu->v &= 0xFFE0;
-                        ppu->v ^= 0x400;
+                        ppu->v ^= _BV(10);
                     } else {
                         ppu->v++;
                     }
@@ -449,7 +540,7 @@ int_fast32_t ppu_update(ppu_t *ppu)
                         
                         switch(y) {
                             case 29:
-                                ppu->v ^= 0x0800;
+                                ppu->v ^= _BV(11);
                             case 31:                                            //!< fallthrough from case 29
                                 y = 0;
                                 break;
@@ -467,27 +558,13 @@ int_fast32_t ppu_update(ppu_t *ppu)
             // sprite logic
             if (257 == ppu->cycle) {
                 if (VISIBLE_LINE) {
-                    // evaluate sprite
-                    int_fast32_t count=0;
-                    for(int_fast32_t j = 0; j < 64; j++) {
-                        int_fast32_t row = ppu->scanline-ppu->oam_data[j * 4];
-                        if (    (row < 0)
-                            ||  (row >= ((ppu->ppuctrl & PPUCTRL_SPRITE_SIZE) ? 16 : 8))) {
-                            continue;
-                        }
-                        if (count < 8) {
-                            ppu->sprite_patterns[count]   = fetch_sprite_pattern(ppu, j, row);
-                            ppu->sprite_positions[count]  = ppu->oam_data[j * 4 + 3];
-                            ppu->sprite_priorities[count] = (ppu->oam_data[j * 4 + 2] >> 5) & 0x01;
-                            ppu->sprite_indicies[count]   = j;
-                        }
-                        count++;
-                    }
-                    if (count > 8) {
-                        count = 8;
-                        ppu->ppustatus |= PPUSTATUS_SPRITE_OVERFLOW;
-                    }
-                    ppu->sprite_count = count;
+                    /*! fetch all the sprite informations on current scanline */
+                    ppu->sprite_count = fetch_sprite_info_on_specified_line(ppu, ppu->scanline);
+                    
+                } else if (240 == ppu->scanline) {
+                    //! reset sprite Y order list counter
+                    ppu->SpriteYOrderList.chCurrent = 0;
+                    
                 } else {
                     ppu->sprite_count = 0;
                 }
