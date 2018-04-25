@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdint.h>
 #include "cpu6502.h"
 #include "cpu6502_debug.h"
 
@@ -6,11 +7,11 @@ int data[65536]={
   #include "rom.inc"
 };
 
-int _read(void *ref, int adr) {
+uint_fast8_t _read(void *ref, uint_fast16_t adr) {
   return data[adr];
 }
 
-void _write(void *ref, int adr, int value) {
+void _write(void *ref, uint_fast16_t adr, uint_fast8_t value) {
   data[adr]=value;
 }
 
@@ -28,7 +29,7 @@ int main(int argc, char *argv[]) {
     return 0;
   }
   else {
-    printf("=== Test failed: PC=$%04X ===\n", cpu.reg_PC);
+    printf("=== Test failed: PC=$%04X ===\n", (unsigned int)cpu.reg_PC);
     return 1;
   }
 

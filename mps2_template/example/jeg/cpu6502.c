@@ -334,7 +334,6 @@ int cpu6502_run(cpu6502_t *cpu, int cycles_to_run) {
       case OP_DEX:
         cpu->reg_X--;
         cpu->reg_X &= 0xFF;
-
         RECALC_ZN(cpu->reg_X);
         break;
       case OP_DEY:
@@ -357,7 +356,6 @@ int cpu6502_run(cpu6502_t *cpu, int cycles_to_run) {
       case OP_INX:
         cpu->reg_X++;
         cpu->reg_X &= 0xFF;
-
         RECALC_ZN(cpu->reg_X);
         break;
       case OP_INY:

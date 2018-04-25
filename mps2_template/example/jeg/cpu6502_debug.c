@@ -6,7 +6,7 @@
 void cpu6502_dump(cpu6502_t *cpu) {
   opcode_tbl_entry_t opcode=opcode_tbl[cpu->read(cpu->reference, cpu->reg_PC)];
 
-  printf("%8ld A=$%02X X=$%02X Y=$%02X SP=$%02X PC=$%04X ", cpu->cycle_number, cpu->reg_A, cpu->reg_X, cpu->reg_Y, cpu->reg_SP, cpu->reg_PC);
+  printf("%8ld A=$%02X X=$%02X Y=$%02X SP=$%02X PC=$%04X ", cpu->cycle_number, (unsigned int)cpu->reg_A, (unsigned int)cpu->reg_X, (unsigned int)cpu->reg_Y, (unsigned int)cpu->reg_SP, (unsigned int)cpu->reg_PC);
   printf("%c%c%c%c", cpu->status_N?'N':'n', cpu->status_V?'V':'v', cpu->status_U?'U':'u', cpu->status_B?'B':'b');
   printf("%c%c%c%c ", cpu->status_D?'D':'d', cpu->status_I?'I':'i', cpu->status_Z?'Z':'z', cpu->status_C?'C':'c');
   printf("%s ", opcode.mnemonic);
@@ -37,10 +37,10 @@ void cpu6502_dump(cpu6502_t *cpu) {
       break;
     case ADR_RELATIVE:
       if (cpu->read(cpu->reference, cpu->reg_PC+2)&0x80) {
-        printf("$%04X", cpu->reg_PC-(256-(cpu->read(cpu->reference, cpu->reg_PC+1)+(cpu->read(cpu->reference, cpu->reg_PC+2)<<8))));
+        printf("$%04X", (unsigned int)cpu->reg_PC-(256-(cpu->read(cpu->reference, cpu->reg_PC+1)+(cpu->read(cpu->reference, cpu->reg_PC+2)<<8))));
       }
       else {
-        printf("$%04X", cpu->reg_PC+(cpu->read(cpu->reference, cpu->reg_PC+1)+(cpu->read(cpu->reference, cpu->reg_PC+2)<<8)));
+        printf("$%04X", (unsigned int)cpu->reg_PC+(cpu->read(cpu->reference, cpu->reg_PC+1)+(cpu->read(cpu->reference, cpu->reg_PC+2)<<8)));
       }
       break;
     case ADR_ZERO_PAGE:

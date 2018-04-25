@@ -14,57 +14,83 @@ typedef void (*ppu_update_frame_func_t) (void *reference, uint8_t* frame_data, i
 typedef void ppu_draw_pixel_func_t(void *ptTag, uint_fast8_t chY, uint_fast8_t chX, uint_fast8_t chColor);
 
 typedef struct ppu_t {
-  nes_t *nes; // reference to nes console
+    nes_t *nes; // reference to nes console
 
-  // ppu state
-  uint64_t last_cycle_number; // measured in cpu cycles
-  int cycle;
-  int scanline;
+    // ppu state
+    uint64_t last_cycle_number; // measured in cpu cycles
+    int cycle;
+    int scanline;
 
-  uint_fast8_t palette[32];
-  uint8_t name_table[2048];
-  uint8_t oam_data[256];
+    uint_fast8_t palette[32];
+    uint8_t name_table[2048];
+  
+    union {
+        uint8_t oam_data[256];
+        struct {
+            uint8_t chY;
+            uint8_t chIndex;
+            struct {
+                uint8_t         ColorH              : 2;
+                uint8_t                             : 3;
+                uint8_t         Priority            : 1;
+                uint8_t         IsFlipHorizontally  : 1;
+                uint8_t         IsFlipVertically    : 1;
+            } Attributes;
+            uint8_t chPosition;
+        } SpriteInfo[64];
+    };
+    bool bOAMUpdated;
+  
+    struct {
+        struct {
+            uint_fast8_t chIndex;
+            uint_fast8_t chY;
+        } List[64] ;
 
-  // ppu registers
-  int v; // current vram address (15bit)
-  int t; // temporary vram address (15bit)
-  int x; // fine x scoll (3bit)
-  int w; // toggle bit (1bit)
-  int f; // even/odd frame flag (1bit)
+        uint_fast8_t chVisibleCount;
+        uint_fast8_t chCurrent; 
+    } SpriteYOrderList;
+    
+    // ppu registers
+    int v; // current vram address (15bit)
+    int t; // temporary vram address (15bit)
+    int x; // fine x scoll (3bit)
+    int w; // toggle bit (1bit)
+    int f; // even/odd frame flag (1bit)
 
-  int register_data;
+    int register_data;
 
-  // background temporary variables
-  int name_table_byte;
-  int attribute_table_byte;
-  int low_tile_byte;
-  int high_tile_byte;
-  uint64_t tile_data;
+    // background temporary variables
+    int name_table_byte;
+    int attribute_table_byte;
+    int low_tile_byte;
+    int high_tile_byte;
+    uint64_t tile_data;
 
-  // sprite temporary variables
-  int sprite_count;
-  uint32_t sprite_patterns[8];
-  uint_fast8_t sprite_positions[8];
-  uint_fast8_t sprite_priorities[8];
-  uint_fast8_t sprite_indicies[8];
+    // sprite temporary variables
+    int sprite_count;
+    uint32_t sprite_patterns      [JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE];
+    uint_fast8_t sprite_positions [JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE];
+    uint_fast8_t sprite_priorities[JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE];
+    uint_fast8_t sprite_indicies  [JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE];
 
-  // memory accessable registers
-  int ppuctrl;
-  int ppumask;
-  int ppustatus;
-  int oam_address;
-  int buffered_data;
-   
-  // memory interface to vram and vrom
-  ppu_read_func_t   *read;
-  ppu_write_func_t  *write;
+    // memory accessable registers
+    int ppuctrl;
+    int ppumask;
+    int ppustatus;
+    int oam_address;
+    int buffered_data;
+
+    // memory interface to vram and vrom
+    ppu_read_func_t   *read;
+    ppu_write_func_t  *write;
   
 #if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
-  ppu_draw_pixel_func_t *fnDrawPixel;
-  void *ptTag;
+    ppu_draw_pixel_func_t *fnDrawPixel;
+    void *ptTag;
 #else
-  // frame data interface
-  uint8_t *video_frame_data;
+    // frame data interface
+    uint8_t *video_frame_data;
 #endif
 
   

@@ -1,8 +1,7 @@
 #include "cartridge.h"
-#include <stdio.h>
 #include <string.h>
 
-int cartridge_setup(cartridge_t *cartridge, uint8_t *data, uint32_t size) {
+int_fast32_t cartridge_setup(cartridge_t *cartridge, uint8_t *data, uint_fast32_t size) {
     uint_fast32_t prg_size, chr_size;
 
     // check minimum size (header is 16 bytes)
@@ -27,7 +26,6 @@ int cartridge_setup(cartridge_t *cartridge, uint8_t *data, uint32_t size) {
 
 
     if (cartridge->mapper!=0 && cartridge->mapper!=3) { // ines #3 is just a quick fix for a test rom
-        printf("%d\n", cartridge->mapper);
         return 3;
     }
 
@@ -89,7 +87,7 @@ uint_fast16_t cartridge_readw_prg(cartridge_t *cartridge, uint_fast16_t adr)
         return *(uint16_t *)&(cartridge->prg_memory[adr & cartridge->prg_adr_mask]);
     }    
     
-    return *(uint16_t *)&(cartridge->io_data[adr & 0x1FFF]);
+    return cartridge->io_data[adr & 0x1FFF];
 }
 #endif
 
