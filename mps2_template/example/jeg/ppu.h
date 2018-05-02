@@ -13,6 +13,14 @@ typedef void (*ppu_update_frame_func_t) (void *reference, uint8_t* frame_data, i
 
 typedef void ppu_draw_pixel_func_t(void *ptTag, uint_fast8_t chY, uint_fast8_t chX, uint_fast8_t chColor);
 
+typedef struct {
+    uint_fast16_t   XScroll     : 5;
+    uint_fast16_t   YScroll     : 5;
+    uint_fast16_t   XToggleBit  : 1;
+    uint_fast16_t   YToggleBit  : 1;
+    uint_fast16_t   TileYOffsite: 3;
+} v_ram_addr_t;
+
 typedef struct ppu_t {
     nes_t *nes; // reference to nes console
 
@@ -22,8 +30,21 @@ typedef struct ppu_t {
     int scanline;
 
     uint_fast8_t palette[32];
-    uint8_t name_table[2048];
-  
+    union {
+        struct {
+            uint8_t chNameTable[30][32];
+            union {
+                struct {
+                    uint8_t     Square0 : 2;
+                    uint8_t     Square1 : 2;
+                    uint8_t     Square2 : 2;
+                    uint8_t     Square3 : 2;
+                }Group;
+                uint8_t chValue;
+            }AttributeTable[8][8];
+        }tTables[2];
+        uint8_t name_table[2048];
+    };
     union {
         uint8_t oam_data[256];
         struct {
@@ -52,8 +73,14 @@ typedef struct ppu_t {
     } SpriteYOrderList;
     
     // ppu registers
-    int v; // current vram address (15bit)
-    int t; // temporary vram address (15bit)
+    union {
+        v_ram_addr_t tVAddress;
+        uint_fast16_t v; // current vram address (15bit)
+    };
+    union {
+        v_ram_addr_t tTempVAddress;
+        uint_fast16_t t; // temporary vram address (15bit)
+    };
     int x; // fine x scoll (3bit)
     int w; // toggle bit (1bit)
     int f; // even/odd frame flag (1bit)
@@ -93,7 +120,9 @@ typedef struct ppu_t {
     uint8_t *video_frame_data;
 #endif
 
-  
+#if JEG_USE_FRAME_SYNC_UP_FLAG  == ENABLED
+    bool bFrameReady;
+#endif
 } ppu_t;
 
 #if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
@@ -128,4 +157,9 @@ extern int ppu_update(ppu_t *ppu); // update ppu to current cpu cycle, return nu
 #if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == DISABLED
 extern void ppu_setup_video(ppu_t *ppu, uint8_t *video_frame_data);
 #endif
+
+#if JEG_USE_FRAME_SYNC_UP_FLAG  == ENABLED
+extern bool ppu_is_frame_ready(ppu_t *ptPPU);
+#endif
+
 #endif

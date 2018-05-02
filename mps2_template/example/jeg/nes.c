@@ -239,3 +239,10 @@ void nes_set_controller(nes_t *nes, uint8_t controller1, uint8_t controller2) {
   nes->controller_data[0]=controller1;
   nes->controller_data[1]=controller2;
 }
+
+#if JEG_USE_FRAME_SYNC_UP_FLAG  == ENABLED
+bool nes_is_frame_ready(nes_t *ptNES)
+{
+    return ppu_is_frame_ready(&(ptNES->ppu));
+}
+#endif

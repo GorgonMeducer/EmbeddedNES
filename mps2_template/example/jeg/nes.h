@@ -37,4 +37,8 @@ extern void nes_reset(nes_t *);
 extern void nes_iterate_frame(nes_t *); // run cpu until next complete frame
 extern void nes_set_controller(nes_t *, uint8_t , uint8_t ); // [7:Right, 6:Left, 5:Down, 4:Up, 3:Start, 2:Select, 1:B, 0:A]
 extern bool nes_is_ready_to_refresh(nes_t *nes);
+
+#if JEG_USE_FRAME_SYNC_UP_FLAG  == ENABLED
+extern bool nes_is_frame_ready(nes_t *ptNES);
+#endif
 #endif

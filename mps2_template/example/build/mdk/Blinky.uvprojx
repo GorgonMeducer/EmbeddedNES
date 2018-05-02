@@ -1480,7 +1480,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>-Omax -fno-short-wchar -fms-extensions -Wno-microsoft-anon-tag -Wno-nonportable-include-path -Wno-tautological-constant-out-of-range-compare</MiscControls>
-              <Define>__USE_LCD __USE_TIMER0 __USE_FPGA USE_JEG  __USER_DEFINED_APP_CFG_H__ GLCD_MIRROR_Y=1 JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE=ENABLED</Define>
+              <Define>__USE_LCD __USE_TIMER0 __USE_FPGA USE_JEG  __USER_DEFINED_APP_CFG_H__ GLCD_MIRROR_Y=1 JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE=ENABLED JEG_USE_FRAME_SYNC_UP_FLAG=ENABLED JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE=16</Define>
               <Undefine></Undefine>
               <IncludePath>..\..\app_platform;..\..\jeg</IncludePath>
             </VariousControls>
