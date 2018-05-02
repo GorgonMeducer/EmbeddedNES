@@ -5,6 +5,14 @@ A portable NES simulator for embedded processors.
 
 ## Update Log
 
+- 03-05-2018 PPU refactory
+
+    * Improve the PPU performance and readabiligy. 
+    
+    * Add dedicated jeg_cfg.h for configuration purpose. 
+    
+    * Improve the display quality - solve the blinking-sprite issue.
+
 - 20-04-2018 Support both LiteNES and JEG
     
     You can switching two emulator in MDK projects:
