@@ -154,21 +154,25 @@ void fce_run(void)
 
         nes_iterate_frame(&this.tNESConsole);
         int nTimeEmulator = stop_counter();
-        start_counter();
-        update_frame(&this.tFrame);
-        int nTimeRefresh = stop_counter();
-        int nTotal = nTimeEmulator+nTimeRefresh;
-        
-        log_info("NES: %8d %3d \t Refresh: %8d %3d\t %8d %8d ms\r",
-                 nTimeEmulator,
-                (nTimeEmulator * 100 + nTotal / 2)/nTotal,
-                 nTimeRefresh,
-                (nTimeRefresh*100 + nTotal / 2)/nTotal,
-                nTotal,
-                (int32_t)((uint64_t)((uint64_t)nTotal * 1000) / SystemCoreClock));
+        if (nes_is_frame_ready(&this.tNESConsole)) {
+            start_counter();
+            update_frame(&this.tFrame);
+            int nTimeRefresh = stop_counter();
+            int nTotal = nTimeEmulator+nTimeRefresh;
+            
+            log_info("NES: %8d %3d \t Refresh: %8d %3d\t %8d %8d ms\r",
+                     nTimeEmulator,
+                    (nTimeEmulator * 100 + nTotal / 2)/nTotal,
+                     nTimeRefresh,
+                    (nTimeRefresh*100 + nTotal / 2)/nTotal,
+                    nTotal,
+                    (int32_t)((uint64_t)((uint64_t)nTotal * 1000) / SystemCoreClock));
+        }
 #else
         nes_iterate_frame(&this.tNESConsole);
-        update_frame(&this.tFrame);
+        if (nes_is_frame_ready(&this.tNESConsole)) {
+            update_frame(&this.tFrame);
+        }
 #endif
     }
 }

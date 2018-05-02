@@ -53,6 +53,11 @@
 #   define JEG_USE_6502_DECIMAL_MODE                   DISABLED
 #endif
 
+/*! \brief This switch is used to enable optimized sprite processing
+ */
+#ifndef JEG_USE_OPTIMIZED_SPRITE_PROCESSING
+#   define JEG_USE_OPTIMIZED_SPRITE_PROCESSING         ENABLED
+#endif
 
 /*! \brief This macro is used to control the maximum allowed sprites on a single
  *!        scanline. By default, it's 8 which is the hardware limitation, but we
@@ -61,7 +66,14 @@
  *!        solving the blinking-sprites issue
  */
 #ifndef JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE  
-#   define JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE  16
+#   define JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE  8
+#endif
+
+/*! \brief This switch is used to enable/disable a dedicated frame ready flag,
+ *!        with which unnecessary frame refresh will be prevented.
+ */
+#ifndef JEG_USE_FRAME_SYNC_UP_FLAG
+#   define JEG_USE_FRAME_SYNC_UP_FLAG                   ENABLED
 #endif
 
 #endif

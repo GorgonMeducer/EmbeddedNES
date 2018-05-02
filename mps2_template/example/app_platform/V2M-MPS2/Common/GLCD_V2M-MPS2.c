@@ -413,7 +413,6 @@ static void delay_ms (int ms) {
 
 /************************ Local auxiliary functions ***************************/
 
-
 /**
   \fn          uint8_t spi_tran (uint8_t byte)
   \brief       Transfer 1 byte over the serial communication
