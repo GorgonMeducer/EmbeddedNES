@@ -92,12 +92,22 @@ static uint8_t *cpu6502_dma_get_source_address(void *ref, uint_fast16_t hwAddres
 }
 #endif
 
-const int mirror_lookup[20]={0,0,1,1,0,1,0,1,0,0,0,0,1,1,1,1,0,1,2,3};
 
-int mirror_address (int mode, int address) {
-  address=address & 0x0FFF;
-  return 0x2000+mirror_lookup[mode*4+(address>>10)]*0x400+(address&0x3ff);
+
+const static uint_fast8_t mirror_lookup[20]={0,0,1,1,0,1,0,1,0,0,0,0,1,1,1,1,0,1,2,3};
+
+
+uint_fast16_t mirror_address (uint_fast8_t chMode, uint_fast16_t hwAddress) 
+{
+    hwAddress = hwAddress & 0x0FFF;
+    return mirror_lookup[chMode*4+(hwAddress>>10)]*0x400+(hwAddress&0x3ff);
 }
+
+uint_fast8_t find_name_attribute_table_index(uint_fast8_t chMode, uint_fast16_t hwAddress)
+{
+    return mirror_lookup[chMode*4+((hwAddress & 0x0FFF)>>10)];
+}
+
 
 static int ppu_bus_read (nes_t *nes, int address) 
 {
@@ -106,7 +116,8 @@ static int ppu_bus_read (nes_t *nes, int address)
     if (address <0x2000) {
         value=cartridge_read_chr(&nes->cartridge, address);
     } else if (address<0x3F00) {
-        value=nes->ppu.name_table[mirror_address(nes->cartridge.mirror, address) & 0x7FF];
+        uint_fast8_t chPhysicTableIndex = find_name_attribute_table_index(nes->cartridge.mirror, address) ;// mirror_lookup[(nes->cartridge.mirror)*4+((address & 0xFFF) >>10)];
+        value = nes->ppu.tNameAttributeTable[chPhysicTableIndex].chBuffer[address & 0x3FF];
     } else if (address<0x4000) {
         address=address & 0x1F;
         if (address>=16 && ((address & 0x03) == 0)) {
@@ -117,13 +128,114 @@ static int ppu_bus_read (nes_t *nes, int address)
     return value;
 }
 
+static void write_name_attribute_table(nes_t *ptNES, uint_fast16_t hwAddress, uint_fast8_t chData)
+{
+    uint_fast8_t chPhysicTableIndex = find_name_attribute_table_index(ptNES->cartridge.mirror, hwAddress);//mirror_lookup[(ptNES->cartridge.mirror)*4+((hwAddress & 0xFFF) >>10)];
+    name_attribute_table_t *ptTable = &(ptNES->ppu.tNameAttributeTable[chPhysicTableIndex]);
+    
+    hwAddress &= 0x3FF;
+    uint8_t chOldData = ptTable->chBuffer[hwAddress];
+    ptTable->chBuffer[hwAddress] = chData;
+    
+    if (chPhysicTableIndex == 1 && (hwAddress == 470)) {
+        __asm volatile ("nop");
+    }
+    
+#if JEG_USE_DIRTY_MATRIX == ENABLED || JEG_USE_BACKGROUND_BUFFERING == ENABLED
+    if (chOldData == chData) {
+        return ;
+    }
+
+    //! update dirty matrix
+    do {
+        if (hwAddress < 32 * 30) {
+            //! update nametable dirty matrix directly
+            ptTable->wDirtyMatrix[hwAddress>>5] |= _BV(hwAddress & 0x1F);
+        } else {        
+            //! addressing attribute table, update name table dirty matrix indirectly
+            hwAddress -= 32 * 30;
+            
+/*! \note   Each byte controls the palette of a 32x32 pixel or 4x4 tile part of 
+            the nametable and is divided into four 2-bit areas. Each area covers 
+            16x16 pixels or 2x2 tiles, the size of a [?] block in Super Mario Bros. 
+            Given palette numbers topleft, topright, bottomleft, bottomright, 
+            each in the range 0 to 3, the value of the byte is
+            
+               2xx0    2xx1    2xx2    2xx3    2xx4    2xx5    2xx6    2xx7
+             ,-------+-------+-------+-------+-------+-------+-------+-------.
+             | 0 . 1 |   .   |   .   |   .   |   .   |   .   |   .   |   .   |
+        2xC0:| - + - | - + - | - + - | - + - | - + - | - + - | - + - | - + - |
+             | 2 . 3 |   .   |   .   |   .   |   .   |   .   |   .   |   .   |
+             +-------+-------+-------+-------+-------+-------+-------+-------+
+             |   .   |   .   |   .   |   .   |   .   |   .   |   .   |   .   |
+        2xC8:| - + - | - + - | - + - | - + - | - + - | - + - | - + - | - + - |
+             |   .   |   .   |   .   |   .   |   .   |   .   |   .   |   .   |
+             +-------+-------+-------+-------+-------+-------+-------+-------+
+             |   .   |   .   |   .   |   .   |   .   |   .   |   .   |   .   |
+        2xD0:| - + - | - + - | - + - | - + - | - + - | - + - | - + - | - + - |
+             |   .   |   .   |   .   |   .   |   .   |   .   |   .   |   .   |
+             +-------+-------+-------+-------+-------+-------+-------+-------+
+             |   .   |   .   |   .   |   .   |   .   |   .   |   .   |   .   |
+        2xD8:| - + - | - + - | - + - | - + - | - + - | - + - | - + - | - + - |
+             |   .   |   .   |   .   |   .   |   .   |   .   |   .   |   .   |
+             +-------+-------+-------+-------+-------+-------+-------+-------+
+             |   .   |   .   |   .   |   .   |   .   |   .   |   .   |   .   |
+        2xE0:| - + - | - + - | - + - | - + - | - + - | - + - | - + - | - + - |
+             |   .   |   .   |   .   |   .   |   .   |   .   |   .   |   .   |
+             +-------+-------+-------+-------+-------+-------+-------+-------+
+             |   .   |   .   |   .   |   .   |   .   |   .   |   .   |   .   |
+        2xE8:| - + - | - + - | - + - | - + - | - + - | - + - | - + - | - + - |
+             |   .   |   .   |   .   |   .   |   .   |   .   |   .   |   .   |
+             +-------+-------+-------+-------+-------+-------+-------+-------+
+             |   .   |   .   |   .   |   .   |   .   |   .   |   .   |   .   |
+        2xF0:| - + - | - + - | - + - | - + - | - + - | - + - | - + - | - + - |
+             |   .   |   .   |   .   |   .   |   .   |   .   |   .   |   .   |
+             +-------+-------+-------+-------+-------+-------+-------+-------+
+        2xF8:|   .   |   .   |   .   |   .   |   .   |   .   |   .   |   .   |
+             `-------+-------+-------+-------+-------+-------+-------+-------'
+     
+*/
+             
+            uint_fast8_t chTileY = (hwAddress >> 3) * 4;
+            uint_fast8_t chTileX = (hwAddress & 0x07) * 4;
+            
+            const struct {
+                uint_fast8_t chX;
+                uint_fast8_t chY;
+            } c_OffSite[] = {
+                {0,0},
+                {2,0},
+                {0,2},
+                {2,2}
+            };
+            
+            for (uint_fast8_t chGroup = 0; chGroup < 4; chGroup++) {
+                if ((chOldData & 0x03) != (chData & 0x03)) {
+                    //! current group has been affected
+                    
+                    uint_fast8_t chY = chTileY + c_OffSite[chGroup].chY;
+                    uint_fast8_t chX = chTileX + c_OffSite[chGroup].chX;
+                    ptTable->wDirtyMatrix[chY++]    |= 0x03 << (chX);
+                    ptTable->wDirtyMatrix[chY]      |= 0x03 << (chX);
+                }
+                chOldData >>= 2;
+                chData >>= 2;
+            }
+            
+        }
+    
+    } while(0);
+
+#endif
+}
+
 static void ppu_bus_write (nes_t *nes, int address, int value) 
 {
     address &= 0x3FFF;
     if (address<0x2000) {
         cartridge_write_chr(&nes->cartridge, address, value);
     } else if (address<0x3F00) {
-        nes->ppu.name_table[mirror_address(nes->cartridge.mirror, address) & 0x7FF ]=value;
+        write_name_attribute_table(nes, address, value);
     } else if (address<0x4000) {
         address=address & 0x1F;
         if (address>=16 && ((address & 0x03) == 0)) {

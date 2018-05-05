@@ -81,6 +81,19 @@ void ppu_reset(ppu_t *ppu)
     ppu->ppuctrl=0;
     ppu->ppustatus=0;
     ppu->t=0;
+#if JEG_USE_DIRTY_MATRIX == ENABLED
+    ppu->hwOldt = 0;
+#endif
+
+#if JEG_USE_BACKGROUND_BUFFERING == ENABLED || JEG_USE_DIRTY_MATRIX == ENABLED
+    memset(&(ppu->tNameAttributeTable[0]), 0, sizeof(name_attribute_table_t));
+    memset(&(ppu->tNameAttributeTable[1]), 0, sizeof(name_attribute_table_t));
+    
+#   if JEG_USE_4_PHYSICAL_NAME_ATTRIBUTE_TABLES == ENABLED
+    memset(&(ppu->tNameAttributeTable[2]), 0, sizeof(name_attribute_table_t));
+    memset(&(ppu->tNameAttributeTable[3]), 0, sizeof(name_attribute_table_t));
+#   endif
+#endif
     ppu->ppumask=0;
     ppu->oam_address=0;
     ppu->register_data=0;
@@ -154,14 +167,20 @@ void ppu_dma_access(ppu_t *ppu, uint_fast8_t chData)
 
 void ppu_write(ppu_t *ppu, uint_fast16_t hwAddress, uint_fast8_t chData) 
 {
-    int address_temp;
-
     ppu->register_data = chData;
 
     switch (hwAddress & 7) {
         case 0:
             ppu->ppuctrl=chData;
-            ppu->t = (ppu->t & 0xF3FF) | ((chData & 0x03) <<10 );
+            ppu->t = (ppu->t & 0xF3FF) | ((chData & 0x03) <<10 );               //! select name/attribute tables
+        /*
+        #if JEG_USE_DIRTY_MATRIX == ENABLED
+            if (ppu->t != ppu->hwOldt) {
+                ppu->hwOldt = ppu->t;
+                ppu->bDisplayWindowMoved = true;
+            }
+        #endif
+        */
             break;
         case 1:
             ppu->ppumask=chData;
@@ -184,6 +203,14 @@ void ppu_write(ppu_t *ppu, uint_fast16_t hwAddress, uint_fast8_t chData)
                 ppu->t = (ppu->t & 0x8FFF) | ((chData&0x07)<<12);
                 ppu->t = (ppu->t & 0xFC1F) | ((chData&0xF8)<<2);
                 ppu->w = 0;
+            /*
+            #if JEG_USE_DIRTY_MATRIX == ENABLED
+                if (ppu->t != ppu->hwOldt) {
+                    ppu->hwOldt = ppu->t;
+                    ppu->bDisplayWindowMoved = true;
+                }
+            #endif
+            */
             }
             break;
         case 6:
@@ -191,9 +218,17 @@ void ppu_write(ppu_t *ppu, uint_fast16_t hwAddress, uint_fast8_t chData)
                 ppu->t = (ppu->t&0x80FF) | ((chData&0x3F)<<8);
                 ppu->w = 1;
             } else {
-                ppu->t = (ppu->t&0xFF00) | chData;
+                ppu->t = (ppu->t&0xFF00) | chData;                              
                 ppu->v = ppu->t;
                 ppu->w = 0;
+            /*    
+            #if JEG_USE_DIRTY_MATRIX == ENABLED
+                if (ppu->t != ppu->hwOldt) {
+                    ppu->hwOldt = ppu->t;
+                    ppu->bDisplayWindowMoved = true;
+                }
+            #endif
+            */
             }
             break;
         case 7:
@@ -368,6 +403,84 @@ static inline uint_fast8_t fetch_sprite_info_on_specified_line(ppu_t *ptPPU, uin
     return chCount;
 }
 
+#if JEG_USE_BACKGROUND_BUFFERING == ENABLED
+static void update_background(ppu_t *ptPPU)
+{
+    uint_fast8_t n = UBOUND(ptPPU->tNameAttributeTable);
+    name_attribute_table_t *ptTable = ptPPU->tNameAttributeTable;
+    
+    do {
+        uint_fast16_t hwAddress = 0;
+        for (uint_fast8_t chY = 0; chY < 30; chY++) {
+        
+            uint_fast32_t wLineMask = ptTable->wDirtyMatrix[chY];
+            if (0 == wLineMask) {
+                hwAddress += 32;
+                continue;
+            }
+            ptTable->wDirtyMatrix[chY] = 0;
+        
+            for (uint_fast8_t chX = 0; chX < 32; chX++) {
+                
+                
+                if (!(wLineMask & 0x01)) {
+                    wLineMask >>= 1;
+                    hwAddress++;
+                    continue;
+                }
+                wLineMask >>= 1;
+                
+                //!< fetch name table byte
+                uint_fast8_t name_table_byte   = ptTable->chNameTable[chY][chX];
+                
+                //!< fetch attribute table byte
+                uint_fast8_t attribute_table_byte = ptTable->AttributeTable[chY>>2][chX>>2].chValue;
+                
+                attribute_table_byte = (   (   attribute_table_byte >> (   ( (hwAddress >> 4) & 4) 
+                                                                        |   (  hwAddress &2)) 
+                                            ) & 3 
+                      ) << 2;
+                
+                for (uint_fast8_t chYOffsite = 0; chYOffsite < 8; chYOffsite++) {
+                    //!< fetch low tile byte
+                    uint_fast8_t low_tile_byte = ptPPU->read ( 
+                                ptPPU->nes,    
+                                0x1000*((ptPPU->ppuctrl & PPUCTRL_BACKGROUND_TABLE) ? 1 : 0)
+                            +   name_table_byte*16
+                            +   chYOffsite
+                        );
+
+                    
+                    //!< fetch high tile byte
+                    uint_fast8_t high_tile_byte = ptPPU->read(
+                                ptPPU->nes, 
+                                0x1000 * ((ptPPU->ppuctrl & PPUCTRL_BACKGROUND_TABLE) ? 1 : 0)
+                            +   name_table_byte*16
+                            +   chYOffsite + 8
+                        );
+
+                    uint8_t *ptLine = &(ptTable->chBackgroundBuffer[chY*8 + chYOffsite][chX * 8]);
+                    //!< store tile data
+                    for(int_fast32_t j = 0; j<8; j++) {
+                        
+                        *ptLine++ =   attribute_table_byte
+                                            |   ((low_tile_byte  & 0x80) >> 7)
+                                            |   ((high_tile_byte & 0x80) >> 6);
+                                
+                        low_tile_byte <<= 1;
+                        high_tile_byte <<= 1;
+                    }
+                }
+                
+                hwAddress++;
+            }
+        }
+        ptTable++;
+        
+    } while(--n);
+}
+#endif
+
 #define RENDERING_ENABLED       (ppu->ppumask & (   PPUMASK_SHOW_BACKGROUND     \
                                                 |   PPUMASK_SHOW_SPRITES))
 #define PRE_LINE                (261 == ppu->scanline)
@@ -384,6 +497,11 @@ int_fast32_t ppu_update(ppu_t *ppu)
     int_fast32_t cycles = (ppu->nes->cpu.cycle_number - ppu->last_cycle_number) * 3;
     ppu->last_cycle_number = ppu->nes->cpu.cycle_number;
 
+
+#if JEG_USE_BACKGROUND_BUFFERING == ENABLED
+    update_background(ppu);
+#endif
+
     while(cycles--) {
         ppu->cycle++;                                                           //!< go to next pixel
         
@@ -399,84 +517,126 @@ int_fast32_t ppu_update(ppu_t *ppu)
 
         //! render
         if (RENDERING_ENABLED) {
+            do {
+                //! background logic
+                if (VISIBLE_LINE && VISIBLE_CYCLE) {
+                    //! render pixel
+                    int_fast32_t background = 0, i = 0, sprite = 0;
+
+                    //! get sprite pixel color
+                    if ((ppu->ppumask&PPUMASK_SHOW_SPRITES)!=0) {
+                    
+                        for(int_fast32_t j = 0; j < ppu->sprite_count; j++) {
+                            int_fast32_t offset =   (ppu->cycle - 1) 
+                                                  - (int_fast32_t)ppu->sprite_positions[j];
+                                                  
+                            if ( offset < 0 || offset > 7) {
+                                continue;
+                            }
+                            
+                            int_fast32_t color = (ppu->sprite_patterns[j] >> ((7 - offset) * 4)) & 0x0F;
+                            if (color % 4 == 0) {
+                                continue;
+                            }
+                            
+                            i=j;
+                            sprite = color;
+                            break;
+                        }
+                    }
+                    
+                    int_fast32_t s = (sprite % 4 !=0 ), color = 0;
+                #if JEG_USE_DIRTY_MATRIX == ENABLED
+                    
+                    if (!ppu->bDisplayWindowMoved) {
+                        if (!s && !(ppu->chBackgroundUpdated & _BV(1))) {
+                            break;                                              //! skip current pixel
+                        }
+                    }
+                    
+                #endif
+
+                    //! get background pixel color
+                    if ((ppu->ppumask&PPUMASK_SHOW_BACKGROUND) != 0) {
+                        background = ((ppu->tile_data >> 32) >> ((7-ppu->x) * 4)) & 0x0F;
+                    }
+
+                    
+
+                    if ((ppu->cycle - 1) < 8) {
+                        if ((ppu->ppumask & PPUMASK_SHOW_LEFT_BACKGROUND) == 0) {
+                            background=0;
+                        }
+                        if ((ppu->ppumask & PPUMASK_SHOW_LEFT_SPRITES) == 0) {
+                            sprite=0;
+                        }
+                    }
+
+                    int_fast32_t b = (background % 4 !=0 );
+                    
+                    if (!b && s) {
+                        color = sprite | 0x10;
+                    } else if (b && !s) {
+                        color = background;
+                    } else if (b && s) {
+                        if (    (ppu->sprite_indicies[i] == 0) 
+                            &&  ((ppu->cycle - 1) < 255)) {
+                            ppu->ppustatus|=PPUSTATUS_SPRITE_ZERO_HIT;
+                        }
+                    
+                        if (ppu->sprite_priorities[i] == 0) {
+                            color=sprite|0x10;
+                        } else {
+                            color=background;
+                        }
+                    }
+                    
+                    if ( color >= 16 && color % 4 == 0 ) {
+                        color -= 16;
+                    }
+                #if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
+                    ppu->fnDrawPixel(   ppu->ptTag, 
+                                        ppu->scanline,                              //!< Y
+                                        ppu->cycle-1,                               //!< X
+                                        ppu->palette[color]);                       //!< 8bit color
+                #else
+                    ppu->video_frame_data[ppu->scanline * 256 + ppu->cycle - 1] 
+                            = ppu->palette[color];
+                #endif
+                }
+            } while(0);
+            
         
-            //! background logic
-            if (VISIBLE_LINE && VISIBLE_CYCLE) {
-                //! render pixel
-                int_fast32_t background = 0, i = 0, sprite = 0;
-
-                //! get background pixel color
-                if ((ppu->ppumask&PPUMASK_SHOW_BACKGROUND) != 0) {
-                    background = ((ppu->tile_data >> 32) >> ((7-ppu->x) * 4)) & 0x0F;
-                }
-
-                //! get sprite pixel color
-                if ((ppu->ppumask&PPUMASK_SHOW_SPRITES)!=0) {
-                
-                    for(int_fast32_t j = 0; j < ppu->sprite_count; j++) {
-                        int_fast32_t offset =   (ppu->cycle - 1) 
-                                              - (int_fast32_t)ppu->sprite_positions[j];
-                                              
-                        if ( offset < 0 || offset > 7) {
-                            continue;
-                        }
-                        
-                        int_fast32_t color = (ppu->sprite_patterns[j] >> ((7 - offset) * 4)) & 0x0F;
-                        if (color % 4 == 0) {
-                            continue;
-                        }
-                        
-                        i=j;
-                        sprite = color;
-                        break;
-                    }
-                }
-
-                if ((ppu->cycle - 1) < 8) {
-                    if ((ppu->ppumask & PPUMASK_SHOW_LEFT_BACKGROUND) == 0) {
-                        background=0;
-                    }
-                    if ((ppu->ppumask & PPUMASK_SHOW_LEFT_SPRITES) == 0) {
-                        sprite=0;
-                    }
-                }
-
-                int_fast32_t b = (background % 4 !=0 ), s = (sprite % 4 !=0 ), color = 0;
-                
-                if (!b && s) {
-                    color = sprite | 0x10;
-                } else if (b && !s) {
-                    color = background;
-                } else if (b && s) {
-                    if (    (ppu->sprite_indicies[i] == 0) 
-                        &&  ((ppu->cycle - 1) < 255)) {
-                        ppu->ppustatus|=PPUSTATUS_SPRITE_ZERO_HIT;
-                    }
-                
-                    if (ppu->sprite_priorities[i] == 0) {
-                        color=sprite|0x10;
-                    } else {
-                        color=background;
-                    }
-                }
-                
-                if ( color >= 16 && color % 4 == 0 ) {
-                    color -= 16;
-                }
-            #if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
-                ppu->fnDrawPixel(   ppu->ptTag, 
-                                    ppu->scanline,                              //!< Y
-                                    ppu->cycle-1,                               //!< X
-                                    ppu->palette[color]);                       //!< 8bit color
-            #else
-                ppu->video_frame_data[ppu->scanline * 256 + ppu->cycle - 1] 
-                        = ppu->palette[color];
-            #endif
-            }
-
             if (RENDER_LINE && FETCH_CYCLE) {
+
+            #if JEG_USE_BACKGROUND_BUFFERING == DISABLED
+            
                 uint_fast32_t data = 0;
                 ppu->tile_data <<= 4;
+            
+            #if JEG_USE_DIRTY_MATRIX == ENABLED
+                
+                if (!ppu->bDisplayWindowMoved) {
+                    uint_fast8_t chTableIndex = find_name_attribute_table_index(
+                                                    ppu->nes->cartridge.mirror, 
+                                                    ppu->v & 0x0FFF);
+                    uint_fast32_t * ptLineMask = 
+                        &(ppu->tNameAttributeTable[chTableIndex].
+                            wDirtyMatrix[ppu->tVAddress.YScroll]);    
+                    uint_fast32_t wMask = _BV(ppu->tVAddress.XScroll);
+                    
+                    ppu->chBackgroundUpdated <<= 1;
+                    
+                    ppu->chBackgroundUpdated |= *ptLineMask & wMask ? 1 : 0;
+                    
+                    //! clear the bit : Todo find a proper place to clear whole line
+                    *ptLineMask &= ~wMask;
+                }
+                
+                // todo remove unnecessary background tile reading
+                //if (ppu->bBackgroundUpdated) {
+            #endif
+                
                 switch (ppu->cycle & 0x07) {
                     case 1:                                                     //!< fetch name table byte
                         ppu->name_table_byte 
@@ -527,8 +687,31 @@ int_fast32_t ppu_update(ppu_t *ppu)
                         ppu->tile_data |= data;
                         break;
                 }
+                
+            #if JEG_USE_DIRTY_MATRIX == ENABLED
+                //}
+            #endif
+            #else
+                ppu->tile_data <<= 4;
+                if (!(ppu->cycle & 0x07)) {
+                
+                    uint_fast32_t data = 0;
+                    uint_fast8_t chTableIndex = 
+                    find_name_attribute_table_index(ppu->nes->cartridge.mirror, (ppu->v&0x0FFF));
+                    
+                    name_attribute_table_t *ptTable = &(ppu->tNameAttributeTable[chTableIndex]);
+                    
+                    uint_fast8_t chY = (ppu->tVAddress.YScroll * 8) + ppu->tVAddress.TileYOffsite;
+                    uint8_t *ptLine = &(ptTable->chBackgroundBuffer[chY][ppu->tVAddress.XScroll * 8]);
+                    for(int_fast32_t j = 0; j<8; j++) {
+                        data <<= 4;
+                        data |= *ptLine++;
+                    }
+                    ppu->tile_data |= data;
+                }
+            #endif
             }
-            
+        
             
             if (   PRE_LINE 
                 && ppu->cycle >= 280 
@@ -540,6 +723,13 @@ int_fast32_t ppu_update(ppu_t *ppu)
                 ppu->tVAddress.TileYOffsite = ppu->tTempVAddress.TileYOffsite;
                 */
                 ppu->v = (ppu->v & 0x841F) | (ppu->t & 0x7BE0);                 //!< ppu copy y
+                
+            #if JEG_USE_DIRTY_MATRIX == ENABLED
+                if (ppu->t != ppu->hwOldt) {
+                    ppu->hwOldt = ppu->t;
+                    ppu->bDisplayWindowMoved = true;
+                }
+            #endif
             }
             
             if (RENDER_LINE) {
@@ -593,10 +783,17 @@ int_fast32_t ppu_update(ppu_t *ppu)
                     ppu->tVAddress.XToggleBit = ppu->tTempVAddress.XToggleBit;
                     */
                     ppu->v = (ppu->v & 0xFBE0) | (ppu->t & 0x41F);              //!< copy x
+                    
+                #if JEG_USE_DIRTY_MATRIX == ENABLED
+                    if (ppu->t != ppu->hwOldt) {
+                        ppu->hwOldt = ppu->t;
+                        ppu->bDisplayWindowMoved = true;
+                    }
+                #endif
                 }
             }
 
-            // sprite logic
+            //! sprite logic
             if (257 == ppu->cycle) {
                 if (VISIBLE_LINE) {
                     /*! fetch all the sprite informations on current scanline */
@@ -605,7 +802,9 @@ int_fast32_t ppu_update(ppu_t *ppu)
                 } else if (240 == ppu->scanline) {
                     //! reset sprite Y order list counter
                     ppu->SpriteYOrderList.chCurrent = 0;
-                    
+                #if JEG_USE_DIRTY_MATRIX == ENABLED
+                    ppu->bDisplayWindowMoved = false;
+                #endif
                 } else {
                     ppu->sprite_count = 0;
                 }
@@ -618,6 +817,8 @@ int_fast32_t ppu_update(ppu_t *ppu)
         #if JEG_USE_FRAME_SYNC_UP_FLAG  == ENABLED
             ppu->bFrameReady = true;
         #endif
+        
+        
             if (ppu->ppuctrl & PPUCTRL_NMI) {
                 cpu6502_trigger_interrupt(&ppu->nes->cpu, INTERRUPT_NMI);
             }
