@@ -13,6 +13,8 @@ typedef void (*ppu_update_frame_func_t) (void *reference, uint8_t* frame_data, i
 
 typedef void ppu_draw_pixel_func_t(void *ptTag, uint_fast8_t chY, uint_fast8_t chX, uint_fast8_t chColor);
 
+typedef uint8_t nes_screen_buffer_t[240][256];
+
 typedef struct {
     uint_fast16_t   XScroll     : 5;
     uint_fast16_t   YScroll     : 5;
@@ -21,15 +23,7 @@ typedef struct {
     uint_fast16_t   TileYOffsite: 3;
 } v_ram_addr_t;
 
-typedef struct ppu_t {
-    nes_t *nes; // reference to nes console
-
-    // ppu state
-    uint64_t last_cycle_number; // measured in cpu cycles
-    int cycle;
-    int scanline;
-
-    uint_fast8_t palette[32];
+typedef struct {
     union {
         struct {
             uint8_t chNameTable[30][32];
@@ -42,9 +36,36 @@ typedef struct ppu_t {
                 }Group;
                 uint8_t chValue;
             }AttributeTable[8][8];
-        }tTables[2];
-        uint8_t name_table[2048];
+        };
+        uint8_t chBuffer[1024];
     };
+    
+#if JEG_USE_BACKGROUND_BUFFERING == ENABLED
+    nes_screen_buffer_t chBackgroundBuffer;
+#endif
+#if JEG_USE_DIRTY_MATRIX == ENABLED || JEG_USE_BACKGROUND_BUFFERING == ENABLED
+    uint_fast32_t wDirtyMatrix[32];                                             //! do not modify it to 30
+#endif
+} name_attribute_table_t;
+
+typedef struct ppu_t {
+    nes_t *nes; // reference to nes console
+
+    // ppu state
+    uint_fast64_t last_cycle_number; // measured in cpu cycles
+    int_fast32_t cycle;
+    uint_fast16_t scanline;
+
+    uint_fast8_t palette[32];
+    union {
+#if JEG_USE_4_PHYSICAL_NAME_ATTRIBUTE_TABLES == ENABLED
+        name_attribute_table_t tNameAttributeTable[4];
+#else
+        name_attribute_table_t tNameAttributeTable[2];
+#endif
+        
+    };
+    
     union {
         uint8_t oam_data[256];
         struct {
@@ -81,6 +102,11 @@ typedef struct ppu_t {
         v_ram_addr_t tTempVAddress;
         uint_fast16_t t; // temporary vram address (15bit)
     };
+#if JEG_USE_DIRTY_MATRIX == ENABLED
+    uint_fast16_t hwOldt;
+    bool bDisplayWindowMoved;
+#endif    
+    
     int x; // fine x scoll (3bit)
     int w; // toggle bit (1bit)
     int f; // even/odd frame flag (1bit)
@@ -90,6 +116,9 @@ typedef struct ppu_t {
     // background temporary variables
     int name_table_byte;
     int attribute_table_byte;
+#if JEG_USE_DIRTY_MATRIX == ENABLED
+    uint_fast8_t chBackgroundUpdated;
+#endif
     int low_tile_byte;
     int high_tile_byte;
     uint64_t tile_data;

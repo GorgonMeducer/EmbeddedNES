@@ -3,19 +3,25 @@
 
 #include <stdint.h>
 #include "app_platform.h"
+#include "nes.h"
 #include "jeg_cfg.h"
 
 #define SCREEN_HEIGHT           240
 #define SCREEN_WIDTH            256
 
 
+
 typedef struct {
 #if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
     uint32_t wDirtyMatrix[SCREEN_HEIGHT >> 3];
 #else
+#   if JEG_DEBUG_SHOW_BACKGROUND == ENABLED
+    nes_screen_buffer_t *pchPixels;
+#   endif
+
     union{
         uint8_t chBuffer[SCREEN_HEIGHT*SCREEN_WIDTH];
-        uint8_t chPixels[SCREEN_HEIGHT][SCREEN_WIDTH];
+        nes_screen_buffer_t chPixels;
     };
 #endif
     

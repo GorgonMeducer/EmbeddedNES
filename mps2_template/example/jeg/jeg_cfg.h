@@ -9,8 +9,14 @@
 #endif
 
 #ifndef _BV
-#define _BV(__N)            ((uint_fast32_t)1<<(__N))
+#   define _BV(__N)            ((uint_fast32_t)1<<(__N))
 #endif
+
+#ifndef UBOUND
+#   define UBOUND(__ARRAY)      (sizeof(__ARRAY)/sizeof(__ARRAY[0]))
+#endif
+
+
 
 /*----------------------------------------------------------------------------*
  * JEG Optimisation / Configuration Switches                                  *
@@ -76,4 +82,45 @@
 #   define JEG_USE_FRAME_SYNC_UP_FLAG                   ENABLED
 #endif
 
+/*! \brief This switch is used to enable the support for four physical name/attribute
+ *!        tables. Although it is rare, it's safe to enable it to avoid buffer overflow
+ *!        caused by wrong mirroring (buffer overflow). Disable this feature could
+ *!        save 2KByte memories.
+ */
+#ifndef JEG_USE_4_PHYSICAL_NAME_ATTRIBUTE_TABLES        
+#   define JEG_USE_4_PHYSICAL_NAME_ATTRIBUTE_TABLES     DISABLED
 #endif
+
+/*! \brief This switch is used to enable dirty matrix of rendering. It hasn't been
+ *!        finished yet. More test required. Do not enable it.
+ */
+#ifndef JEG_USE_DIRTY_MATRIX                            
+#   define  JEG_USE_DIRTY_MATRIX                        DISABLED
+#endif
+
+/*! \brief This switch is used to add a background buffer for each name table,
+ *!        so you don't need to re-draw the background every time
+ */ 
+#ifndef JEG_USE_BACKGROUND_BUFFERING
+#   define  JEG_USE_BACKGROUND_BUFFERING                ENABLED
+#endif
+
+
+
+/*----------------------------------------------------------------------------*
+ * JEG Debug  Switches                                                        *
+ *----------------------------------------------------------------------------*/
+#ifndef JEG_DEBUG_SHOW_BACKGROUND
+#   define JEG_DEBUG_SHOW_BACKGROUND                    DISABLED
+#   define JEG_DEBUG_SHOW_NAMETABLE_INDEX               1
+#endif
+
+#if JEG_DEBUG_SHOW_BACKGROUND == ENABLED && \
+    JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
+#   warning     Override JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE to DISABLED for debug purpose.
+#   undef       JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE
+#   define      JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE    DISABLED
+#endif
+
+#endif
+

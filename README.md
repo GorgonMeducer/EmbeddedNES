@@ -5,6 +5,16 @@ A portable NES simulator for embedded processors.
 
 ## Update Log
 
+- 05-05-2018 PPU improvement
+    
+    * Add background buffer for name tables.
+    
+    * Add Dirty Matrix to background buffer refreshing scheme. Only changed tile will be updated. 
+    
+    * Add debug mode to show background buffer. 
+    
+    * Gain > 10% performance improvement.
+
 - 03-05-2018 PPU refactory
 
     * Improve the PPU performance and readabiligy. 
