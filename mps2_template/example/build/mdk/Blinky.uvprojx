@@ -1154,8 +1154,8 @@
       <TargetName>V2M-MPS2-jeg</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pArmCC>6090000::V6.9::.\ARMCLANG</pArmCC>
-      <pCCUsed>6090000::V6.9::.\ARMCLANG</pCCUsed>
+      <pArmCC>6100000::V6.10::..\..\Program Files\ARMCompiler6.10</pArmCC>
+      <pCCUsed>6100000::V6.10::..\..\Program Files\ARMCompiler6.10</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -1480,7 +1480,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>-fms-extensions -Wno-microsoft-anon-tag -Wno-nonportable-include-path -Wno-tautological-constant-out-of-range-compare</MiscControls>
-              <Define>__USE_LCD __USE_TIMER0 __USE_FPGA USE_JEG  __USER_DEFINED_APP_CFG_H__ GLCD_MIRROR_Y=1 JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE=ENABLED JEG_USE_FRAME_SYNC_UP_FLAG=ENABLED JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE=32 JEG_USE_EXTRA_16BIT_BUS_ACCESS=ENABLED JEG_USE_DMA_MEMORY_COPY_ACCELERATION=ENABLED</Define>
+              <Define>_MSC_VER __USE_LCD __USE_TIMER0 __USE_FPGA USE_JEG  __USER_DEFINED_APP_CFG_H__ GLCD_MIRROR_Y=1 JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE=ENABLED JEG_USE_FRAME_SYNC_UP_FLAG=ENABLED JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE=32 JEG_USE_EXTRA_16BIT_BUS_ACCESS=ENABLED JEG_USE_DMA_MEMORY_COPY_ACCELERATION=ENABLED</Define>
               <Undefine></Undefine>
               <IncludePath>..\..\app_platform;..\..\jeg</IncludePath>
             </VariousControls>
