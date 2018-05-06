@@ -40,11 +40,10 @@ typedef struct {
         uint8_t chBuffer[1024];
     };
     
-#if JEG_USE_BACKGROUND_BUFFERING == ENABLED
-    nes_screen_buffer_t chBackgroundBuffer;
-#endif
 #if JEG_USE_DIRTY_MATRIX == ENABLED || JEG_USE_BACKGROUND_BUFFERING == ENABLED
+    nes_screen_buffer_t chBackgroundBuffer;
     uint_fast32_t wDirtyMatrix[32];                                             //! do not modify it to 30
+    bool bRequestRefresh;
 #endif
 } name_attribute_table_t;
 

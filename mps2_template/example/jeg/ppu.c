@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "jeg_cfg.h"
+#include <assert.h>
 
 #define PPUCTRL_NAMETABLE 3
 #define PPUCTRL_INCREMENT 4
@@ -149,20 +150,39 @@ void ppu_dma_access(ppu_t *ppu, uint_fast8_t chData)
 {
     uint_fast16_t address_temp = chData << 8;
 
+    assert(0 == ppu->oam_address);
 #if JEG_USE_DMA_MEMORY_COPY_ACCELERATION == ENABLED
     uint8_t *pchSrc = ppu->nes->cpu.fnDMAGetSourceAddress(ppu->nes, address_temp);
-    memcpy(&(ppu->oam_data[ppu->oam_address]), pchSrc, 256);
+    
+    uint8_t *pchCheck = pchSrc;
+    uint8_t *pchOAM = ppu->oam_data;
+    uint_fast8_t n = 64;
+    do {
+        if (*pchCheck != *pchOAM) {
+            ppu->bOAMUpdated = true;
+            break;
+        }
+        pchCheck += 4;
+        pchOAM += 4;
+    } while(--n);
+    
+    memcpy(&(ppu->oam_data[0]), pchSrc, 256);
 #else
     for(uint_fast16_t i=0; i<256; i++) {
         int v=ppu->nes->cpu.read(ppu->nes, address_temp++);
-        ppu->oam_data[ppu->oam_address+i]=v;
+        if (!(i & 0x03)) {
+            if (ppu->oam_data[i] != v) {
+                ppu->bOAMUpdated = true;
+            }
+        }
+        //ppu->oam_data[ppu->oam_address+i]=v;
+        ppu->oam_data[i]=v;
     }
 #endif
     ppu->nes->cpu.stall_cycles += 513;
     if (ppu->nes->cpu.cycle_number & 0x01) {
         ppu->nes->cpu.stall_cycles++;
     }
-    ppu->bOAMUpdated = true;
 }
 
 void ppu_write(ppu_t *ppu, uint_fast16_t hwAddress, uint_fast8_t chData) 
@@ -189,9 +209,13 @@ void ppu_write(ppu_t *ppu, uint_fast16_t hwAddress, uint_fast8_t chData)
             ppu->oam_address=chData;
             break;
         case 4:
-            ppu->oam_data[ppu->oam_address] = chData;
-            ppu->oam_address++;
-            ppu->bOAMUpdated = true;
+            if (!(ppu->oam_address & 0x03)) {
+                uint_fast8_t chOld = ppu->oam_data[ppu->oam_address];
+                if (chOld != chData) {
+                    ppu->bOAMUpdated = true;
+                }
+            }
+            ppu->oam_data[ppu->oam_address++] = chData;
             break;
         case 5:
             ppu_update(ppu);
@@ -411,68 +435,74 @@ static void update_background(ppu_t *ptPPU)
     
     do {
         uint_fast16_t hwAddress = 0;
-        for (uint_fast8_t chY = 0; chY < 30; chY++) {
-        
-            uint_fast32_t wLineMask = ptTable->wDirtyMatrix[chY];
-            if (0 == wLineMask) {
-                hwAddress += 32;
-                continue;
-            }
-            ptTable->wDirtyMatrix[chY] = 0;
-        
-            for (uint_fast8_t chX = 0; chX < 32; chX++) {
-                
-                
-                if (!(wLineMask & 0x01)) {
-                    wLineMask >>= 1;
-                    hwAddress++;
+        if (ptTable->bRequestRefresh) {
+            ptTable->bRequestRefresh = false;
+            
+            for (uint_fast8_t chY = 0; chY < 30; chY++) {
+            
+                uint_fast32_t wLineMask = ptTable->wDirtyMatrix[chY];
+                if (0 == wLineMask) {
+                    hwAddress += 32;
                     continue;
                 }
-                wLineMask >>= 1;
-                
-                //!< fetch name table byte
-                uint_fast8_t name_table_byte   = ptTable->chNameTable[chY][chX];
-                
-                //!< fetch attribute table byte
-                uint_fast8_t attribute_table_byte = ptTable->AttributeTable[chY>>2][chX>>2].chValue;
-                
-                attribute_table_byte = (   (   attribute_table_byte >> (   ( (hwAddress >> 4) & 4) 
-                                                                        |   (  hwAddress &2)) 
-                                            ) & 3 
-                      ) << 2;
-                
-                for (uint_fast8_t chYOffsite = 0; chYOffsite < 8; chYOffsite++) {
-                    //!< fetch low tile byte
-                    uint_fast8_t low_tile_byte = ptPPU->read ( 
-                                ptPPU->nes,    
-                                0x1000*((ptPPU->ppuctrl & PPUCTRL_BACKGROUND_TABLE) ? 1 : 0)
-                            +   name_table_byte*16
-                            +   chYOffsite
-                        );
-
+            #if JEG_USE_DIRTY_MATRIX != ENABLED
+                ptTable->wDirtyMatrix[chY] = 0;
+            #endif
+            
+                for (uint_fast8_t chX = 0; chX < 32; chX++) {
                     
-                    //!< fetch high tile byte
-                    uint_fast8_t high_tile_byte = ptPPU->read(
-                                ptPPU->nes, 
-                                0x1000 * ((ptPPU->ppuctrl & PPUCTRL_BACKGROUND_TABLE) ? 1 : 0)
-                            +   name_table_byte*16
-                            +   chYOffsite + 8
-                        );
-
-                    uint8_t *ptLine = &(ptTable->chBackgroundBuffer[chY*8 + chYOffsite][chX * 8]);
-                    //!< store tile data
-                    for(int_fast32_t j = 0; j<8; j++) {
-                        
-                        *ptLine++ =   attribute_table_byte
-                                            |   ((low_tile_byte  & 0x80) >> 7)
-                                            |   ((high_tile_byte & 0x80) >> 6);
-                                
-                        low_tile_byte <<= 1;
-                        high_tile_byte <<= 1;
+                    
+                    if (!(wLineMask & 0x01)) {
+                        wLineMask >>= 1;
+                        hwAddress++;
+                        continue;
                     }
+                    wLineMask >>= 1;
+                    
+                    //!< fetch name table byte
+                    uint_fast8_t name_table_byte   = ptTable->chNameTable[chY][chX];
+                    
+                    //!< fetch attribute table byte
+                    uint_fast8_t attribute_table_byte = ptTable->AttributeTable[chY>>2][chX>>2].chValue;
+                    
+                    attribute_table_byte = (   (   attribute_table_byte >> (   ( (hwAddress >> 4) & 4) 
+                                                                            |   (  hwAddress &2)) 
+                                                ) & 3 
+                          ) << 2;
+                    
+                    for (uint_fast8_t chYOffsite = 0; chYOffsite < 8; chYOffsite++) {
+                        //!< fetch low tile byte
+                        uint_fast8_t low_tile_byte = ptPPU->read ( 
+                                    ptPPU->nes,    
+                                    0x1000*((ptPPU->ppuctrl & PPUCTRL_BACKGROUND_TABLE) ? 1 : 0)
+                                +   name_table_byte*16
+                                +   chYOffsite
+                            );
+
+                        
+                        //!< fetch high tile byte
+                        uint_fast8_t high_tile_byte = ptPPU->read(
+                                    ptPPU->nes, 
+                                    0x1000 * ((ptPPU->ppuctrl & PPUCTRL_BACKGROUND_TABLE) ? 1 : 0)
+                                +   name_table_byte*16
+                                +   chYOffsite + 8
+                            );
+
+                        uint8_t *ptLine = &(ptTable->chBackgroundBuffer[chY*8 + chYOffsite][chX * 8]);
+                        //!< store tile data
+                        for(int_fast32_t j = 0; j<8; j++) {
+                            
+                            *ptLine++ =   attribute_table_byte
+                                                |   ((low_tile_byte  & 0x80) >> 7)
+                                                |   ((high_tile_byte & 0x80) >> 6);
+                                    
+                            low_tile_byte <<= 1;
+                            high_tile_byte <<= 1;
+                        }
+                    }
+                    
+                    hwAddress++;
                 }
-                
-                hwAddress++;
             }
         }
         ptTable++;
@@ -609,49 +639,49 @@ int_fast32_t ppu_update(ppu_t *ppu)
         
             if (RENDER_LINE && FETCH_CYCLE) {
 
+                bool bReadInfo = true;
             #if JEG_USE_BACKGROUND_BUFFERING == DISABLED
             
                 uint_fast32_t data = 0;
                 ppu->tile_data <<= 4;
             
-            #if JEG_USE_DIRTY_MATRIX == ENABLED
                 
-                if (!ppu->bDisplayWindowMoved) {
-                    uint_fast8_t chTableIndex = find_name_attribute_table_index(
+            #if JEG_USE_DIRTY_MATRIX == ENABLED
+                uint_fast8_t chTableIndex = find_name_attribute_table_index(
                                                     ppu->nes->cartridge.mirror, 
                                                     ppu->v & 0x0FFF);
-                    uint_fast32_t * ptLineMask = 
-                        &(ppu->tNameAttributeTable[chTableIndex].
-                            wDirtyMatrix[ppu->tVAddress.YScroll]);    
+                name_attribute_table_t *ptTable = &(ppu->tNameAttributeTable[chTableIndex]);
+                uint_fast16_t hwAddress = ppu->v & 0x3FF;
+                
+                if (!ppu->bDisplayWindowMoved) {
+                    
+                    uint_fast32_t * ptLineMask =  &(ptTable->wDirtyMatrix[ppu->tVAddress.YScroll]);    
                     uint_fast32_t wMask = _BV(ppu->tVAddress.XScroll);
                     
                     ppu->chBackgroundUpdated <<= 1;
-                    
-                    ppu->chBackgroundUpdated |= *ptLineMask & wMask ? 1 : 0;
+                    ppu->chBackgroundUpdated |= (*ptLineMask & wMask) ? 1 : 0;
                     
                     //! clear the bit : Todo find a proper place to clear whole line
                     *ptLineMask &= ~wMask;
-                }
+                    
+                    bReadInfo = ppu->chBackgroundUpdated & 0x01;
+                } 
                 
                 // todo remove unnecessary background tile reading
-                //if (ppu->bBackgroundUpdated) {
+                if (bReadInfo) {
             #endif
                 
                 switch (ppu->cycle & 0x07) {
                     case 1:                                                     //!< fetch name table byte
                         ppu->name_table_byte 
-                            = ppu->read(ppu->nes, 0x2000 | (ppu->v&0x0FFF) );
+                            = ptTable->chBuffer[hwAddress];                     //!< ppu->read(ppu->nes, 0x2000 | (ppu->v&0x0FFF) );
                         break;
                         
                     case 3:                                                     //!< fetch attribute table byte
-                        ppu->attribute_table_byte
-                            = (   (   ppu->read( ppu->nes,  (   0x23C0
-                                                            |   ( ppu->v & 0xC00)
-                                                            |   ((ppu->v >> 4) & 0x38)
-                                                            |   ((ppu->v >> 2) & 0x07))
-                                                            
-                                               ) >> (   ( (ppu->v>>4) & 4) 
-                                                    |   (  ppu->v&2)) 
+                        ppu->attribute_table_byte = ptTable->AttributeTable[ppu->tVAddress.YScroll>>2][ppu->tVAddress.XScroll>>2].chValue;
+                        ppu->attribute_table_byte = 
+                              (   (   ppu->attribute_table_byte >> (    ( (ppu->v>>4) & 4) 
+                                                                    |   (  ppu->v&2)) 
                                   ) & 3 
                               ) << 2;
                         break;
@@ -689,7 +719,7 @@ int_fast32_t ppu_update(ppu_t *ppu)
                 }
                 
             #if JEG_USE_DIRTY_MATRIX == ENABLED
-                //}
+                }
             #endif
             #else
                 ppu->tile_data <<= 4;
@@ -701,13 +731,31 @@ int_fast32_t ppu_update(ppu_t *ppu)
                     
                     name_attribute_table_t *ptTable = &(ppu->tNameAttributeTable[chTableIndex]);
                     
-                    uint_fast8_t chY = (ppu->tVAddress.YScroll * 8) + ppu->tVAddress.TileYOffsite;
-                    uint8_t *ptLine = &(ptTable->chBackgroundBuffer[chY][ppu->tVAddress.XScroll * 8]);
-                    for(int_fast32_t j = 0; j<8; j++) {
-                        data <<= 4;
-                        data |= *ptLine++;
+                    
+                    #if JEG_USE_DIRTY_MATRIX == ENABLED
+                    if (!ppu->bDisplayWindowMoved) {
+                    
+                        uint_fast32_t * ptLineMask =  &(ptTable->wDirtyMatrix[ppu->tVAddress.YScroll]);    
+                        uint_fast32_t wMask = _BV(ppu->tVAddress.XScroll);
+                        
+                        ppu->chBackgroundUpdated <<= 1;
+                        ppu->chBackgroundUpdated |= *ptLineMask & wMask ? 1 : 0;
+                        
+                        //! clear the bit : Todo find a proper place to clear whole line
+                        *ptLineMask &= ~wMask;
+                        
+                        bReadInfo = ppu->chBackgroundUpdated & 0x01;
+                    } 
+                    #endif
+                    if (bReadInfo) {
+                        uint_fast8_t chY = (ppu->tVAddress.YScroll * 8) + ppu->tVAddress.TileYOffsite;
+                        uint8_t *ptLine = &(ptTable->chBackgroundBuffer[chY][ppu->tVAddress.XScroll * 8]);
+                        for(int_fast32_t j = 0; j<8; j++) {
+                            data <<= 4;
+                            data |= *ptLine++;
+                        }
+                        ppu->tile_data |= data;
                     }
-                    ppu->tile_data |= data;
                 }
             #endif
             }
@@ -818,6 +866,18 @@ int_fast32_t ppu_update(ppu_t *ppu)
             ppu->bFrameReady = true;
         #endif
         
+        #if JEG_USE_BACKGROUND_BUFFERING == ENABLED && JEG_USE_DIRTY_MATRIX == ENABLED
+            do {
+                uint_fast8_t n = UBOUND(ppu->tNameAttributeTable);
+                name_attribute_table_t *ptTable = ppu->tNameAttributeTable;
+                do {
+                    if (ptTable->bRequestRefresh) {
+                        memset(ptTable->wDirtyMatrix, 0, 30);
+                    }
+                    ptTable++;
+                } while(--n);
+            } while(0);
+        #endif
         
             if (ppu->ppuctrl & PPUCTRL_NMI) {
                 cpu6502_trigger_interrupt(&ppu->nes->cpu, INTERRUPT_NMI);

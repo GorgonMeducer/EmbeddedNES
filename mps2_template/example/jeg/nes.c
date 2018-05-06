@@ -146,11 +146,15 @@ static void write_name_attribute_table(nes_t *ptNES, uint_fast16_t hwAddress, ui
         return ;
     }
 
+    ptTable->bRequestRefresh = true;
     //! update dirty matrix
     do {
         if (hwAddress < 32 * 30) {
+            uint_fast32_t wMask = _BV(hwAddress & 0x1F);
+
             //! update nametable dirty matrix directly
-            ptTable->wDirtyMatrix[hwAddress>>5] |= _BV(hwAddress & 0x1F);
+            ptTable->wDirtyMatrix[hwAddress>>5] |= wMask;
+        
         } else {        
             //! addressing attribute table, update name table dirty matrix indirectly
             hwAddress -= 32 * 30;
@@ -215,12 +219,17 @@ static void write_name_attribute_table(nes_t *ptNES, uint_fast16_t hwAddress, ui
                     
                     uint_fast8_t chY = chTileY + c_OffSite[chGroup].chY;
                     uint_fast8_t chX = chTileX + c_OffSite[chGroup].chX;
-                    ptTable->wDirtyMatrix[chY++]    |= 0x03 << (chX);
-                    ptTable->wDirtyMatrix[chY]      |= 0x03 << (chX);
+                    uint_fast32_t wMask = 0x03 << (chX);
+
+                    ptTable->wDirtyMatrix[chY+1]    |= wMask;
+                    ptTable->wDirtyMatrix[chY]      |= wMask;
+
                 }
                 chOldData >>= 2;
                 chData >>= 2;
             }
+            
+            
             
         }
     
