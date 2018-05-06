@@ -109,23 +109,27 @@ uint_fast8_t find_name_attribute_table_index(uint_fast8_t chMode, uint_fast16_t 
 }
 
 
-static int ppu_bus_read (nes_t *nes, int address) 
+static uint_fast8_t ppu_bus_read (nes_t *ptNES, uint_fast16_t hwAddress) 
 {
-    int value;
-    address &= 0x3FFF;
-    if (address <0x2000) {
-        value=cartridge_read_chr(&nes->cartridge, address);
-    } else if (address<0x3F00) {
-        uint_fast8_t chPhysicTableIndex = find_name_attribute_table_index(nes->cartridge.mirror, address) ;// mirror_lookup[(nes->cartridge.mirror)*4+((address & 0xFFF) >>10)];
-        value = nes->ppu.tNameAttributeTable[chPhysicTableIndex].chBuffer[address & 0x3FF];
-    } else if (address<0x4000) {
-        address=address & 0x1F;
-        if (address>=16 && ((address & 0x03) == 0)) {
-            address-=16;
+    uint_fast8_t chData;
+    hwAddress &= 0x3FFF;
+    
+    if (hwAddress <0x2000) {
+        chData=cartridge_read_chr(&ptNES->cartridge, hwAddress);
+        
+    } else if (hwAddress<0x3F00) {
+        uint_fast8_t chPhysicTableIndex = find_name_attribute_table_index(ptNES->cartridge.mirror, hwAddress) ;
+        chData = ptNES->ppu.tNameAttributeTable[chPhysicTableIndex].chBuffer[hwAddress & 0x3FF];
+        
+    } else if (hwAddress<0x4000) {
+        hwAddress &= 0x1F;
+        if (hwAddress>=16 && (!(hwAddress & 0x03))) {
+            hwAddress-=16;
         }
-        value=nes->ppu.palette[address];
+        chData = ptNES->ppu.palette[hwAddress];
     }
-    return value;
+    
+    return chData;
 }
 
 static void write_name_attribute_table(nes_t *ptNES, uint_fast16_t hwAddress, uint_fast8_t chData)
@@ -238,19 +242,22 @@ static void write_name_attribute_table(nes_t *ptNES, uint_fast16_t hwAddress, ui
 #endif
 }
 
-static void ppu_bus_write (nes_t *nes, int address, int value) 
+static void ppu_bus_write (nes_t *ptNES, uint_fast16_t hwAddress, uint_fast8_t chData) 
 {
-    address &= 0x3FFF;
-    if (address<0x2000) {
-        cartridge_write_chr(&nes->cartridge, address, value);
-    } else if (address<0x3F00) {
-        write_name_attribute_table(nes, address, value);
-    } else if (address<0x4000) {
-        address=address & 0x1F;
-        if (address>=16 && ((address & 0x03) == 0)) {
-            address-=16;
+    hwAddress &= 0x3FFF;
+    
+    if (hwAddress<0x2000) {
+        cartridge_write_chr(&ptNES->cartridge, hwAddress, chData);
+        
+    } else if (hwAddress<0x3F00) {
+        write_name_attribute_table(ptNES, hwAddress, chData);
+        
+    } else if (hwAddress<0x4000) {
+        hwAddress &= 0x1F;
+        if (hwAddress>=16 && (!(hwAddress & 0x03))) {
+            hwAddress-=16;
         }
-        nes->ppu.palette[address]=value;
+        ptNES->ppu.palette[hwAddress] = chData;
     }
 }
 

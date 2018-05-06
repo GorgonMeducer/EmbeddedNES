@@ -7,11 +7,10 @@
 
 typedef struct nes_t nes_t;
 
-typedef int ppu_read_func_t (nes_t *nes, int address); // read data [8bit] from address [16bit]
-typedef void ppu_write_func_t (nes_t *nes, int address, int value); // write data [8bit] to address [16bit]
-typedef void (*ppu_update_frame_func_t) (void *reference, uint8_t* frame_data, int width, int height);
+typedef uint_fast8_t ppu_read_func_t (nes_t *, uint_fast16_t);                  //!< read data [8bit] from address [16bit]
+typedef void ppu_write_func_t (nes_t *nes, uint_fast16_t, uint_fast8_t);        //!< write data [8bit] to address [16bit]
 
-typedef void ppu_draw_pixel_func_t(void *ptTag, uint_fast8_t chY, uint_fast8_t chX, uint_fast8_t chColor);
+typedef void ppu_draw_pixel_func_t(void *, uint_fast8_t , uint_fast8_t , uint_fast8_t );
 
 typedef uint8_t nes_screen_buffer_t[240][256];
 
@@ -21,7 +20,7 @@ typedef struct {
     uint_fast16_t   XToggleBit  : 1;
     uint_fast16_t   YToggleBit  : 1;
     uint_fast16_t   TileYOffsite: 3;
-} v_ram_addr_t;
+} vram_addr_t;
 
 typedef struct {
     union {
@@ -70,18 +69,23 @@ typedef struct ppu_t {
         struct {
             uint8_t chY;
             uint8_t chIndex;
-            struct {
-                uint8_t         ColorH              : 2;
-                uint8_t                             : 3;
-                uint8_t         Priority            : 1;
-                uint8_t         IsFlipHorizontally  : 1;
-                uint8_t         IsFlipVertically    : 1;
-            } Attributes;
+            union {
+                struct {
+                    uint8_t         ColorH              : 2;
+                    uint8_t                             : 3;
+                    uint8_t         Priority            : 1;
+                    uint8_t         IsFlipHorizontally  : 1;
+                    uint8_t         IsFlipVertically    : 1;
+                }; 
+                uint8_t chValue;
+            }Attributes;
             uint8_t chPosition;
         } SpriteInfo[64];
     };
+#if JEG_USE_OPTIMIZED_SPRITE_PROCESSING == ENABLED
     bool bOAMUpdated;
-  
+#endif
+
     struct {
         struct {
             uint_fast8_t chIndex;
@@ -94,11 +98,11 @@ typedef struct ppu_t {
     
     // ppu registers
     union {
-        v_ram_addr_t tVAddress;
+        vram_addr_t tVAddress;
         uint_fast16_t v; // current vram address (15bit)
     };
     union {
-        v_ram_addr_t tTempVAddress;
+        vram_addr_t tTempVAddress;
         uint_fast16_t t; // temporary vram address (15bit)
     };
 #if JEG_USE_DIRTY_MATRIX == ENABLED
@@ -106,24 +110,24 @@ typedef struct ppu_t {
     bool bDisplayWindowMoved;
 #endif    
     
-    int x; // fine x scoll (3bit)
-    int w; // toggle bit (1bit)
-    int f; // even/odd frame flag (1bit)
+    uint_fast8_t x; // fine x scoll (3bit)
+    uint_fast8_t w; // toggle bit (1bit)
+    uint_fast8_t f; // even/odd frame flag (1bit)
 
-    int register_data;
+    uint_fast8_t register_data;
 
     // background temporary variables
-    int name_table_byte;
-    int attribute_table_byte;
+    uint_fast8_t name_table_byte;
+    uint_fast8_t attribute_table_byte;
 #if JEG_USE_DIRTY_MATRIX == ENABLED
     uint_fast8_t chBackgroundUpdated;
 #endif
-    int low_tile_byte;
-    int high_tile_byte;
-    uint64_t tile_data;
+    uint_fast8_t low_tile_byte;
+    uint_fast8_t high_tile_byte;
+    uint_fast64_t tile_data;
 
     // sprite temporary variables
-    int sprite_count;
+    uint_fast8_t sprite_count;
     uint32_t sprite_patterns      [JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE];
     uint_fast8_t sprite_positions [JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE];
     uint_fast8_t sprite_priorities[JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE];
