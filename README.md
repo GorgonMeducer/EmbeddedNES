@@ -4,6 +4,14 @@ A portable NES simulator for embedded processors.
 
 
 ## Update Log
+- 07-05-2008 PPU improvement 
+    * Seperate PPU into two versions, one for scanline based and one for partial-scanline based (while another part is pixel based)
+    
+    * Apply compact dual pixels to background buffer
+    
+        TODO: Fix debug mode
+        
+- Improve the readability
 
 - 05-05-2018 PPU improvement
     
@@ -15,7 +23,7 @@ A portable NES simulator for embedded processors.
     
     * Gain > 10% performance improvement.
 
-- 03-05-2018 PPU refactory
+- 03-05-2018 PPU refactory 
 
     * Improve the PPU performance and readabiligy. 
     
