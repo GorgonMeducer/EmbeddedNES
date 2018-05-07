@@ -93,8 +93,14 @@ static uint8_t *cpu6502_dma_get_source_address(void *ref, uint_fast16_t hwAddres
 #endif
 
 
-
-const static uint_fast8_t mirror_lookup[20]={0,0,1,1,0,1,0,1,0,0,0,0,1,1,1,1,0,1,2,3};
+//! \brief name table mirroring look up table
+const static uint_fast8_t mirror_lookup[20] = {
+    0,0,1,1,                //!< vertical mirroring
+    0,1,0,1,                //!< horizontal mirroring
+    0,0,0,0,                //!< single screen mirroring 0
+    1,1,1,1,                //!< single screen mirroring 1
+    0,1,2,3                 //!< Full/No mirroring
+};
 
 
 uint_fast16_t mirror_address (uint_fast8_t chMode, uint_fast16_t hwAddress) 
@@ -140,10 +146,6 @@ static void write_name_attribute_table(nes_t *ptNES, uint_fast16_t hwAddress, ui
     hwAddress &= 0x3FF;
     uint8_t chOldData = ptTable->chBuffer[hwAddress];
     ptTable->chBuffer[hwAddress] = chData;
-    
-    if (chPhysicTableIndex == 1 && (hwAddress == 470)) {
-        __asm volatile ("nop");
-    }
     
 #if JEG_USE_DIRTY_MATRIX == ENABLED || JEG_USE_BACKGROUND_BUFFERING == ENABLED
     if (chOldData == chData) {
@@ -232,9 +234,6 @@ static void write_name_attribute_table(nes_t *ptNES, uint_fast16_t hwAddress, ui
                 chOldData >>= 2;
                 chData >>= 2;
             }
-            
-            
-            
         }
     
     } while(0);
@@ -331,19 +330,20 @@ void nes_init(nes_t *ptNES)
 #endif
 }
 
-int_fast32_t nes_setup_rom(nes_t *nes, uint8_t *data, uint_fast32_t size) {
-  int result;
+int_fast32_t nes_setup_rom(nes_t *nes, uint8_t *data, uint_fast32_t size) 
+{
+    int result;
 
-  nes->controller_data[0]=0;
-  nes->controller_data[1]=0;
-  nes->controller_shift_reg[0]=0;
-  nes->controller_shift_reg[1]=0;
+    nes->controller_data[0]=0;
+    nes->controller_data[1]=0;
+    nes->controller_shift_reg[0]=0;
+    nes->controller_shift_reg[1]=0;
 
-  result=cartridge_setup(&nes->cartridge, data, size);
-  if (result==0) {
-    nes_reset(nes);
-  }
-  return result;
+    result=cartridge_setup(&nes->cartridge, data, size);
+    if (result==0) {
+        nes_reset(nes);
+    }
+    return result;
 }
 
 #if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == DISABLED
@@ -353,19 +353,22 @@ void nes_setup_video(nes_t *nes, uint8_t *video_frame_data)
 }
 #endif
 
-void nes_reset(nes_t *nes) {
-  cpu6502_reset(&nes->cpu);
-  ppu_reset(&nes->ppu);
-  memset(&nes->ram_data, 0, 0x800);
+void nes_reset(nes_t *nes) 
+{
+    cpu6502_reset(&nes->cpu);
+    ppu_reset(&nes->ppu);
+    memset(&nes->ram_data, 0, 0x800);
 }
 
-void nes_iterate_frame(nes_t *nes) {
-  cpu6502_run(&nes->cpu, ppu_update(&nes->ppu));
+void nes_iterate_frame(nes_t *nes) 
+{
+    cpu6502_run(&nes->cpu, ppu_update(&nes->ppu));
 }
 
-void nes_set_controller(nes_t *nes, uint8_t controller1, uint8_t controller2) {
-  nes->controller_data[0]=controller1;
-  nes->controller_data[1]=controller2;
+void nes_set_controller(nes_t *nes, uint8_t controller1, uint8_t controller2) 
+{
+    nes->controller_data[0] = controller1;
+    nes->controller_data[1] = controller2;
 }
 
 #if JEG_USE_FRAME_SYNC_UP_FLAG  == ENABLED

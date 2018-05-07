@@ -12,7 +12,17 @@ typedef void ppu_write_func_t (nes_t *nes, uint_fast16_t, uint_fast8_t);        
 
 typedef void ppu_draw_pixel_func_t(void *, uint_fast8_t , uint_fast8_t , uint_fast8_t );
 
+
+typedef union {
+    uint8_t chValue;
+    struct {
+        uint8_t Low     : 4;
+        uint8_t High    : 4;
+    };
+} compact_dual_pixels_t;
+
 typedef uint8_t nes_screen_buffer_t[240][256];
+
 
 typedef struct {
     uint_fast16_t   XScroll     : 5;
@@ -40,7 +50,7 @@ typedef struct {
     };
     
 #if JEG_USE_DIRTY_MATRIX == ENABLED || JEG_USE_BACKGROUND_BUFFERING == ENABLED
-    nes_screen_buffer_t chBackgroundBuffer;
+    compact_dual_pixels_t chBackgroundBuffer[240][128];
     uint_fast32_t wDirtyMatrix[32];                                             //! do not modify it to 30
     bool bRequestRefresh;
 #endif

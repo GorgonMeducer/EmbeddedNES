@@ -253,13 +253,15 @@ void update_frame(frame_t *ptFrame)
     uint_fast8_t chX, chY;
     
     for (chY = 0; chY < SCREEN_HEIGHT; chY++) {
-        for (chX = 0; chX < SCREEN_WIDTH; chX++) {
+        for (chX = 0; chX < SCREEN_WIDTH; chX ++) {
             uint_fast8_t y = SCREEN_HEIGHT - chY - 1;
+        
         #if JEG_DEBUG_SHOW_BACKGROUND == ENABLED
-            s_tScreenBuffer[y][chX].tColor = s_tColorMap[(*(ptFrame->pchPixels))[chY][chX]];
+            uint_fast8_t chColor = (*(ptFrame->pchPixels))[chY][chX];
         #else
-            s_tScreenBuffer[chY][chX].tColor = s_tColorMap[ptFrame->chPixels[chY][chX]];
+            uint_fast8_t chColor = ptFrame->chPixels[chY][chX];
         #endif
+            s_tScreenBuffer[y][chX].tColor = s_tColorMap[chColor];
         }
     }
 #endif
