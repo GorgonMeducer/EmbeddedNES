@@ -19,7 +19,7 @@
 
 
 /*----------------------------------------------------------------------------*
- * JEG Optimisation / Configuration Switches                                  *
+ * JEG Common  Optimisation / Configuration Switches                          *
  *----------------------------------------------------------------------------*/
 
 /*! \brief This switch is used to use a dedicated draw pixel interface (callback)
@@ -91,6 +91,10 @@
 #   define JEG_USE_4_PHYSICAL_NAME_ATTRIBUTE_TABLES     DISABLED
 #endif
 
+/*----------------------------------------------------------------------------*
+ * JEG Pixel Version Dedicated Optimisation / Configuration Switches          *
+ *----------------------------------------------------------------------------*/
+
 /*! \brief This switch is used to enable dirty matrix of rendering. It hasn't been
  *!        finished yet. More test required. Do not enable it.
  */
@@ -104,7 +108,6 @@
 #ifndef JEG_USE_BACKGROUND_BUFFERING
 #   define  JEG_USE_BACKGROUND_BUFFERING                ENABLED
 #endif
-
 
 
 /*----------------------------------------------------------------------------*

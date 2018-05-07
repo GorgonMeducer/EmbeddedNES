@@ -20,7 +20,7 @@ typedef struct {
 #   endif
 
     union{
-        uint8_t chBuffer[SCREEN_HEIGHT*SCREEN_WIDTH];
+        uint8_t chBuffer[SCREEN_HEIGHT*(SCREEN_WIDTH>>1)];
         nes_screen_buffer_t chPixels;
     };
 #endif
