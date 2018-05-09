@@ -11,7 +11,7 @@ A portable NES simulator for embedded processors.
     
         TODO: Fix debug mode
         
-- Improve the readability
+    * Improve the readability
 
 - 05-05-2018 PPU improvement
     

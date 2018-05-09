@@ -29,7 +29,7 @@ I (..\..\app_platform\..\..\sources\gmsi\utilities\template\.\t_queue.h)(0x5AD9F
 I (..\..\app_platform\..\..\sources\gmsi\utilities\template\.\t_pool.h)(0x5A43A145)
 I (..\..\app_platform\..\..\sources\gmsi\utilities\template\.\t_list.h)(0x5A43A148)
 I (..\..\app_platform\..\..\sources\gmsi\..\app_cfg.h)(0x5A0DAB10)
-I (..\..\app_platform\..\..\sources\gmsi\..\..\example\app_cfg.h)(0x5AE0563E)
+I (..\..\app_platform\..\..\sources\gmsi\..\..\example\app_cfg.h)(0x5AF195CD)
 I (..\..\app_platform\..\..\sources\gmsi\.\hal\hal.h)(0x5A158824)
 I (..\..\app_platform\..\..\sources\gmsi\.\hal\.\app_cfg.h)(0x5A43A157)
 I (..\..\app_platform\..\..\sources\gmsi\.\hal\.\component\component.h)(0x5A43A212)
@@ -141,7 +141,7 @@ I (..\..\app_platform\.\stdout_USART.h)(0x5AEDD06C)
 I (..\..\app_platform\.\file_io.h)(0x5ADDEB31)
 I (..\..\jeg\nes.h)(0x5AEB9962)
 I (..\..\jeg\ppu.h)(0x5AF0C836)
-I (..\..\jeg\jeg_cfg.h)(0x5AF0C7FF)
+I (..\..\jeg\jeg_cfg.h)(0x5AF0D337)
 I (..\..\jeg\cpu6502.h)(0x5ADFAFBD)
 I (..\..\jeg\cartridge.h)(0x5ADFAFBD)
 I (..\..\jeg\fce.h)(0x5AEDD1DE)
@@ -174,7 +174,7 @@ I (..\..\app_platform\..\..\sources\gmsi\utilities\template\.\t_queue.h)(0x5AD9F
 I (..\..\app_platform\..\..\sources\gmsi\utilities\template\.\t_pool.h)(0x5A43A145)
 I (..\..\app_platform\..\..\sources\gmsi\utilities\template\.\t_list.h)(0x5A43A148)
 I (..\..\app_platform\..\..\sources\gmsi\..\app_cfg.h)(0x5A0DAB10)
-I (..\..\app_platform\..\..\sources\gmsi\..\..\example\app_cfg.h)(0x5AE0563E)
+I (..\..\app_platform\..\..\sources\gmsi\..\..\example\app_cfg.h)(0x5AF195CD)
 I (..\..\app_platform\..\..\sources\gmsi\.\hal\hal.h)(0x5A158824)
 I (..\..\app_platform\..\..\sources\gmsi\.\hal\.\app_cfg.h)(0x5A43A157)
 I (..\..\app_platform\..\..\sources\gmsi\.\hal\.\component\component.h)(0x5A43A212)
@@ -287,9 +287,9 @@ I (..\..\app_platform\.\file_io.h)(0x5ADDEB31)
 I (..\..\jeg\fce.h)(0x5AEDD1DE)
 I (C:\Program Files\ARMCompiler6.10\include\assert.h)(0x5A791878)
 I (C:\Program Files\ARMCompiler6.10\include\string.h)(0x5A791878)
-F (..\..\app_cfg.h)(0x5AE0563E)()
+F (..\..\app_cfg.h)(0x5AF195CD)()
 F (.\Abstract.txt)(0x59F59CC5)()
-F (..\..\..\..\README.md)(0x5AEDE133)()
+F (..\..\..\..\README.md)(0x5AF0CDDA)()
 F (..\..\..\sources\gmsi\utilities\ooc.c)(0x5A2927F0)()
 F (..\..\..\sources\gmsi\utilities\arm\signal.c)(0x5A37A963)()
 F (..\..\..\sources\gmsi\gmsi.c)(0x5A158824)()
@@ -368,7 +368,7 @@ I (..\..\app_platform\..\..\sources\gmsi\utilities\template\.\t_queue.h)(0x5AD9F
 I (..\..\app_platform\..\..\sources\gmsi\utilities\template\.\t_pool.h)(0x5A43A145)
 I (..\..\app_platform\..\..\sources\gmsi\utilities\template\.\t_list.h)(0x5A43A148)
 I (..\..\app_platform\..\..\sources\gmsi\..\app_cfg.h)(0x5A0DAB10)
-I (..\..\app_platform\..\..\sources\gmsi\..\..\example\app_cfg.h)(0x5AE0563E)
+I (..\..\app_platform\..\..\sources\gmsi\..\..\example\app_cfg.h)(0x5AF195CD)
 I (..\..\app_platform\..\..\sources\gmsi\.\hal\hal.h)(0x5A158824)
 I (..\..\app_platform\..\..\sources\gmsi\.\hal\.\app_cfg.h)(0x5A43A157)
 I (..\..\app_platform\..\..\sources\gmsi\.\hal\.\component\component.h)(0x5A43A212)
@@ -507,7 +507,7 @@ I (..\..\app_platform\..\..\sources\gmsi\utilities\template\.\t_queue.h)(0x5AD9F
 I (..\..\app_platform\..\..\sources\gmsi\utilities\template\.\t_pool.h)(0x5A43A145)
 I (..\..\app_platform\..\..\sources\gmsi\utilities\template\.\t_list.h)(0x5A43A148)
 I (..\..\app_platform\..\..\sources\gmsi\..\app_cfg.h)(0x5A0DAB10)
-I (..\..\app_platform\..\..\sources\gmsi\..\..\example\app_cfg.h)(0x5AE0563E)
+I (..\..\app_platform\..\..\sources\gmsi\..\..\example\app_cfg.h)(0x5AF195CD)
 I (..\..\app_platform\..\..\sources\gmsi\.\hal\hal.h)(0x5A158824)
 I (..\..\app_platform\..\..\sources\gmsi\.\hal\.\app_cfg.h)(0x5A43A157)
 I (..\..\app_platform\..\..\sources\gmsi\.\hal\.\component\component.h)(0x5A43A212)
@@ -662,7 +662,7 @@ I (..\..\app_platform\..\..\sources\gmsi\utilities\template\.\t_queue.h)(0x5AD9F
 I (..\..\app_platform\..\..\sources\gmsi\utilities\template\.\t_pool.h)(0x5A43A145)
 I (..\..\app_platform\..\..\sources\gmsi\utilities\template\.\t_list.h)(0x5A43A148)
 I (..\..\app_platform\..\..\sources\gmsi\..\app_cfg.h)(0x5A0DAB10)
-I (..\..\app_platform\..\..\sources\gmsi\..\..\example\app_cfg.h)(0x5AE0563E)
+I (..\..\app_platform\..\..\sources\gmsi\..\..\example\app_cfg.h)(0x5AF195CD)
 I (..\..\app_platform\..\..\sources\gmsi\.\hal\hal.h)(0x5A158824)
 I (..\..\app_platform\..\..\sources\gmsi\.\hal\.\app_cfg.h)(0x5A43A157)
 I (..\..\app_platform\..\..\sources\gmsi\.\hal\.\component\component.h)(0x5A43A212)
@@ -1723,25 +1723,25 @@ F (..\..\LiteNES\src\fce\ppu_new.h)(0x5AB2335D)()
 F (..\..\jeg\cartridge.c)(0x5AEDD1D9)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m7 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -c-fno-rtti -flto -funsigned-char-D__MICROLIB -gdwarf-3 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ../../app_platform -I ../../jeg -fms-extensions -Wno-microsoft-anon-tag -Wno-nonportable-include-path -Wno-tautological-constant-out-of-range-compare-I./RTE/Device/CMSDK_CM7_SP-I./RTE/_V2M-MPS2-jeg-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Driver/Include-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Include-IC:/Keil_v5/ARM/PACK/Keil/MDK-Middleware/7.6.0/Board-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Boards/ARM/V2M-MPS2/Common-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Device/CMSDK_CM7/Include-D__UVISION_VERSION="525" -D_RTE_ -DCMSDK_CM7_SP -D_MSC_VER -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1" -DJEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE="ENABLED" -DJEG_USE_FRAME_SYNC_UP_FLAG="ENABLED" -DJEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE="32" -DJEG_USE_EXTRA_16BIT_BUS_ACCESS="ENABLED" -DJEG_USE_DMA_MEMORY_COPY_ACCELERATION="ENABLED"-o ./out/cartridge.o -MD)
 I (..\..\jeg\cartridge.h)(0x5ADFAFBD)
 I (C:\Program Files\ARMCompiler6.10\include\stdint.h)(0x5A791878)
-I (..\..\jeg\jeg_cfg.h)(0x5AF0C7FF)
+I (..\..\jeg\jeg_cfg.h)(0x5AF0D337)
 I (C:\Program Files\ARMCompiler6.10\include\string.h)(0x5A791878)
 F (..\..\jeg\cpu6502.c)(0x5ADFAFBD)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m7 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -c-fno-rtti -flto -funsigned-char-D__MICROLIB -gdwarf-3 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ../../app_platform -I ../../jeg -fms-extensions -Wno-microsoft-anon-tag -Wno-nonportable-include-path -Wno-tautological-constant-out-of-range-compare-I./RTE/Device/CMSDK_CM7_SP-I./RTE/_V2M-MPS2-jeg-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Driver/Include-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Include-IC:/Keil_v5/ARM/PACK/Keil/MDK-Middleware/7.6.0/Board-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Boards/ARM/V2M-MPS2/Common-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Device/CMSDK_CM7/Include-D__UVISION_VERSION="525" -D_RTE_ -DCMSDK_CM7_SP -D_MSC_VER -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1" -DJEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE="ENABLED" -DJEG_USE_FRAME_SYNC_UP_FLAG="ENABLED" -DJEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE="32" -DJEG_USE_EXTRA_16BIT_BUS_ACCESS="ENABLED" -DJEG_USE_DMA_MEMORY_COPY_ACCELERATION="ENABLED"-o ./out/cpu6502.o -MD)
 I (..\..\jeg\cpu6502.h)(0x5ADFAFBD)
 I (C:\Program Files\ARMCompiler6.10\include\stdint.h)(0x5A791878)
 I (C:\Program Files\ARMCompiler6.10\include\stdbool.h)(0x5A791878)
-I (..\..\jeg\jeg_cfg.h)(0x5AF0C7FF)
+I (..\..\jeg\jeg_cfg.h)(0x5AF0D337)
 I (..\..\jeg\cpu6502_opcodes.h)(0x5AE067AA)
 I (..\..\jeg\cpu6502_debug.h)(0x5ADFAFBD)
 I (C:\Program Files\ARMCompiler6.10\include\string.h)(0x5A791878)
 F (..\..\jeg\cpu6502_opcodes.c)(0x5AE0677A)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m7 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -c-fno-rtti -flto -funsigned-char-D__MICROLIB -gdwarf-3 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ../../app_platform -I ../../jeg -fms-extensions -Wno-microsoft-anon-tag -Wno-nonportable-include-path -Wno-tautological-constant-out-of-range-compare-I./RTE/Device/CMSDK_CM7_SP-I./RTE/_V2M-MPS2-jeg-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Driver/Include-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Include-IC:/Keil_v5/ARM/PACK/Keil/MDK-Middleware/7.6.0/Board-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Boards/ARM/V2M-MPS2/Common-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Device/CMSDK_CM7/Include-D__UVISION_VERSION="525" -D_RTE_ -DCMSDK_CM7_SP -D_MSC_VER -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1" -DJEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE="ENABLED" -DJEG_USE_FRAME_SYNC_UP_FLAG="ENABLED" -DJEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE="32" -DJEG_USE_EXTRA_16BIT_BUS_ACCESS="ENABLED" -DJEG_USE_DMA_MEMORY_COPY_ACCELERATION="ENABLED"-o ./out/cpu6502_opcodes.o -MD)
 I (..\..\jeg\cpu6502_opcodes.h)(0x5AE067AA)
-I (..\..\jeg\jeg_cfg.h)(0x5AF0C7FF)
+I (..\..\jeg\jeg_cfg.h)(0x5AF0D337)
 F (..\..\jeg\nes.c)(0x5AF0C29C)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m7 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -c-fno-rtti -flto -funsigned-char-D__MICROLIB -gdwarf-3 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ../../app_platform -I ../../jeg -fms-extensions -Wno-microsoft-anon-tag -Wno-nonportable-include-path -Wno-tautological-constant-out-of-range-compare-I./RTE/Device/CMSDK_CM7_SP-I./RTE/_V2M-MPS2-jeg-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Driver/Include-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Include-IC:/Keil_v5/ARM/PACK/Keil/MDK-Middleware/7.6.0/Board-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Boards/ARM/V2M-MPS2/Common-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Device/CMSDK_CM7/Include-D__UVISION_VERSION="525" -D_RTE_ -DCMSDK_CM7_SP -D_MSC_VER -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1" -DJEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE="ENABLED" -DJEG_USE_FRAME_SYNC_UP_FLAG="ENABLED" -DJEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE="32" -DJEG_USE_EXTRA_16BIT_BUS_ACCESS="ENABLED" -DJEG_USE_DMA_MEMORY_COPY_ACCELERATION="ENABLED"-o ./out/nes.o -MD)
 I (..\..\jeg\nes.h)(0x5AEB9962)
 I (C:\Program Files\ARMCompiler6.10\include\stdint.h)(0x5A791878)
 I (C:\Program Files\ARMCompiler6.10\include\stdbool.h)(0x5A791878)
 I (..\..\jeg\ppu.h)(0x5AF0C836)
-I (..\..\jeg\jeg_cfg.h)(0x5AF0C7FF)
+I (..\..\jeg\jeg_cfg.h)(0x5AF0D337)
 I (..\..\jeg\cpu6502.h)(0x5ADFAFBD)
 I (..\..\jeg\cartridge.h)(0x5ADFAFBD)
 I (..\..\jeg\cpu6502_debug.h)(0x5ADFAFBD)
@@ -1749,12 +1749,12 @@ I (C:\Program Files\ARMCompiler6.10\include\string.h)(0x5A791878)
 F (..\..\jeg\ui.c)(0x5ADFAFBD)()
 F (..\..\jeg\fce.h)(0x5AEDD1DE)()
 F (..\..\jeg\hal.h)(0x5AF0C1E5)()
-F (..\..\jeg\fce.c)(0x5AEF6FFB)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m7 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -c-fno-rtti -flto -funsigned-char-D__MICROLIB -gdwarf-3 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ../../app_platform -I ../../jeg -fms-extensions -Wno-microsoft-anon-tag -Wno-nonportable-include-path -Wno-tautological-constant-out-of-range-compare-I./RTE/Device/CMSDK_CM7_SP-I./RTE/_V2M-MPS2-jeg-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Driver/Include-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Include-IC:/Keil_v5/ARM/PACK/Keil/MDK-Middleware/7.6.0/Board-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Boards/ARM/V2M-MPS2/Common-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Device/CMSDK_CM7/Include-D__UVISION_VERSION="525" -D_RTE_ -DCMSDK_CM7_SP -D_MSC_VER -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1" -DJEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE="ENABLED" -DJEG_USE_FRAME_SYNC_UP_FLAG="ENABLED" -DJEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE="32" -DJEG_USE_EXTRA_16BIT_BUS_ACCESS="ENABLED" -DJEG_USE_DMA_MEMORY_COPY_ACCELERATION="ENABLED"-o ./out/fce.o -MD)
+F (..\..\jeg\fce.c)(0x5AF184A1)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m7 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -c-fno-rtti -flto -funsigned-char-D__MICROLIB -gdwarf-3 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ../../app_platform -I ../../jeg -fms-extensions -Wno-microsoft-anon-tag -Wno-nonportable-include-path -Wno-tautological-constant-out-of-range-compare-I./RTE/Device/CMSDK_CM7_SP-I./RTE/_V2M-MPS2-jeg-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Driver/Include-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Include-IC:/Keil_v5/ARM/PACK/Keil/MDK-Middleware/7.6.0/Board-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Boards/ARM/V2M-MPS2/Common-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Device/CMSDK_CM7/Include-D__UVISION_VERSION="525" -D_RTE_ -DCMSDK_CM7_SP -D_MSC_VER -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1" -DJEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE="ENABLED" -DJEG_USE_FRAME_SYNC_UP_FLAG="ENABLED" -DJEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE="32" -DJEG_USE_EXTRA_16BIT_BUS_ACCESS="ENABLED" -DJEG_USE_DMA_MEMORY_COPY_ACCELERATION="ENABLED"-o ./out/fce.o -MD)
 I (..\..\jeg\nes.h)(0x5AEB9962)
 I (C:\Program Files\ARMCompiler6.10\include\stdint.h)(0x5A791878)
 I (C:\Program Files\ARMCompiler6.10\include\stdbool.h)(0x5A791878)
 I (..\..\jeg\ppu.h)(0x5AF0C836)
-I (..\..\jeg\jeg_cfg.h)(0x5AF0C7FF)
+I (..\..\jeg\jeg_cfg.h)(0x5AF0D337)
 I (..\..\jeg\cpu6502.h)(0x5ADFAFBD)
 I (..\..\jeg\cartridge.h)(0x5ADFAFBD)
 I (..\..\jeg\cpu6502_debug.h)(0x5ADFAFBD)
@@ -1786,7 +1786,7 @@ I (..\..\app_platform\..\..\sources\gmsi\utilities\template\.\t_queue.h)(0x5AD9F
 I (..\..\app_platform\..\..\sources\gmsi\utilities\template\.\t_pool.h)(0x5A43A145)
 I (..\..\app_platform\..\..\sources\gmsi\utilities\template\.\t_list.h)(0x5A43A148)
 I (..\..\app_platform\..\..\sources\gmsi\..\app_cfg.h)(0x5A0DAB10)
-I (..\..\app_platform\..\..\sources\gmsi\..\..\example\app_cfg.h)(0x5AE0563E)
+I (..\..\app_platform\..\..\sources\gmsi\..\..\example\app_cfg.h)(0x5AF195CD)
 I (..\..\app_platform\..\..\sources\gmsi\.\hal\hal.h)(0x5A158824)
 I (..\..\app_platform\..\..\sources\gmsi\.\hal\.\app_cfg.h)(0x5A43A157)
 I (..\..\app_platform\..\..\sources\gmsi\.\hal\.\component\component.h)(0x5A43A212)
@@ -1899,12 +1899,12 @@ I (..\..\app_platform\.\file_io.h)(0x5ADDEB31)
 F (..\..\jeg\cpu6502.h)(0x5ADFAFBD)()
 F (..\..\jeg\cpu6502_debug.h)(0x5ADFAFBD)()
 F (..\..\jeg\cpu6502_opcodes.h)(0x5AE067AA)()
-F (..\..\jeg\jeg_cfg.h)(0x5AF0C7FF)()
+F (..\..\jeg\jeg_cfg.h)(0x5AF0D337)()
 F (..\..\jeg\ppu_pixel_based.c)(0x5AF0CC39)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m7 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -c-fno-rtti -flto -funsigned-char-D__MICROLIB -gdwarf-3 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ../../app_platform -I ../../jeg -fms-extensions -Wno-microsoft-anon-tag -Wno-nonportable-include-path -Wno-tautological-constant-out-of-range-compare-I./RTE/Device/CMSDK_CM7_SP-I./RTE/_V2M-MPS2-jeg-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Driver/Include-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.3.0/CMSIS/Include-IC:/Keil_v5/ARM/PACK/Keil/MDK-Middleware/7.6.0/Board-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Boards/ARM/V2M-MPS2/Common-IC:/Keil_v5/ARM/PACK/Keil/V2M-MPS2_CMx_BSP/1.6.0/Device/CMSDK_CM7/Include-D__UVISION_VERSION="525" -D_RTE_ -DCMSDK_CM7_SP -D_MSC_VER -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1" -DJEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE="ENABLED" -DJEG_USE_FRAME_SYNC_UP_FLAG="ENABLED" -DJEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE="32" -DJEG_USE_EXTRA_16BIT_BUS_ACCESS="ENABLED" -DJEG_USE_DMA_MEMORY_COPY_ACCELERATION="ENABLED"-o ./out/ppu_pixel_based.o -MD)
 I (..\..\jeg\ppu.h)(0x5AF0C836)
 I (C:\Program Files\ARMCompiler6.10\include\stdint.h)(0x5A791878)
 I (C:\Program Files\ARMCompiler6.10\include\stdbool.h)(0x5A791878)
-I (..\..\jeg\jeg_cfg.h)(0x5AF0C7FF)
+I (..\..\jeg\jeg_cfg.h)(0x5AF0D337)
 I (..\..\jeg\nes.h)(0x5AEB9962)
 I (..\..\jeg\cpu6502.h)(0x5ADFAFBD)
 I (..\..\jeg\cartridge.h)(0x5ADFAFBD)

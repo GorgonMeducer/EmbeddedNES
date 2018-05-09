@@ -1,60 +1,33 @@
 #include <stdio.h>
+#include <stdint.h>
 #include <SDL.h>
 #include "nes.h"
 
 // global variables
-SDL_Surface *screen; // used in main and update_frame
+SDL_Window *window;
+SDL_Renderer *renderer;
+SDL_Texture *texture;
+uint32_t pixels[256*240];
 
-typedef struct rgb_entry_t {uint8_t red; uint8_t green; uint8_t blue;} rgb_entry_t;
-
-static const rgb_entry_t rgb_palette[64] = {
-  {0x80, 0x80, 0x80}, {0x00, 0x00, 0xBB}, {0x37, 0x00, 0xBF}, {0x84, 0x00, 0xA6}, {0xBB, 0x00, 0x6A}, {0xB7, 0x00, 0x1E},
-  {0xB3, 0x00, 0x00}, {0x91, 0x26, 0x00}, {0x7B, 0x2B, 0x00}, {0x00, 0x3E, 0x00}, {0x00, 0x48, 0x0D}, {0x00, 0x3C, 0x22},
-  {0x00, 0x2F, 0x66}, {0x00, 0x00, 0x00}, {0x05, 0x05, 0x05}, {0x05, 0x05, 0x05}, {0xC8, 0xC8, 0xC8}, {0x00, 0x59, 0xFF},
-  {0x44, 0x3C, 0xFF}, {0xB7, 0x33, 0xCC}, {0xFF, 0x33, 0xAA}, {0xFF, 0x37, 0x5E}, {0xFF, 0x37, 0x1A}, {0xD5, 0x4B, 0x00},
-  {0xC4, 0x62, 0x00}, {0x3C, 0x7B, 0x00}, {0x1E, 0x84, 0x15}, {0x00, 0x95, 0x66}, {0x00, 0x84, 0xC4}, {0x11, 0x11, 0x11},
-  {0x09, 0x09, 0x09}, {0x09, 0x09, 0x09}, {0xFF, 0xFF, 0xFF}, {0x00, 0x95, 0xFF}, {0x6F, 0x84, 0xFF}, {0xD5, 0x6F, 0xFF},
-  {0xFF, 0x77, 0xCC}, {0xFF, 0x6F, 0x99}, {0xFF, 0x7B, 0x59}, {0xFF, 0x91, 0x5F}, {0xFF, 0xA2, 0x33}, {0xA6, 0xBF, 0x00},
-  {0x51, 0xD9, 0x6A}, {0x4D, 0xD5, 0xAE}, {0x00, 0xD9, 0xFF}, {0x66, 0x66, 0x66}, {0x0D, 0x0D, 0x0D}, {0x0D, 0x0D, 0x0D},
-  {0xFF, 0xFF, 0xFF}, {0x84, 0xBF, 0xFF}, {0xBB, 0xBB, 0xFF}, {0xD0, 0xBB, 0xFF}, {0xFF, 0xBF, 0xEA}, {0xFF, 0xBF, 0xCC},
-  {0xFF, 0xC4, 0xB7}, {0xFF, 0xCC, 0xAE}, {0xFF, 0xD9, 0xA2}, {0xCC, 0xE1, 0x99}, {0xAE, 0xEE, 0xB7}, {0xAA, 0xF7, 0xEE},
-  {0xB3, 0xEE, 0xFF}, {0xDD, 0xDD, 0xDD}, {0x11, 0x11, 0x11}, {0x11, 0x11, 0x11}
+static const uint32_t rgb_palette[64] = {
+  0x7C7C7C, 0x0000FC, 0x0000BC, 0x4428BC, 0x940084, 0xA80020, 0xA81000, 0x881400,
+  0x503000, 0x007800, 0x006800, 0x005800, 0x004058, 0x000000, 0x000000, 0x000000,
+  0xBCBCBC, 0x0078F8, 0x0058F8, 0x6844FC, 0xD800CC, 0xE40058, 0xF83800, 0xE45C10,
+  0xAC7C00, 0x00B800, 0x00A800, 0x00A844, 0x008888, 0x000000, 0x000000, 0x000000,
+  0xF8F8F8, 0x3CBCFC, 0x6888FC, 0x9878F8, 0xF878F8, 0xF85898, 0xF87858, 0xFCA044,
+  0xF8B800, 0xB8F818, 0x58D854, 0x58F898, 0x00E8D8, 0x787878, 0x000000, 0x000000,
+  0xFCFCFC, 0xA4E4FC, 0xB8B8F8, 0xD8B8F8, 0xF8B8F8, 0xF8A4C0, 0xF0D0B0, 0xFCE0A8,
+  0xF8D878, 0xD8F878, 0xB8F8B8, 0xB8F8D8, 0x00FCFC, 0xF8D8F8, 0x000000, 0x000000
 };
 
-uint32_t sdl_palette[64];
-
-void update_frame(uint8_t* frame_data, int width, int height) {
-  SDL_Rect rect={0,0,2,2};
-  uint32_t *pixmem=screen->pixels;
-
-  if(SDL_MUSTLOCK(screen)) {
-    if(SDL_LockSurface(screen) < 0) {
-      return;
-    }
+void update_frame(uint8_t* frame_data) {
+  for (uint32_t i=0; i<256*240; i++) {
+    pixels[i]=rgb_palette[frame_data[i]];
   }
-  
-  for(int y=0; y<height; y++) {
-    rect.y=y*2;
-    for(int x=0; x<width; x++) {
-      rect.x=x*2;
-      SDL_FillRect(screen, &rect, sdl_palette[*frame_data]);
-      frame_data++;
-      pixmem++;
-    }
-  }
-
-  if(SDL_MUSTLOCK(screen)) {
-    SDL_UnlockSurface(screen);
-  }
-  
-  SDL_Flip(screen); 
-}
-
-uint32_t next_frame(uint32_t interval, void *p) {
-	SDL_Event event;
-	event.type = SDL_USEREVENT;
-	SDL_PushEvent(&event);
-  return 20;
+  SDL_UpdateTexture(texture, NULL, pixels, 256*sizeof(uint32_t));
+  SDL_RenderClear(renderer);
+  SDL_RenderCopy(renderer, texture, NULL, NULL);
+  SDL_RenderPresent(renderer);
 }
 
 int main(int argc, char* argv[]) {
@@ -66,6 +39,8 @@ int main(int argc, char* argv[]) {
   uint32_t rom_size;
   uint8_t video_frame_data[256*240];
   uint8_t controller1=0;
+  int wait_ms;
+  double next_frame_tick=SDL_GetTicks()+1000.0/60.0;
 
   // load rom file
   if (argc<2) {
@@ -91,20 +66,17 @@ int main(int argc, char* argv[]) {
   fclose(rom_file);
 
   // init SDL
-  if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER) < 0 ) {
+  if (SDL_Init(SDL_INIT_VIDEO) < 0 ) {
     printf("unable to init sdl video\n");
     return 4;
   }
-   
-  if (!(screen = SDL_SetVideoMode(256*2, 240*2, 32, /*SDL_FULLSCREEN|*/SDL_HWSURFACE))) {
-    SDL_Quit();
-    printf("unable to set sdl video mode\n");
-    return 5;
-  }
 
-  for(int idx=0; idx<64; idx++) {
-    sdl_palette[idx]=SDL_MapRGB(screen->format, rgb_palette[idx].red, rgb_palette[idx].green, rgb_palette[idx].blue);
-  }
+  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "best");
+ 
+  window = SDL_CreateWindow("JEG", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 256*2, 240*2, 0);
+  renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
+  SDL_RenderSetLogicalSize(renderer, 256, 240);
+  texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, 256, 240);
 
   // init nes
   nes_init(&nes_console);
@@ -118,17 +90,10 @@ int main(int argc, char* argv[]) {
   
   int quit = 0;
   uint16_t key_value;
-  
-  SDL_AddTimer(17, next_frame, 0);
 
   while(!quit) {
-    SDL_WaitEvent(&event);
+    SDL_PollEvent(&event);
     switch (event.type) {
-      case SDL_USEREVENT:
-        nes_set_controller(&nes_console, controller1, 0);
-        nes_iterate_frame(&nes_console);
-        update_frame(video_frame_data, 256, 240);
-        break;
       case SDL_QUIT:
         quit=1;
         break;
@@ -184,6 +149,15 @@ int main(int argc, char* argv[]) {
       default:
         break;
     }
+    nes_set_controller(&nes_console, controller1, 0);
+    nes_iterate_frame(&nes_console);
+    update_frame(video_frame_data);
+    wait_ms= (int)next_frame_tick-SDL_GetTicks();
+    if (wait_ms<0) {
+      wait_ms=0;
+    }
+    SDL_Delay(wait_ms);
+    next_frame_tick+=1000.0/60.0;
   }
 
   free(rom_data);
