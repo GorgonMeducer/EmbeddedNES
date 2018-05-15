@@ -343,7 +343,7 @@ void nes_flip_display(frame_t *ptThis)
             if (!(wMask & (1<<x))) {
                 continue;
             }
-            GLCD_DrawBitmap(((320-SCREEN_WIDTH)>>1) + x * 8, y * 8, 8,8, (uint8_t *)&s_tScreenBuffer[y][x]);
+            GLCD_DrawBitmap(((GLCD_WIDTH-SCREEN_WIDTH)>>1) + x * 8, ((GLCD_HEIGHT-SCREEN_HEIGHT)>>1) + y * 8, 8,8, (uint8_t *)&s_tScreenBuffer[y][x]);
         }
     #endif
         

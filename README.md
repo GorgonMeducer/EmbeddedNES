@@ -4,14 +4,23 @@ A portable NES simulator for embedded processors.
 
 
 ## Update Log
+- 15-05-2018 Add support for STM32F746G-Discovery
+    
+    * Add dedicated BSP folders for V2M-MPS2 and STM32F746G-Discovery
+    
+    * Add dedicated macro switch to disable FILE-IO 
+        
+    Disable it so you can port and test the NES emulator with default City Tank rom
+
 - 07-05-2008 PPU improvement 
+
     * Seperate PPU into two versions, one for scanline based and one for partial-scanline based (while another part is pixel based)
     
     * Apply compact dual pixels to background buffer
     
         TODO: Fix debug mode
         
-- Improve the readability
+    * Improve the readability
 
 - 05-05-2018 PPU improvement
     

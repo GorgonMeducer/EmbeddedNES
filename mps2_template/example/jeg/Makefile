@@ -7,13 +7,13 @@ SRCS_UI=$(SRCS_NES) ui.c
 all: jeg
 
 jeg: $(SRCS_UI)
-	$(CC) $(SRCS_UI) -I. -O3 -o $@ `sdl-config --cflags --libs` -Wall -pedantic $(CFLAGS)
+	$(CC) $(SRCS_UI) -I. -O3 -o $@ `sdl2-config --cflags --libs` -Wall -pedantic $(CFLAGS)
 
 benchmark: $(SRCS_NES) benchmark.c
 	$(CC) $(SRCS_NES) benchmark.c -I. -O3 -o $@ -Wall -pedantic -DWITHOUT_DECIMAL_MODE $(CFLAGS)
 
 jeg.exe: $(SRCS_UI)
-	i686-w64-mingw32-gcc  $(SRCS_UI) -mwindows -I. -O3 -o $@ -D_GNU_SOURCE=1 -D_REENTRANT -Iwindows/include/SDL -Lwindows/libs -lmingw32 -lSDLmain -lSDL -Wall -pedantic -DWITHOUT_DECIMAL_MODE $(CFLAGS)
+	i686-w64-mingw32-gcc  $(SRCS_UI) -mwindows -I. -O3 -o $@ -D_GNU_SOURCE=1 -D_REENTRANT -Iwindows/include/SDL -Lwindows/libs -lmingw32 -lSDL2main -lSDL2 -Wall -pedantic -DWITHOUT_DECIMAL_MODE $(CFLAGS)
 
 test: run_klaus2m5 run_test_roms
 
@@ -31,4 +31,4 @@ run_test_roms: test_roms
 	cd test/nes_roms && ../../test_roms -p test.key
 
 clean:
-	rm jeg jeg.exe test_klaus2m5 test/klaus2m5/rom.inc test_roms -rf
+	rm jeg jeg.exe benchmark test_klaus2m5 test/klaus2m5/rom.inc test_roms -rf

@@ -227,11 +227,13 @@ static int_fast32_t load_nes_rom(uint8_t *pchBuffer, uint32_t wSize)
 int main (void) 
 {
     system_init();
+#if DEMO_USE_FILE_IO == ENABLED
     app_init();
+#endif
     
     extern const uint8_t NES_ROM_1[];
     extern const uint32_t NES_ROM_1_Length;
-    
+#if DEMO_USE_FILE_IO == ENABLED
     file_io_stream_t *ptLog = FILE_IO.Channel.Open(
                             "Log",
                             "STDOUT",
@@ -241,9 +243,10 @@ int main (void)
     if (NULL != ptLog) {
         retarget_stdout(ptLog);
     }
-    
+#endif
     do {
         bool bLoadingSuccess = false;
+#if DEMO_USE_FILE_IO == ENABLED
         do {
             if (NULL == ptLog) {
                 break;
@@ -260,7 +263,7 @@ int main (void)
             
             bLoadingSuccess = true;
         } while(false);
-        
+#endif
         if (!bLoadingSuccess) {
             //! use default
             if (fce_load_rom((uint8_t *)NES_ROM_1, NES_ROM_1_Length) != 0){
@@ -272,15 +275,16 @@ int main (void)
         fce_init();
         log_info("Game Start...\r\n")
         fce_run();
-        
+#if DEMO_USE_FILE_IO == ENABLED
         FILE_IO.Channel.Close(ptLog);
+#endif
         while(1);
     } while(false);
     
     log_info("Error: Invalid or unsupported rom.\r\n")
-    
+#if DEMO_USE_FILE_IO == ENABLED
     FILE_IO.Channel.Close(ptLog);
-
+#endif
     while (true) {
     }
 

@@ -19,6 +19,7 @@ int main(int argc, char *argv[]) {
   cpu6502_t cpu;
 
   cpu6502_init(&cpu, 0, _read, _write);
+  cpu6502_reset(&cpu);
 
   cpu.reg_PC=0x400;
 

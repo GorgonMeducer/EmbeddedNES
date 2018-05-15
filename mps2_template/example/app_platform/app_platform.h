@@ -22,13 +22,8 @@
 #include ".\app_cfg.h"
 
 #include <stdio.h>
-#include "Device.h"                     // Keil::Board Support:V2M-MPS2:Common
-#include "RTE_Components.h"             // Component selection
-#include "Board_LED.h"                  // ::Board Support:LED
-#include "Board_Buttons.h"              // ::Board Support:Buttons
-#include "Board_Touch.h"                // ::Board Support:Touchscreen
-#include "Board_GLCD.h"                 // ::Board Support:Graphic LCD
-#include "GLCD_Config.h"                // Keil.SAM4E-EK::Board Support:Graphic LCD
+
+#include ".\bsp.h"
 
 #include ".\stdout_USART.h"
 #include ".\file_io.h"
@@ -36,12 +31,15 @@
 /*============================ MACROS ========================================*/
 /*============================ MACROFIED FUNCTIONS ===========================*/
 
+#if DEMO_USE_FILE_IO == ENABLED
 #define log_info(...)                               \
         do {                                        \
             printf(__VA_ARGS__);                    \
             stdout_flush();                         \
         } while(false);
-
+#else
+#define log_info(...)
+#endif
 /*============================ TYPES =========================================*/     
 /*============================ GLOBAL VARIABLES ==============================*/
 /*============================ LOCAL VARIABLES ===============================*/
@@ -90,10 +88,5 @@ extern void start_counter(void);
 extern int32_t stop_counter(void);
 
 
-extern void disable_blocking_style(void);
-
-extern void enable_blocking_style(void);
-
-extern bool is_blocking_style_enabled(void);
 
 #endif

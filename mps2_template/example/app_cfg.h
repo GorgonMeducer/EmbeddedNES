@@ -71,11 +71,11 @@
 
 //      <o>The maximum number of blocks in block pool
 //      <i>Specifying the block pool size.
-#define IO_STREAM_BLOCK_BUFFER_ITEM_COUNT   18
+#define IO_STREAM_BLOCK_BUFFER_ITEM_COUNT   8
 
 //      <o>The block size <16-65535>
 //      <i>Specifying the block buffer size.
-#define IO_STREAM_BLOCK_BUFFER_ITEM_SIZE    1024
+#define IO_STREAM_BLOCK_BUFFER_ITEM_SIZE    32
 
 //      <o>The maximum number of telegraphs in telegraph pool <1-65535>
 //      <i>Specifying the telegraph pool size
@@ -87,7 +87,7 @@
 
 //      <o>The maximum number of channels in channel pool <1-65535>
 //      <i>Specifying the maxium number of channels which are allowed to open simultaneously. 
-#define IO_CHANNEL_BUFFER_ITEM_COUNT        8
+#define IO_CHANNEL_BUFFER_ITEM_COUNT        3
 
 //      <o>Telegraph retrying times <1-15>
 //      <i>Specifying how many times a transaction will be retried if it is keeping failing.
@@ -102,10 +102,10 @@
 //  <h> NES Simulator Configuration
 //      <o>Maximum ROM Buffer Size in KB <32-512>
 //      <i>A dedicated local buffer is provided to load the NES rom. The minimal size is 32KB
-#define NES_ROM_BUFFER_SIZE                 64
+#define NES_ROM_BUFFER_SIZE                 32
 //      <o>ROM Path
 //      <i>The path of NES rom in host pc.
-//#define NES_ROM_PATH                        "..\\..\\LiteNES\\ROMS\\Super Tank (Battle City Pirate) (J) [p1].nes"
+#define NES_ROM_PATH                        "..\\..\\LiteNES\\ROMS\\Super Tank (Battle City Pirate) (J) [p1].nes"
 //  </h>
 
 
@@ -122,6 +122,7 @@
 
 #define DEMO_MULTIPLE_DELAY                 DISABLED
 #define DEMO_FRAME_USE_BLOCK_MODE           ENABLED
+#define DEMO_USE_FILE_IO                    DISABLED
 
 /*============================ MACROFIED FUNCTIONS ===========================*/
 /*============================ TYPES =========================================*/
