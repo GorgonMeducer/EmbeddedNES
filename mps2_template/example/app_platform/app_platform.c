@@ -20,13 +20,7 @@
 
 
 #include <stdio.h>
-#include "Device.h"                     // Keil::Board Support:V2M-MPS2:Common
-#include "RTE_Components.h"             // Component selection
-#include "Board_LED.h"                  // ::Board Support:LED
-#include "Board_Buttons.h"              // ::Board Support:Buttons
-#include "Board_Touch.h"                // ::Board Support:Touchscreen
-#include "Board_GLCD.h"                 // ::Board Support:Graphic LCD
-#include "GLCD_Config.h"                // Keil.SAM4E-EK::Board Support:Graphic LCD
+#include "bsp.h"                     
 
 #include ".\stdout_USART.h"
 #include ".\file_io.h"
@@ -111,6 +105,7 @@ int32_t stop_counter(void)
  */
 void app_platform_1ms_event_handler(void)
 {
+    bsp_1ms_event_handler();
     counter_overflow();
     STREAM_IN_1ms_event_handler();
 }
@@ -124,18 +119,18 @@ void app_platform_1ms_event_handler(void)
 bool app_platform_init( void )
 {
     do {
-        
+        bsp_init();
         SystemCoreClockUpdate();
 
         LED_Initialize();                       /* Initializ LEDs                 */
         Buttons_Initialize();                   /* Initializ Push Buttons         */
-        
+#if DEMO_USE_FILE_IO == ENABLED
     #ifdef RTE_Compiler_IO_STDOUT_User
         if (!stdout_init()) {
             break;
         }
     #endif
-        
+#endif
         return true;
     } while(false);
     
@@ -191,31 +186,6 @@ void stdout_flush(void)
 }
   
   
-static volatile bool s_bBlockingStyle = true;
 
-
-void disable_blocking_style(void)
-{
-    SAFE_ATOM_CODE(
-        s_bBlockingStyle = false;
-        //__NVIC_EnableIRQ(SPI_0_1_IRQn);
-    )
-}
-
-void enable_blocking_style(void)
-{
-    SAFE_ATOM_CODE(
-
-        __NVIC_DisableIRQ(SPI_0_1_IRQn);
-        __NVIC_ClearPendingIRQ(SPI_0_1_IRQn);
-    
-        s_bBlockingStyle = true;
-    )
-}
-
-bool is_blocking_style_enabled(void)
-{
-    return s_bBlockingStyle;
-}
   
 /* EOF */

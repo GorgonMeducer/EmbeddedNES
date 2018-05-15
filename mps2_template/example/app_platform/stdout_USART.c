@@ -35,18 +35,13 @@
 #include ".\app_cfg.h"
 #include <string.h>
 #include "Driver_USART.h"
-#include "Device.h"
+#include ".\bsp.h"
 
 /*============================ MACROS ========================================*/
 
 //-------- <<< Use Configuration Wizard in Context Menu >>> --------------------
  
-// <h>STDOUT USART Interface
- 
-//   <o>Connect to hardware via Driver_USART# <0-255>
-//   <i>Select driver control block for USART interface
-#define USART_DRV_NUM           0
-// </h>
+
 
 
 #ifndef USART_BAUDRATE
@@ -86,63 +81,7 @@
 
 /*============================ MACROFIED FUNCTIONS ===========================*/
 
-#define __USE_SERIAL_PORT_INPUT_ADAPTER(__NUM)                          \
-                                                                        \
-void STREAM_IN_serial_port_enable_rx_cpl_interrupt(void)                \
-{                                                                       \
-    CMSDK_UART##__NUM->CTRL |= CMSDK_UART_CTRL_RXIRQEN_Msk;             \
-}                                                                       \
-                                                                        \
-void STREAM_IN_serial_port_disable_rx_cpl_interrupt(void)               \
-{                                                                       \
-    CMSDK_UART##__NUM->CTRL &= ~CMSDK_UART_CTRL_RXIRQEN_Msk;            \
-}                                                                       \
-                                                                        \
-uint8_t STREAM_IN_serial_port_get_byte(void)                            \
-{                                                                       \
-    return CMSDK_UART##__NUM->DATA;                                     \
-}                                                                       \
-/* this function is called instead of the original UART0RX_Handler() */ \
-void USART##__NUM##_RX_CPL_Handler(void)                                \
-{                                                                       \
-    /*! clear interrupt flag */                                         \
-    CMSDK_UART##__NUM->INTCLEAR = CMSDK_UART##__NUM->INTSTATUS;         \
-    STREAM_IN_insert_serial_port_rx_cpl_event_handler();                \
-}                           
 
-#define USE_SERIAL_PORT_INPUT_ADAPTER(__NUM)                \
-            __USE_SERIAL_PORT_INPUT_ADAPTER(__NUM)  
-    
-#define __USE_SERIAL_PORT_OUTPUT_ADAPTER(__NUM)                         \
-                                                                        \
-void STREAM_OUT_serial_port_enable_tx_cpl_interrupt(void)               \
-{                                                                       \
-    CMSDK_UART##__NUM->CTRL |= CMSDK_UART_CTRL_TXIRQEN_Msk;             \
-}                                                                       \
-                                                                        \
-void STREAM_OUT_serial_port_disbale_tx_cpl_interrupt(void)              \
-{                                                                       \
-    CMSDK_UART##__NUM->CTRL &= ~CMSDK_UART_CTRL_TXIRQEN_Msk;            \
-}                                                                       \
-                                                                        \
-void STREAM_OUT_serial_port_fill_byte(uint8_t chByte)                   \
-{                                                                       \
-    CMSDK_UART##__NUM->DATA = chByte;                                   \
-}                                                                       \
-                                                                        \
-/* this function is called instead of the original UART0TX_Handler() */ \
-void USART##__NUM##_TX_CPL_Handler(void)                                \
-{                                                                       \
-    /*! clear interrupt flag  */                                        \
-    CMSDK_UART##__NUM->INTCLEAR = CMSDK_UART##__NUM->INTSTATUS;         \
-    /*! implement our own version of uart tx interrupt */               \
-                                                                        \
-    STREAM_OUT_insert_serial_port_tx_cpl_event_handler();               \
-}
-
-
-#define USE_SERIAL_PORT_OUTPUT_ADAPTER(__NUM)                           \
-            __USE_SERIAL_PORT_OUTPUT_ADAPTER(__NUM)                  
     
 /*============================ TYPES =========================================*/ 
 
@@ -194,6 +133,8 @@ extern ARM_DRIVER_USART  USART_Driver_(USART_DRV_NUM);
  */  
 bool stdout_init (void) 
 {    
+
+    
     do {
         int32_t status;
 

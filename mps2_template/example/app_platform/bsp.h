@@ -1,5 +1,5 @@
 /****************************************************************************
-*  Copyright 2017 Gorgon Meducer (Email:embedded_zhuoran@hotmail.com)       *
+*  Copyright 2018 Gorgon Meducer (Email:embedded_zhuoran@hotmail.com)       *
 *                                                                           *
 *  Licensed under the Apache License, Version 2.0 (the "License");          *
 *  you may not use this file except in compliance with the License.         *
@@ -15,59 +15,26 @@
 *                                                                           *
 ****************************************************************************/
 
-#ifndef __UTILITIES_COMMUNICATE_H__
-#define __UTILITIES_COMMUNICATE_H__
+#ifndef __USE_APP_PLATFORM_BSP_H__
+#define __USE_APP_PLATFORM_BSP_H__
 
 /*============================ INCLUDES ======================================*/
+#include ".\app_cfg.h"
+
+#if defined(__USE_STM32F746G_DISCOVERY__)
+#   include ".\STM32F746G-Discovery\bsp.h"
+#else
+#   include ".\V2M-MPS2\bsp.h"
+#endif
+
+
+
 /*============================ MACROS ========================================*/
 /*============================ MACROFIED FUNCTIONS ===========================*/
-/*============================ TYPES =========================================*/
-
-//! \name stream
-//! @{
-typedef struct {
-    union {
-        uint8_t *pchBuffer;         //!< stream buffer
-        uint8_t *pchSrc;
-        void *pObj;
-    };
-    uint_fast32_t wSize;            //!< stream size
-} mem_block_t;
-//! @}
-
-
-//! \name interface: byte pipe
-//! @{
-def_interface(i_byte_pipe_t)
-    //!< read a byte
-    bool (*ReadByte)(uint8_t *pchByte);
-    //!< write a byte
-    bool (*WriteByte)(uint_fast8_t chByte);
-    
-    bool (*Flush)(void);
-end_def_interface(i_byte_pipe_t)
-//! @}
-
-//! \name interface: pipe
-//! @{
-def_interface(i_pipe_t)
-
-    inherit(i_byte_pipe_t)
-    
-    struct {
-        //! read a block
-        uint_fast32_t  (*Read)(uint8_t *pchStream, uint_fast32_t wSize);
-        //! write a block
-        uint_fast32_t  (*Write)(uint8_t *pchStream, uint_fast32_t wSize);
-    } Stream;
-
-end_def_interface(i_pipe_t)
-//! @}
-
+/*============================ TYPES =========================================*/     
 /*============================ GLOBAL VARIABLES ==============================*/
 /*============================ LOCAL VARIABLES ===============================*/
 /*============================ PROTOTYPES ====================================*/
 
 
 #endif
-/* EOF */

@@ -15,59 +15,59 @@
 *                                                                           *
 ****************************************************************************/
 
-#ifndef __UTILITIES_COMMUNICATE_H__
-#define __UTILITIES_COMMUNICATE_H__
-
 /*============================ INCLUDES ======================================*/
+#include ".\app_cfg.h"
+
+
+#include "Device.h"
+
+#include "RTE_Components.h"             // Component selection
+#include "Board_LED.h"                  // ::Board Support:LED
+#include "Board_Touch.h"                // ::Board Support:Touchscreen
+#include "Board_GLCD.h"                 // ::Board Support:Graphic LCD
+#include "GLCD_Config.h"                // 
+
 /*============================ MACROS ========================================*/
 /*============================ MACROFIED FUNCTIONS ===========================*/
 /*============================ TYPES =========================================*/
-
-//! \name stream
-//! @{
-typedef struct {
-    union {
-        uint8_t *pchBuffer;         //!< stream buffer
-        uint8_t *pchSrc;
-        void *pObj;
-    };
-    uint_fast32_t wSize;            //!< stream size
-} mem_block_t;
-//! @}
-
-
-//! \name interface: byte pipe
-//! @{
-def_interface(i_byte_pipe_t)
-    //!< read a byte
-    bool (*ReadByte)(uint8_t *pchByte);
-    //!< write a byte
-    bool (*WriteByte)(uint_fast8_t chByte);
-    
-    bool (*Flush)(void);
-end_def_interface(i_byte_pipe_t)
-//! @}
-
-//! \name interface: pipe
-//! @{
-def_interface(i_pipe_t)
-
-    inherit(i_byte_pipe_t)
-    
-    struct {
-        //! read a block
-        uint_fast32_t  (*Read)(uint8_t *pchStream, uint_fast32_t wSize);
-        //! write a block
-        uint_fast32_t  (*Write)(uint8_t *pchStream, uint_fast32_t wSize);
-    } Stream;
-
-end_def_interface(i_pipe_t)
-//! @}
-
 /*============================ GLOBAL VARIABLES ==============================*/
 /*============================ LOCAL VARIABLES ===============================*/
 /*============================ PROTOTYPES ====================================*/
+/*============================ IMPLEMENTATION ================================*/
+
+static volatile bool s_bBlockingStyle = true;
 
 
-#endif
+void disable_blocking_style(void)
+{
+    SAFE_ATOM_CODE(
+        s_bBlockingStyle = false;
+        //__NVIC_EnableIRQ(SPI_0_1_IRQn);
+    )
+}
+
+void enable_blocking_style(void)
+{
+    SAFE_ATOM_CODE(
+
+        __NVIC_DisableIRQ(SPI_0_1_IRQn);
+        __NVIC_ClearPendingIRQ(SPI_0_1_IRQn);
+    
+        s_bBlockingStyle = true;
+    )
+}
+
+bool is_blocking_style_enabled(void)
+{
+    return s_bBlockingStyle;
+}
+
+bool bsp_init(void)
+{
+    return true;
+}
+
+void bsp_1ms_event_handler(void)
+{}
+  
 /* EOF */
