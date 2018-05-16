@@ -601,7 +601,7 @@ static void fetch_background_tile_info(ppu_t *ptPPU)
     ptPPU->tile_data <<= 4;
     if (!(ptPPU->cycle & 0x07)) {
     
-        uint_fast32_t data = 0;
+        //uint_fast32_t data = 0;
         uint_fast8_t chTableIndex = 
         find_name_attribute_table_index(ptPPU->nes->cartridge.mirror, (ptPPU->v&0x0FFF));
         

@@ -9,7 +9,7 @@ typedef struct {
   uint8_t          *prg_memory;
   uint_fast32_t     chr_adr_mask;
   uint8_t          *chr_memory;
-  uint8_t           ram_data[0x2000];
+  //uint8_t           ram_data[0x2000];
   uint8_t           io_data[0x2000];
   uint8_t           chr_data[0x2000];
   int_fast32_t      mapper;

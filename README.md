@@ -4,13 +4,22 @@ A portable NES simulator for embedded processors.
 
 
 ## Update Log
+
+- 16-05-2018 Add more default roms
+
+    * Add two default roms
+        - ROM1: City Tanks
+        - ROM2: Road Fighter
+        - ROM3: Super Mario Bro
+        - ROM4: Contra (Need implementing new mapper)
+
 - 15-05-2018 Add support for STM32F746G-Discovery
     
     * Add dedicated BSP folders for V2M-MPS2 and STM32F746G-Discovery
     
     * Add dedicated macro switch to disable FILE-IO 
         
-    Disable it so you can port and test the NES emulator with default City Tank rom
+        Disable it so you can port and test the NES emulator with default City Tank rom
 
 - 07-05-2008 PPU improvement 
 
