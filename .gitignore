@@ -14,3 +14,5 @@ mps2_template/example/build/mdk/Out/msp2_file_io_template.hex
 mps2_template/example/build/mdk/Out/msp2_file_io_template.axf
 mps2_template/example/build/mdk/Out/startup_cmsdk_cm7.lst
 *.gabwan01
+*.zip
+*.deb

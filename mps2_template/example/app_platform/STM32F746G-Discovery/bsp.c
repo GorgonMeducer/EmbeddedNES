@@ -92,40 +92,41 @@ static void SystemClock_Config(void) {
   *   The Region Size is 256KB, it is related to SRAM1 and SRAM2 memory size.
   */
 static void MPU_Config (void) {
-  MPU_Region_InitTypeDef MPU_InitStruct;
+    MPU_Region_InitTypeDef MPU_InitStruct;
 
-  // Disable the MPU
-  HAL_MPU_Disable();
+    // Disable the MPU
+    HAL_MPU_Disable();
 
-  // Configure the MPU attributes as WT for SRAM
-  MPU_InitStruct.Enable            = MPU_REGION_ENABLE;
-  MPU_InitStruct.BaseAddress       = 0x20010000;
-  MPU_InitStruct.Size              = MPU_REGION_SIZE_256KB;
-  MPU_InitStruct.AccessPermission  = MPU_REGION_FULL_ACCESS;
-  MPU_InitStruct.IsBufferable      = MPU_ACCESS_NOT_BUFFERABLE;
-  MPU_InitStruct.IsCacheable       = MPU_ACCESS_CACHEABLE;
-  MPU_InitStruct.IsShareable       = MPU_ACCESS_NOT_SHAREABLE;
-  MPU_InitStruct.Number            = MPU_REGION_NUMBER0;
-  MPU_InitStruct.TypeExtField      = MPU_TEX_LEVEL0;
-  MPU_InitStruct.SubRegionDisable  = 0x00U;
-  MPU_InitStruct.DisableExec       = MPU_INSTRUCTION_ACCESS_ENABLE;
+    // Configure the MPU attributes as WT for SRAM
+    MPU_InitStruct.Enable            = MPU_REGION_ENABLE;
+    MPU_InitStruct.BaseAddress       = 0x20010000;
+    MPU_InitStruct.Size              = MPU_REGION_SIZE_256KB;
+    MPU_InitStruct.AccessPermission  = MPU_REGION_FULL_ACCESS;
+    MPU_InitStruct.IsBufferable      = MPU_ACCESS_NOT_BUFFERABLE;
+    MPU_InitStruct.IsCacheable       = MPU_ACCESS_CACHEABLE;
+    MPU_InitStruct.IsShareable       = MPU_ACCESS_NOT_SHAREABLE;
+    MPU_InitStruct.Number            = MPU_REGION_NUMBER0;
+    MPU_InitStruct.TypeExtField      = MPU_TEX_LEVEL0;
+    MPU_InitStruct.SubRegionDisable  = 0x00U;
+    MPU_InitStruct.DisableExec       = MPU_INSTRUCTION_ACCESS_ENABLE;
 
-  HAL_MPU_ConfigRegion(&MPU_InitStruct);
+    HAL_MPU_ConfigRegion(&MPU_InitStruct);
 
-  // Enable the MPU
-  HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
+    // Enable the MPU
+    HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
 }
 
 /**
   * CPU L1-Cache enable
   */
-static void CPU_CACHE_Enable (void) {
+static void CPU_CACHE_Enable (void) 
+{
 
-  // Enable I-Cache
-  SCB_EnableICache();
+    // Enable I-Cache
+    SCB_EnableICache();
 
-  // Enable D-Cache
-  SCB_EnableDCache();
+    // Enable D-Cache
+    SCB_EnableDCache();
 }
 
 static volatile uint_fast32_t s_wSystemCounter = 0;
@@ -141,25 +142,12 @@ uint32_t HAL_GetTick (void)
 
 bool bsp_init(void)
 {
-    MPU_Config();                         // Configure the MPU
+    //MPU_Config();                         // Configure the MPU
     CPU_CACHE_Enable();                   // Enable the CPU Cache
     HAL_Init();                           // Initialize the HAL Library
     SystemClock_Config();                 // Configure the System Clock
     SystemCoreClockUpdate();              // Update system clock
-
-    GLCD_Initialize         ();
-    GLCD_SetBackgroundColor (GLCD_COLOR_BLUE);
-    GLCD_SetForegroundColor (GLCD_COLOR_WHITE);
-    GLCD_ClearScreen        ();
-    GLCD_SetFont            (&GLCD_Font_16x24);
-    GLCD_DrawString         (0U, 0U*24U, "       NES Emulator       ");
-    GLCD_DrawString         (0U, 1U*24U, "       CDC ACM Class      ");
-    GLCD_DrawString         (0U, 2U*24U, "     VirtualCOM Example   ");
-    GLCD_DrawString         (0U, 4U*24U, "USB_HS <-> USART1 (STlink)");
-    GLCD_DrawString         (0U, 8U*24U, "      Keil Tools by ARM   ");
-    GLCD_DrawString         (0U, 9U*24U, "        www.keil.com      ");
-
-   
+  
     return true;
 }
   

@@ -224,6 +224,18 @@ static int_fast32_t load_nes_rom(uint8_t *pchBuffer, uint32_t wSize)
     return wTotalSize;
 }
 
+//! \name default roms
+//! @{
+extern const uint8_t NES_ROM_1[];               //!< city tank
+extern const uint32_t NES_ROM_1_Length;
+extern const uint8_t NES_ROM_2[];               //!< road fighter
+extern const uint32_t NES_ROM_2_Length;
+extern const uint8_t NES_ROM_3[];               //!< super mario bro
+extern const uint32_t NES_ROM_3_Length;
+extern const uint8_t NES_ROM_4[];               //!< Contra(USA)
+extern const uint32_t NES_ROM_4_Length;
+//! @}
+
 int main (void) 
 {
     system_init();
@@ -231,8 +243,7 @@ int main (void)
     app_init();
 #endif
     
-    extern const uint8_t NES_ROM_1[];
-    extern const uint32_t NES_ROM_1_Length;
+
 #if DEMO_USE_FILE_IO == ENABLED
     file_io_stream_t *ptLog = FILE_IO.Channel.Open(
                             "Log",
@@ -266,7 +277,7 @@ int main (void)
 #endif
         if (!bLoadingSuccess) {
             //! use default
-            if (fce_load_rom((uint8_t *)NES_ROM_1, NES_ROM_1_Length) != 0){
+            if (fce_load_rom((uint8_t *)NES_ROM_2, NES_ROM_2_Length) != 0){
                 break;
             }
         }        

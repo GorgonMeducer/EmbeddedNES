@@ -125,7 +125,7 @@ extern ARM_DRIVER_USART  USART_Driver_(USART_DRV_NUM);
 /*============================ IMPLEMENTATION ================================*/
 
 
-
+#if DEMO_USE_FILE_IO == ENABLED
 /*! \note initialize usart for stdout
  *  \param none
  *  \retval true    initialization succeeded.
@@ -133,8 +133,6 @@ extern ARM_DRIVER_USART  USART_Driver_(USART_DRV_NUM);
  */  
 bool stdout_init (void) 
 {    
-
-    
     do {
         int32_t status;
 
@@ -177,7 +175,7 @@ bool stdout_init (void)
 
     return false;
 }
-
+#endif
 
     
     

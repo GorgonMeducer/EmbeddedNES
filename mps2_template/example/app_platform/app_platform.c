@@ -107,7 +107,9 @@ void app_platform_1ms_event_handler(void)
 {
     bsp_1ms_event_handler();
     counter_overflow();
+#if DEMO_USE_FILE_IO == ENABLED
     STREAM_IN_1ms_event_handler();
+#endif
 }
 
 
@@ -146,17 +148,20 @@ bool app_platform_init( void )
 */
 int stdout_putchar (int ch) 
 {
+#if DEMO_USE_FILE_IO == ENABLED
     if (NULL == s_tSTDIO.ptOUT) {
         while(!STREAM_OUT.Stream.WriteByte(ch));
     } else {
         FILE_IO.Channel.WriteByte(s_tSTDIO.ptOUT, ch);
     }
-    
+#endif   
     return ch;
+ 
 }
 
 int stdin_getchar (void)
 {   
+#if DEMO_USE_FILE_IO == ENABLED
     if (NULL == s_tSTDIO.ptIN) {
         uint8_t chByte;
         while(!STREAM_IN.Stream.ReadByte(&chByte));
@@ -164,25 +169,34 @@ int stdin_getchar (void)
     }
     
     return FILE_IO.Channel.ReadByte(s_tSTDIO.ptIN);
+#else
+    return -1;
+#endif
 }
 
 void retarget_stdout(file_io_stream_t *ptOut)
 {
+#if DEMO_USE_FILE_IO == ENABLED
     s_tSTDIO.ptOUT = ptOut;
+#endif
 }
 
 void retarget_stdin(file_io_stream_t *ptIn)
 {
+#if DEMO_USE_FILE_IO == ENABLED
     s_tSTDIO.ptIN = ptIn;
+#endif
 }
 
 void stdout_flush(void)
 {
+#if DEMO_USE_FILE_IO == ENABLED
     if (NULL == s_tSTDIO.ptOUT) {
         while(!STREAM_OUT.Stream.Flush());
     } else {
         FILE_IO.Channel.Flush(s_tSTDIO.ptOUT);
     }
+#endif
 }
   
   
