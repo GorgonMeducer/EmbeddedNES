@@ -128,7 +128,7 @@ uint_fast8_t ppu_read(ppu_t *ppu, uint_fast16_t hwAddress)
             break;
             
         case 4:
-            value=ppu->oam_data[ppu->oam_address];
+            value=ppu->tSpriteTable.chBuffer[ppu->oam_address];
             break;
             
         case 7:
@@ -159,7 +159,7 @@ void ppu_dma_access(ppu_t *ppu, uint_fast8_t chData)
     uint8_t *pchSrc = ppu->nes->cpu.fnDMAGetSourceAddress(ppu->nes, address_temp);
 #   if JEG_USE_OPTIMIZED_SPRITE_PROCESSING == ENABLED
     uint8_t *pchCheck = pchSrc;
-    uint8_t *pchOAM = ppu->oam_data;
+    uint8_t *pchOAM = ppu->tSpriteTable.chBuffer;
     uint_fast8_t n = 64;
     do {
         if (*pchCheck != *pchOAM) {
@@ -170,19 +170,19 @@ void ppu_dma_access(ppu_t *ppu, uint_fast8_t chData)
         pchOAM += 4;
     } while(--n);
 #   endif
-    memcpy(&(ppu->oam_data[0]), pchSrc, 256);
+    memcpy(&(ppu->tSpriteTable.chBuffer[0]), pchSrc, 256);
 #else
     for(uint_fast16_t i=0; i<256; i++) {
         int v=ppu->nes->cpu.read(ppu->nes, address_temp++);
 #   if JEG_USE_OPTIMIZED_SPRITE_PROCESSING == ENABLED
         if (!(i & 0x03)) {
-            if (ppu->oam_data[i] != v) {
+            if (ppu->tSpriteTable.chBuffer[i] != v) {
                 ppu->bOAMUpdated = true;
             }
         }
 #   endif
         //ppu->oam_data[ppu->oam_address+i]=v;
-        ppu->oam_data[i]=v;
+        ppu->tSpriteTable.chBuffer[i]=v;
     }
 #endif
     ppu->nes->cpu.stall_cycles += 513;
@@ -209,13 +209,13 @@ void ppu_write(ppu_t *ppu, uint_fast16_t hwAddress, uint_fast8_t chData)
         case 4:
         #if JEG_USE_OPTIMIZED_SPRITE_PROCESSING == ENABLED
             if (!(ppu->oam_address & 0x03)) {
-                uint_fast8_t chOld = ppu->oam_data[ppu->oam_address];
+                uint_fast8_t chOld = ppu->tSpriteTable.chBuffer[ppu->oam_address];
                 if (chOld != chData) {
                     ppu->bOAMUpdated = true;
                 }
             }
         #endif
-            ppu->oam_data[ppu->oam_address++] = chData;
+            ppu->tSpriteTable.chBuffer[ppu->oam_address++] = chData;
             break;
         case 5:
             ppu_update(ppu);
@@ -247,10 +247,10 @@ void ppu_write(ppu_t *ppu, uint_fast16_t hwAddress, uint_fast8_t chData)
 
 }
 
-static uint32_t fetch_sprite_pattern(ppu_t *ppu, uint_fast8_t i, uint_fast16_t hwRow) 
+static uint32_t fetch_sprite_pattern(ppu_t *ppu, sprite_t *ptSpriteInfo, uint_fast16_t hwRow) 
 {
-    uint_fast8_t tile = ppu->SpriteInfo[i].chIndex;
-    uint_fast8_t chAttributes = ppu->SpriteInfo[i].Attributes.chValue;
+    uint_fast8_t tile = ptSpriteInfo->chIndex;
+    uint_fast8_t chAttributes =  ptSpriteInfo->Attributes.chValue;
     uint_fast8_t table;
     uint_fast16_t hwAddress;
 
@@ -320,7 +320,7 @@ static void sort_sprite_order_list(ppu_t *ptPPU)
     //! initialise the list
     for (;chIndex < 64; chIndex++) {
         ptPPU->SpriteYOrderList.List[chIndex].chIndex = chIndex;
-        ptPPU->SpriteYOrderList.List[chIndex].chY = ptPPU->SpriteInfo[chIndex].chY;
+        ptPPU->SpriteYOrderList.List[chIndex].chY = ptPPU->tSpriteTable.SpriteInfo[chIndex].chY;
     }
     
     //! sort the list
@@ -381,9 +381,9 @@ static inline uint_fast8_t fetch_sprite_info_on_specified_line(ppu_t *ptPPU, uin
         }
         
         if (chCount < JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE) {
-            ptPPU->sprite_patterns[chCount]   = fetch_sprite_pattern(ptPPU, chIndex, row);
-            ptPPU->sprite_positions[chCount]  = ptPPU->SpriteInfo[chIndex].chPosition; 
-            ptPPU->sprite_priorities[chCount] = ptPPU->SpriteInfo[chIndex].Attributes.Priority;
+            ptPPU->sprite_patterns[chCount]   = fetch_sprite_pattern(ptPPU, ptPPU->tSpriteTable.SpriteInfo + chIndex, row);
+            ptPPU->sprite_positions[chCount]  = ptPPU->tSpriteTable.SpriteInfo[chIndex].chPosition; 
+            ptPPU->sprite_priorities[chCount] = ptPPU->tSpriteTable.SpriteInfo[chIndex].Attributes.Priority;
             ptPPU->sprite_indicies[chCount]   = chIndex;
             chCount++;
         } else {

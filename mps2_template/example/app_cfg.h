@@ -102,10 +102,14 @@
 //  <h> NES Simulator Configuration
 //      <o>Maximum ROM Buffer Size in KB <32-512>
 //      <i>A dedicated local buffer is provided to load the NES rom. The minimal size is 32KB
-#define NES_ROM_BUFFER_SIZE                 32
-//      <o>ROM Path
+#define NES_ROM_BUFFER_SIZE                 (32)
+//      <s>ROM Path
 //      <i>The path of NES rom in host pc.
-#define NES_ROM_PATH                        "..\\..\\LiteNES\\ROMS\\Super Tank (Battle City Pirate) (J) [p1].nes"
+#define NES_ROM_PATH                        "../../LiteNES/ROMS/Super Tank (Battle City Pirate) (J) [p1].nes"
+//      <o>Default ROM Number               <1=> City Tank          <2=> Road Fighter
+//                                          <3=> Super Mario Bro    <4=> Contra
+//      <i>Specify the default rom : 1 - City Tank,  2 - Road Fighter, 3 - Super Mario, 4 - Contra (Not supported yet)
+#define NES_DEFAULT_ROM_NUMBER              2
 //  </h>
 
 

@@ -58,7 +58,6 @@ static void cpu6502_bus_write (void *ref, uint_fast16_t address, uint_fast8_t va
 static uint_fast16_t cpu6502_bus_readw (void *ref, uint_fast16_t hwAddress) 
 {
     nes_t* nes=(nes_t *)ref;
-    int value;
 
     if ( hwAddress<0x2000 ) {
         return *(uint16_t *)&(nes->ram_data[hwAddress & 0x7FF]);

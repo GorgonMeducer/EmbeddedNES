@@ -56,6 +56,30 @@ typedef struct {
 #endif
 } name_attribute_table_t;
 
+typedef union { 
+    struct {
+        uint8_t chY;
+        uint8_t chIndex;
+        union {
+            struct {
+                uint8_t         ColorH              : 2;
+                uint8_t                             : 3;
+                uint8_t         Priority            : 1;
+                uint8_t         IsFlipHorizontally  : 1;
+                uint8_t         IsFlipVertically    : 1;
+            }; 
+            uint8_t chValue;
+        }Attributes;
+        uint8_t chPosition;
+    }; 
+    uint32_t wValue;
+}sprite_t;
+
+typedef union {
+    uint8_t     chBuffer[256];
+    sprite_t    SpriteInfo[64];
+} sprite_table_t;
+
 typedef struct ppu_t {
     nes_t *nes; // reference to nes console
 
@@ -73,25 +97,20 @@ typedef struct ppu_t {
 #endif
         
     };
-    
+    /*
     union {
-        uint8_t oam_data[256];
-        struct {
-            uint8_t chY;
-            uint8_t chIndex;
-            union {
-                struct {
-                    uint8_t         ColorH              : 2;
-                    uint8_t                             : 3;
-                    uint8_t         Priority            : 1;
-                    uint8_t         IsFlipHorizontally  : 1;
-                    uint8_t         IsFlipVertically    : 1;
-                }; 
-                uint8_t chValue;
-            }Attributes;
-            uint8_t chPosition;
-        } SpriteInfo[64];
+        uint8_t     oam_data[256];
+        sprite_t    SpriteInfo[64];
     };
+    */
+    sprite_table_t tSpriteTable;
+
+    
+#if JEG_USE_SPRITE_BUFFER == ENABLED
+    sprite_table_t tModifiedSpriteTable;
+    compact_dual_pixels_t tSpriteBuffer[240][128+4];            //! "+4" to add a safe margin
+#endif
+    
 #if JEG_USE_OPTIMIZED_SPRITE_PROCESSING == ENABLED
     bool bOAMUpdated;
 #endif

@@ -109,16 +109,25 @@
 #   define  JEG_USE_BACKGROUND_BUFFERING                ENABLED
 #endif
 
+/*! \brief This switch is used to add a buffer for sprite rendering, so you don't 
+ *!        need to check the sprite status for each scanline
+ */
+#ifndef JEG_USE_SPRITE_BUFFER
+#   define  JEG_USE_SPRITE_BUFFER                       ENABLED
+#endif
 
 /*----------------------------------------------------------------------------*
  * JEG Debug  Switches                                                        *
  *----------------------------------------------------------------------------*/
 #ifndef JEG_DEBUG_SHOW_BACKGROUND
 #   define JEG_DEBUG_SHOW_BACKGROUND                    DISABLED
-#   define JEG_DEBUG_SHOW_NAMETABLE_INDEX               1
+#   define JEG_DEBUG_SHOW_NAMETABLE_INDEX               0
+#endif
+#ifndef JEG_DEBUG_SHOW_SPRITE
+#   define JEG_DEBUG_SHOW_SPRITE                        DISABLED
 #endif
 
-#if JEG_DEBUG_SHOW_BACKGROUND == ENABLED && \
+#if (JEG_DEBUG_SHOW_BACKGROUND == ENABLED || JEG_DEBUG_SHOW_SPRITE == ENABLED) && \
     JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
 #   warning     Override JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE to DISABLED for debug purpose.
 #   undef       JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE
