@@ -18,9 +18,6 @@ typedef struct {
 #   if JEG_DEBUG_SHOW_BACKGROUND == ENABLED
     compact_dual_pixels_t (*ptBuffer)[240][128];
 #   endif
-#   if JEG_DEBUG_SHOW_SPRITE == ENABLED
-    compact_dual_pixels_t (*ptBuffer)[240][128+4];
-#   endif
 
     union{
         uint8_t chBuffer[SCREEN_HEIGHT*(SCREEN_WIDTH>>1)];
@@ -47,7 +44,7 @@ extern void update_frame(frame_t *ptFrame);
 extern void draw_pixels(void *ptTag, uint_fast8_t y, uint_fast8_t x, uint_fast8_t chColor);
 #endif
 
-#if JEG_DEBUG_SHOW_BACKGROUND == ENABLED || JEG_DEBUG_SHOW_SPRITE == ENABLED
+#if JEG_DEBUG_SHOW_BACKGROUND == ENABLED
 extern uint_fast8_t debug_fetch_color(uint_fast8_t chColor);
 #endif
 

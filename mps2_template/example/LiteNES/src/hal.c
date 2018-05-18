@@ -276,23 +276,6 @@ void update_frame(frame_t *ptFrame)
                 chX++;
             } while(--n);
             chX--;
-        #elif JEG_DEBUG_SHOW_SPRITE == ENABLED
-            uint_fast32_t wPattern = (*(uint32_t *)&(*(ptFrame->ptBuffer))[chY][chX>>1]);
-                uint_fast8_t n = 8;
-                do {
-                    uint_fast8_t chColor = wPattern & 0x0F;
-                    chColor |= 0x10;
-                    
-                    if ( chColor >= 16 && !(chColor & 0x03)) {
-                        chColor -= 16;
-                    }
-                    wPattern >>= 4;
-                    chColor = debug_fetch_color(chColor);
-                    s_tScreenBuffer[y][chX].tColor = s_tColorMap[chColor];
-                    chX++;
-                } while(--n);
-                chX--;
-        #else
             uint_fast8_t chColor = ptFrame->chPixels[chY][chX];
             s_tScreenBuffer[y][chX].tColor = s_tColorMap[chColor];
         #endif

@@ -146,7 +146,7 @@ static void write_name_attribute_table(nes_t *ptNES, uint_fast16_t hwAddress, ui
     uint8_t chOldData = ptTable->chBuffer[hwAddress];
     ptTable->chBuffer[hwAddress] = chData;
     
-#if JEG_USE_DIRTY_MATRIX == ENABLED || JEG_USE_BACKGROUND_BUFFERING == ENABLED
+#if JEG_USE_BACKGROUND_BUFFERING == ENABLED
     if (chOldData == chData) {
         return ;
     }

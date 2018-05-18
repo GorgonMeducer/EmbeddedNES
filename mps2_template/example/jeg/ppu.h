@@ -49,7 +49,7 @@ typedef struct {
         uint8_t chBuffer[1024];
     };
     
-#if JEG_USE_DIRTY_MATRIX == ENABLED || JEG_USE_BACKGROUND_BUFFERING == ENABLED
+#if JEG_USE_BACKGROUND_BUFFERING == ENABLED
     compact_dual_pixels_t chBackgroundBuffer[240][128];
     uint_fast32_t wDirtyMatrix[32];                                             //! do not modify it to 30
     bool bRequestRefresh;
@@ -97,18 +97,15 @@ typedef struct ppu_t {
 #endif
         
     };
-    /*
-    union {
-        uint8_t     oam_data[256];
-        sprite_t    SpriteInfo[64];
-    };
-    */
-    sprite_table_t tSpriteTable;
 
+    sprite_table_t tSpriteTable;
+    
+    
     
 #if JEG_USE_SPRITE_BUFFER == ENABLED
     sprite_table_t tModifiedSpriteTable;
-    compact_dual_pixels_t tSpriteBuffer[240][128+4];            //! "+4" to add a safe margin
+    uint32_t wSpriteBuffer[64][16];
+    bool bRequestRefreshSpriteBuffer;
 #endif
     
 #if JEG_USE_OPTIMIZED_SPRITE_PROCESSING == ENABLED
@@ -133,11 +130,7 @@ typedef struct ppu_t {
     union {
         vram_addr_t tTempVAddress;
         uint_fast16_t t; // temporary vram address (15bit)
-    };
-#if JEG_USE_DIRTY_MATRIX == ENABLED
-    uint_fast16_t hwOldt;
-    bool bDisplayWindowMoved;
-#endif    
+    };   
     
     uint_fast8_t x; // fine x scoll (3bit)
     uint_fast8_t w; // toggle bit (1bit)
@@ -148,9 +141,7 @@ typedef struct ppu_t {
     // background temporary variables
     uint_fast8_t name_table_byte;
     uint_fast8_t attribute_table_byte;
-#if JEG_USE_DIRTY_MATRIX == ENABLED
-    uint_fast8_t chBackgroundUpdated;
-#endif
+
     uint_fast8_t low_tile_byte;
     uint_fast8_t high_tile_byte;
     uint_fast64_t tile_data;
