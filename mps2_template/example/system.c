@@ -64,6 +64,13 @@
 #   define NES_ROM_PATH "..\\..\\LiteNES\\ROMS\\Super Mario Bros (E).nes"
 #endif
 
+#ifndef NES_DEFAULT_ROM_NUMBER
+#   define NES_DEFAULT_ROM_NUMBER           1
+#endif
+#define __DEFAULT_ROM(__N)          (uint8_t *)NES_ROM_##__N, NES_ROM_##__N##_Length
+#define __NES_DEFAULT_ROM(__N)      __DEFAULT_ROM(__N)
+#define NES_DEFAULT_ROM             __NES_DEFAULT_ROM(NES_DEFAULT_ROM_NUMBER)
+
 /*============================ MACROFIED FUNCTIONS ===========================*/
 /*============================ TYPES =========================================*/
 /*============================ GLOBAL VARIABLES ==============================*/
@@ -277,7 +284,7 @@ int main (void)
 #endif
         if (!bLoadingSuccess) {
             //! use default
-            if (fce_load_rom((uint8_t *)NES_ROM_2, NES_ROM_2_Length) != 0){
+            if (fce_load_rom(NES_DEFAULT_ROM) != 0){
                 break;
             }
         }        

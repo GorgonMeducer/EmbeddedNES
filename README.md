@@ -5,6 +5,12 @@ A portable NES simulator for embedded processors.
 
 ## Update Log
 
+- 18-05-2018 PPU performance improvement
+
+    * Add buffers for individual sprites
+    
+    * Clean code, remove unused macro switch, i.e. JEG_USE_DIRTY_MATRIX
+
 - 16-05-2018 Add more default roms
 
     * Add two default roms

@@ -58,7 +58,6 @@ static void cpu6502_bus_write (void *ref, uint_fast16_t address, uint_fast8_t va
 static uint_fast16_t cpu6502_bus_readw (void *ref, uint_fast16_t hwAddress) 
 {
     nes_t* nes=(nes_t *)ref;
-    int value;
 
     if ( hwAddress<0x2000 ) {
         return *(uint16_t *)&(nes->ram_data[hwAddress & 0x7FF]);
@@ -147,7 +146,7 @@ static void write_name_attribute_table(nes_t *ptNES, uint_fast16_t hwAddress, ui
     uint8_t chOldData = ptTable->chBuffer[hwAddress];
     ptTable->chBuffer[hwAddress] = chData;
     
-#if JEG_USE_DIRTY_MATRIX == ENABLED || JEG_USE_BACKGROUND_BUFFERING == ENABLED
+#if JEG_USE_BACKGROUND_BUFFERING == ENABLED
     if (chOldData == chData) {
         return ;
     }

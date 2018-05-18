@@ -95,13 +95,6 @@
  * JEG Pixel Version Dedicated Optimisation / Configuration Switches          *
  *----------------------------------------------------------------------------*/
 
-/*! \brief This switch is used to enable dirty matrix of rendering. It hasn't been
- *!        finished yet. More test required. Do not enable it.
- */
-#ifndef JEG_USE_DIRTY_MATRIX                            
-#   define  JEG_USE_DIRTY_MATRIX                        DISABLED
-#endif
-
 /*! \brief This switch is used to add a background buffer for each name table,
  *!        so you don't need to re-draw the background every time
  */ 
@@ -109,13 +102,19 @@
 #   define  JEG_USE_BACKGROUND_BUFFERING                ENABLED
 #endif
 
+/*! \brief This switch is used to add a buffer for sprite rendering, so you don't 
+ *!        need to check the sprite status for each scanline. 
+ */
+#ifndef JEG_USE_SPRITE_BUFFER
+#   define  JEG_USE_SPRITE_BUFFER                       ENABLED
+#endif
 
 /*----------------------------------------------------------------------------*
  * JEG Debug  Switches                                                        *
  *----------------------------------------------------------------------------*/
 #ifndef JEG_DEBUG_SHOW_BACKGROUND
 #   define JEG_DEBUG_SHOW_BACKGROUND                    DISABLED
-#   define JEG_DEBUG_SHOW_NAMETABLE_INDEX               1
+#   define JEG_DEBUG_SHOW_NAMETABLE_INDEX               0
 #endif
 
 #if JEG_DEBUG_SHOW_BACKGROUND == ENABLED && \

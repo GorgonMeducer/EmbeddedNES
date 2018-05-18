@@ -2924,7 +2924,7 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls>--wchar32 --loop_optimization_level=2 --no_unaligned_access</MiscControls>
+              <MiscControls>--wchar32 --loop_optimization_level=2 --no_unaligned_access --diag_suppress=64,177</MiscControls>
               <Define>__USE_STM32F746G_DISCOVERY__ _MSC_VER __USE_LCD __USE_TIMER0 __USE_FPGA USE_JEG  __USER_DEFINED_APP_CFG_H__ GLCD_MIRROR_Y=1 JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE=ENABLED JEG_USE_FRAME_SYNC_UP_FLAG=ENABLED JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE=32 JEG_USE_EXTRA_16BIT_BUS_ACCESS=ENABLED JEG_USE_DMA_MEMORY_COPY_ACCELERATION=ENABLED</Define>
               <Undefine></Undefine>
               <IncludePath>..\..\app_platform;..\..\jeg</IncludePath>
@@ -2958,7 +2958,7 @@
             <TextAddressRange>0x00000000</TextAddressRange>
             <DataAddressRange>0x20000000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile>.\Out\msp2_file_io_template.sct</ScatterFile>
+            <ScatterFile>.\STM32F746G_Discovery.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc></Misc>

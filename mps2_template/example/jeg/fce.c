@@ -93,7 +93,12 @@ typedef struct {
 
 static NO_INIT fce_t s_tFCE;
 
-
+#if JEG_DEBUG_SHOW_BACKGROUND == ENABLED
+uint_fast8_t debug_fetch_color(uint_fast8_t chColor)
+{
+    return s_tFCE.tNESConsole.ppu.palette[chColor];
+}
+#endif
 
 void fce_init(void)
 {
@@ -112,7 +117,7 @@ void fce_init(void)
 #endif
 
 #if JEG_DEBUG_SHOW_BACKGROUND == ENABLED
-    this.tFrame.pchPixels = &(this.tNESConsole.ppu.tNameAttributeTable[JEG_DEBUG_SHOW_NAMETABLE_INDEX].chBackgroundBuffer);
+    this.tFrame.ptBuffer = &(this.tNESConsole.ppu.tNameAttributeTable[JEG_DEBUG_SHOW_NAMETABLE_INDEX].chBackgroundBuffer);
 #endif
 }
 

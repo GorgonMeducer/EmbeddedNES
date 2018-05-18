@@ -49,12 +49,36 @@ typedef struct {
         uint8_t chBuffer[1024];
     };
     
-#if JEG_USE_DIRTY_MATRIX == ENABLED || JEG_USE_BACKGROUND_BUFFERING == ENABLED
+#if JEG_USE_BACKGROUND_BUFFERING == ENABLED
     compact_dual_pixels_t chBackgroundBuffer[240][128];
     uint_fast32_t wDirtyMatrix[32];                                             //! do not modify it to 30
     bool bRequestRefresh;
 #endif
 } name_attribute_table_t;
+
+typedef union { 
+    struct {
+        uint8_t chY;
+        uint8_t chIndex;
+        union {
+            struct {
+                uint8_t         ColorH              : 2;
+                uint8_t                             : 3;
+                uint8_t         Priority            : 1;
+                uint8_t         IsFlipHorizontally  : 1;
+                uint8_t         IsFlipVertically    : 1;
+            }; 
+            uint8_t chValue;
+        }Attributes;
+        uint8_t chPosition;
+    }; 
+    uint32_t wValue;
+}sprite_t;
+
+typedef union {
+    uint8_t     chBuffer[256];
+    sprite_t    SpriteInfo[64];
+} sprite_table_t;
 
 typedef struct ppu_t {
     nes_t *nes; // reference to nes console
@@ -73,25 +97,17 @@ typedef struct ppu_t {
 #endif
         
     };
+
+    sprite_table_t tSpriteTable;
     
-    union {
-        uint8_t oam_data[256];
-        struct {
-            uint8_t chY;
-            uint8_t chIndex;
-            union {
-                struct {
-                    uint8_t         ColorH              : 2;
-                    uint8_t                             : 3;
-                    uint8_t         Priority            : 1;
-                    uint8_t         IsFlipHorizontally  : 1;
-                    uint8_t         IsFlipVertically    : 1;
-                }; 
-                uint8_t chValue;
-            }Attributes;
-            uint8_t chPosition;
-        } SpriteInfo[64];
-    };
+    
+    
+#if JEG_USE_SPRITE_BUFFER == ENABLED
+    sprite_table_t tModifiedSpriteTable;
+    uint32_t wSpriteBuffer[64][16];
+    bool bRequestRefreshSpriteBuffer;
+#endif
+    
 #if JEG_USE_OPTIMIZED_SPRITE_PROCESSING == ENABLED
     bool bOAMUpdated;
 #endif
@@ -114,11 +130,7 @@ typedef struct ppu_t {
     union {
         vram_addr_t tTempVAddress;
         uint_fast16_t t; // temporary vram address (15bit)
-    };
-#if JEG_USE_DIRTY_MATRIX == ENABLED
-    uint_fast16_t hwOldt;
-    bool bDisplayWindowMoved;
-#endif    
+    };   
     
     uint_fast8_t x; // fine x scoll (3bit)
     uint_fast8_t w; // toggle bit (1bit)
@@ -129,9 +141,7 @@ typedef struct ppu_t {
     // background temporary variables
     uint_fast8_t name_table_byte;
     uint_fast8_t attribute_table_byte;
-#if JEG_USE_DIRTY_MATRIX == ENABLED
-    uint_fast8_t chBackgroundUpdated;
-#endif
+
     uint_fast8_t low_tile_byte;
     uint_fast8_t high_tile_byte;
     uint_fast64_t tile_data;

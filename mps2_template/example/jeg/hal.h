@@ -16,7 +16,7 @@ typedef struct {
     uint32_t wDirtyMatrix[SCREEN_HEIGHT >> 3];
 #else
 #   if JEG_DEBUG_SHOW_BACKGROUND == ENABLED
-    nes_screen_buffer_t *pchPixels;
+    compact_dual_pixels_t (*ptBuffer)[240][128];
 #   endif
 
     union{
@@ -42,6 +42,10 @@ extern void update_frame(frame_t *ptFrame);
 
 #if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
 extern void draw_pixels(void *ptTag, uint_fast8_t y, uint_fast8_t x, uint_fast8_t chColor);
+#endif
+
+#if JEG_DEBUG_SHOW_BACKGROUND == ENABLED
+extern uint_fast8_t debug_fetch_color(uint_fast8_t chColor);
 #endif
 
 #endif
