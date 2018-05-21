@@ -1,11 +1,10 @@
 #ifndef NES_H
 #define NES_H
 
-#include <stdint.h>
-#include <stdbool.h>
 #include "ppu.h"
 #include "cpu6502.h"
 #include "cartridge.h"
+#include ".\common.h"
 #include "jeg_cfg.h"
 
 

@@ -15072,24 +15072,21 @@ ARM Macro Assembler    Page 232
    19 0000A014                 EXPORT           NES_ROM_3_Length
    20 0000A014         
    21 0000A014                 END
-Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M7.fp.sp --apcs=
-interwork --depend=.\out\super_mario_bros.d -o.\out\super_mario_bros.o -I.\RTE\
-Device\STM32F746NGHx -I.\RTE\_STM32F746-Discovery -IC:\Keil_v5\ARM\PACK\ARM\CMS
-IS\5.3.0\CMSIS\Driver\Include -IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Inclu
-de -IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.6.0\Board -IC:\Keil_v5\ARM\PACK\
-Keil\STM32F7xx_DFP\2.9.0\Drivers\BSP\STM32746G-Discovery -IC:\Keil_v5\ARM\PACK\
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M7.fp.sp --depen
+d=.\out\super_mario_bros.d -o.\out\super_mario_bros.o -I.\RTE\Device\CMSDK_CM7_
+SP -I.\RTE\_V2M-MPS2-jeg -IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Driver\Inc
+lude -IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include -IC:\Keil_v5\ARM\PACK\
+Keil\MDK-Middleware\7.6.0\Board -IC:\Keil_v5\ARM\PACK\Keil\V2M-MPS2_CMx_BSP\1.6
+.0\Boards\ARM\V2M-MPS2\Common -IC:\Keil_v5\ARM\PACK\Keil\V2M-MPS2_CMx_BSP\1.6.0
 
 
 
 ARM Macro Assembler    Page 233 
 
 
-Keil\STM32F7xx_DFP\2.9.0\Drivers\CMSIS\Device\ST\STM32F7xx\Include -IC:\Keil_v5
-\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\STM32F7xx_HAL_Driver\Inc -IC:\Keil_v
-5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\MDK\Boards\ST\STM32F746G_Discovery\Common -
--predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 525" --prede
-fine="_RTE_ SETA 1" --predefine="STM32F746xx SETA 1" --list=.\out\super_mario_b
-ros.lst ..\..\LiteNES\roms\Super_Mario_Bros.s
+\Device\CMSDK_CM7\Include --predefine="__MICROLIB SETA 1" --predefine="__UVISIO
+N_VERSION SETA 525" --predefine="_RTE_ SETA 1" --predefine="CMSDK_CM7_SP SETA 1
+" --list=.\out\super_mario_bros.lst ..\..\LiteNES\roms\Super_Mario_Bros.s
 
 
 

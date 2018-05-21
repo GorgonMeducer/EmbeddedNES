@@ -3,6 +3,6 @@
 
 #include "cpu6502.h"
 
-void cpu6502_dump(cpu6502_t *cpu);
+extern void cpu6502_dump(cpu6502_t *cpu);
 
 #endif

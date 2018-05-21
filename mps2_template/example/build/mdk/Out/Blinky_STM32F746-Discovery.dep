@@ -1,7 +1,6 @@
 Dependencies for Project 'Blinky', Target 'STM32F746-Discovery': (DO NOT MODIFY !)
 F (..\..\LiteNES\src\hal.c)(0x5AFEC3C0)(--c99 --gnu -c --cpu Cortex-M7.fp.sp -D__MICROLIB -g -O3 -Otime --apcs=interwork --split_sections --enum_is_int -I ..\..\app_platform -I ..\..\jeg --wchar32 --loop_optimization_level=2 --no_unaligned_access --diag_suppress=64,177-I.\RTE\Device\STM32F746NGHx-I.\RTE\_STM32F746-Discovery-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Driver\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.6.0\Board-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\BSP\STM32746G-Discovery-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\CMSIS\Device\ST\STM32F7xx\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\STM32F7xx_HAL_Driver\Inc-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\MDK\Boards\ST\STM32F746G_Discovery\Common-D__UVISION_VERSION="525" -D_RTE_ -DSTM32F746xx -D__USE_STM32F746G_DISCOVERY__ -D_MSC_VER -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1" -DJEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE="ENABLED" -DJEG_USE_FRAME_SYNC_UP_FLAG="ENABLED" -DJEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE="32" -DJEG_USE_EXTRA_16BIT_BUS_ACCESS="ENABLED" -DJEG_USE_DMA_MEMORY_COPY_ACCELERATION="ENABLED"-o .\out\hal.o --omf_browse .\out\hal.crf --depend .\out\hal.d)
-I (..\..\jeg\hal.h)(0x5AFEC3E8)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
+I (..\..\jeg\hal.h)(0x5AFF481B)
 I (..\..\app_platform\app_platform.h)(0x5AFADA70)
 I (..\..\app_platform\.\app_cfg.h)(0x5A43D0EE)
 I (..\..\app_platform\.\..\..\sources\gmsi\gmsi.h)(0x5A158824)
@@ -17,6 +16,7 @@ I (..\..\app_platform\.\..\..\sources\gmsi\.\utilities\.\preprocessor\stringz.h)
 I (..\..\app_platform\.\..\..\sources\gmsi\.\utilities\.\arm\arm_compiler.h)(0x5A61D485)
 I (..\..\app_platform\.\..\..\sources\gmsi\.\utilities\.\arm\cortex_m7_compiler.h)(0x5A1EC1DB)
 I (..\..\app_platform\.\..\..\sources\gmsi\.\utilities\.\arm\.\app_type.h)(0x5A158824)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x599F2F9C)
 I (..\..\app_platform\.\..\..\sources\gmsi\.\utilities\.\arm\.\signal.h)(0x5A3D8534)
@@ -30,7 +30,7 @@ I (..\..\app_platform\.\..\..\sources\gmsi\.\utilities\template\.\t_queue.h)(0x5
 I (..\..\app_platform\.\..\..\sources\gmsi\.\utilities\template\.\t_pool.h)(0x5A43A145)
 I (..\..\app_platform\.\..\..\sources\gmsi\.\utilities\template\.\t_list.h)(0x5A43A148)
 I (..\..\app_platform\.\..\..\sources\gmsi\.\..\app_cfg.h)(0x5A0DAB10)
-I (..\..\app_platform\.\..\..\sources\gmsi\.\..\..\example\app_cfg.h)(0x5AFED963)
+I (..\..\app_platform\.\..\..\sources\gmsi\.\..\..\example\app_cfg.h)(0x5B02986F)
 I (..\..\app_platform\.\..\..\sources\gmsi\.\hal\hal.h)(0x5A158824)
 I (..\..\app_platform\.\..\..\sources\gmsi\.\hal\.\app_cfg.h)(0x5A43A157)
 I (..\..\app_platform\.\..\..\sources\gmsi\.\hal\.\component\component.h)(0x5A43A212)
@@ -201,12 +201,15 @@ I (C:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.6.0\Board\Board_GLCD.h)(0x5877704C)
 I (C:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\MDK\Boards\ST\STM32F746G_Discovery\Common\GLCD_Config.h)(0x5593F300)
 I (..\..\app_platform\.\stdout_USART.h)(0x5AEDD06C)
 I (..\..\app_platform\.\file_io.h)(0x5ADDEB31)
-I (..\..\jeg\nes.h)(0x5AEB9962)
-I (..\..\jeg\ppu.h)(0x5AFECB27)
-I (..\..\jeg\jeg_cfg.h)(0x5AFED479)
-I (..\..\jeg\cpu6502.h)(0x5ADFAFBD)
-I (..\..\jeg\cartridge.h)(0x5AFC0A50)
-I (..\..\jeg\fce.h)(0x5AFC7ABC)
+I (..\..\jeg\nes.h)(0x5AFF4846)
+I (..\..\jeg\ppu.h)(0x5B029FA8)
+I (..\..\jeg\.\common.h)(0x5AFF4828)
+I (C:\Keil_v5\ARM\ARMCC\include\assert.h)(0x599F2F9A)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599F2F9C)
+I (..\..\jeg\jeg_cfg.h)(0x5AFF4936)
+I (..\..\jeg\cpu6502.h)(0x5B029EEB)
+I (..\..\jeg\cartridge.h)(0x5AFF5336)
+I (..\..\jeg\fce.h)(0x5AFF4835)
 F (..\..\system.c)(0x5AFDB171)(--c99 --gnu -c --cpu Cortex-M7.fp.sp -D__MICROLIB -g -O3 -Otime --apcs=interwork --split_sections --enum_is_int -I ..\..\app_platform -I ..\..\jeg --wchar32 --loop_optimization_level=2 --no_unaligned_access --diag_suppress=64,177-I.\RTE\Device\STM32F746NGHx-I.\RTE\_STM32F746-Discovery-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Driver\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.6.0\Board-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\BSP\STM32746G-Discovery-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\CMSIS\Device\ST\STM32F7xx\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\STM32F7xx_HAL_Driver\Inc-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\MDK\Boards\ST\STM32F746G_Discovery\Common-D__UVISION_VERSION="525" -D_RTE_ -DSTM32F746xx -D__USE_STM32F746G_DISCOVERY__ -D_MSC_VER -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1" -DJEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE="ENABLED" -DJEG_USE_FRAME_SYNC_UP_FLAG="ENABLED" -DJEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE="32" -DJEG_USE_EXTRA_16BIT_BUS_ACCESS="ENABLED" -DJEG_USE_DMA_MEMORY_COPY_ACCELERATION="ENABLED"-o .\out\system.o --omf_browse .\out\system.crf --depend .\out\system.d)
 I (..\..\.\app_platform\app_platform.h)(0x5AFADA70)
 I (..\..\.\app_platform\.\app_cfg.h)(0x5A43D0EE)
@@ -237,7 +240,7 @@ I (..\..\.\app_platform\.\..\..\sources\gmsi\.\utilities\template\.\t_queue.h)(0
 I (..\..\.\app_platform\.\..\..\sources\gmsi\.\utilities\template\.\t_pool.h)(0x5A43A145)
 I (..\..\.\app_platform\.\..\..\sources\gmsi\.\utilities\template\.\t_list.h)(0x5A43A148)
 I (..\..\.\app_platform\.\..\..\sources\gmsi\.\..\app_cfg.h)(0x5A0DAB10)
-I (..\..\.\app_platform\.\..\..\sources\gmsi\.\..\..\example\app_cfg.h)(0x5AFED963)
+I (..\..\.\app_platform\.\..\..\sources\gmsi\.\..\..\example\app_cfg.h)(0x5B02986F)
 I (..\..\.\app_platform\.\..\..\sources\gmsi\.\hal\hal.h)(0x5A158824)
 I (..\..\.\app_platform\.\..\..\sources\gmsi\.\hal\.\app_cfg.h)(0x5A43A157)
 I (..\..\.\app_platform\.\..\..\sources\gmsi\.\hal\.\component\component.h)(0x5A43A212)
@@ -408,12 +411,13 @@ I (C:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.6.0\Board\Board_GLCD.h)(0x5877704C)
 I (C:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\MDK\Boards\ST\STM32F746G_Discovery\Common\GLCD_Config.h)(0x5593F300)
 I (..\..\.\app_platform\.\stdout_USART.h)(0x5AEDD06C)
 I (..\..\.\app_platform\.\file_io.h)(0x5ADDEB31)
-I (..\..\jeg\fce.h)(0x5AFC7ABC)
+I (..\..\jeg\fce.h)(0x5AFF4835)
+I (..\..\jeg\.\common.h)(0x5AFF4828)
 I (C:\Keil_v5\ARM\ARMCC\include\assert.h)(0x599F2F9A)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599F2F9C)
-F (..\..\app_cfg.h)(0x5AFED963)()
+F (..\..\app_cfg.h)(0x5B02986F)()
 F (.\Abstract.txt)(0x59F59CC5)()
-F (..\..\..\..\README.md)(0x5AFBFF60)()
+F (..\..\..\..\README.md)(0x5AFEDA96)()
 F (..\..\..\sources\gmsi\utilities\ooc.c)(0x5A2927F0)()
 F (..\..\..\sources\gmsi\utilities\arm\signal.c)(0x5A37A963)()
 F (..\..\..\sources\gmsi\gmsi.c)(0x5A158824)()
@@ -493,7 +497,7 @@ I (..\..\app_platform\.\..\..\sources\gmsi\.\utilities\template\.\t_queue.h)(0x5
 I (..\..\app_platform\.\..\..\sources\gmsi\.\utilities\template\.\t_pool.h)(0x5A43A145)
 I (..\..\app_platform\.\..\..\sources\gmsi\.\utilities\template\.\t_list.h)(0x5A43A148)
 I (..\..\app_platform\.\..\..\sources\gmsi\.\..\app_cfg.h)(0x5A0DAB10)
-I (..\..\app_platform\.\..\..\sources\gmsi\.\..\..\example\app_cfg.h)(0x5AFED963)
+I (..\..\app_platform\.\..\..\sources\gmsi\.\..\..\example\app_cfg.h)(0x5B02986F)
 I (..\..\app_platform\.\..\..\sources\gmsi\.\hal\hal.h)(0x5A158824)
 I (..\..\app_platform\.\..\..\sources\gmsi\.\hal\.\app_cfg.h)(0x5A43A157)
 I (..\..\app_platform\.\..\..\sources\gmsi\.\hal\.\component\component.h)(0x5A43A212)
@@ -693,7 +697,7 @@ I (..\..\app_platform\.\..\..\sources\gmsi\.\utilities\template\.\t_queue.h)(0x5
 I (..\..\app_platform\.\..\..\sources\gmsi\.\utilities\template\.\t_pool.h)(0x5A43A145)
 I (..\..\app_platform\.\..\..\sources\gmsi\.\utilities\template\.\t_list.h)(0x5A43A148)
 I (..\..\app_platform\.\..\..\sources\gmsi\.\..\app_cfg.h)(0x5A0DAB10)
-I (..\..\app_platform\.\..\..\sources\gmsi\.\..\..\example\app_cfg.h)(0x5AFED963)
+I (..\..\app_platform\.\..\..\sources\gmsi\.\..\..\example\app_cfg.h)(0x5B02986F)
 I (..\..\app_platform\.\..\..\sources\gmsi\.\hal\hal.h)(0x5A158824)
 I (..\..\app_platform\.\..\..\sources\gmsi\.\hal\.\app_cfg.h)(0x5A43A157)
 I (..\..\app_platform\.\..\..\sources\gmsi\.\hal\.\component\component.h)(0x5A43A212)
@@ -884,46 +888,65 @@ F (..\..\LiteNES\src\fce\cartridge.c)(0x5AB2333C)()
 F (..\..\LiteNES\src\fce\cartridge.h)(0x5ADA5BA0)()
 F (..\..\LiteNES\src\fce\ppu_new.c)(0x5ADCFA07)()
 F (..\..\LiteNES\src\fce\ppu_new.h)(0x5AB2335D)()
-F (..\..\jeg\cartridge.c)(0x5AEDD1D9)(--c99 --gnu -c --cpu Cortex-M7.fp.sp -D__MICROLIB -g -O3 -Otime --apcs=interwork --split_sections --enum_is_int -I ..\..\app_platform -I ..\..\jeg --wchar32 --loop_optimization_level=2 --no_unaligned_access --diag_suppress=64,177-I.\RTE\Device\STM32F746NGHx-I.\RTE\_STM32F746-Discovery-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Driver\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.6.0\Board-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\BSP\STM32746G-Discovery-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\CMSIS\Device\ST\STM32F7xx\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\STM32F7xx_HAL_Driver\Inc-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\MDK\Boards\ST\STM32F746G_Discovery\Common-D__UVISION_VERSION="525" -D_RTE_ -DSTM32F746xx -D__USE_STM32F746G_DISCOVERY__ -D_MSC_VER -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1" -DJEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE="ENABLED" -DJEG_USE_FRAME_SYNC_UP_FLAG="ENABLED" -DJEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE="32" -DJEG_USE_EXTRA_16BIT_BUS_ACCESS="ENABLED" -DJEG_USE_DMA_MEMORY_COPY_ACCELERATION="ENABLED"-o .\out\cartridge.o --omf_browse .\out\cartridge.crf --depend .\out\cartridge.d)
-I (..\..\jeg\cartridge.h)(0x5AFC0A50)
+F (..\..\jeg\cartridge.c)(0x5B029A39)(--c99 --gnu -c --cpu Cortex-M7.fp.sp -D__MICROLIB -g -O3 -Otime --apcs=interwork --split_sections --enum_is_int -I ..\..\app_platform -I ..\..\jeg --wchar32 --loop_optimization_level=2 --no_unaligned_access --diag_suppress=64,177-I.\RTE\Device\STM32F746NGHx-I.\RTE\_STM32F746-Discovery-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Driver\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.6.0\Board-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\BSP\STM32746G-Discovery-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\CMSIS\Device\ST\STM32F7xx\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\STM32F7xx_HAL_Driver\Inc-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\MDK\Boards\ST\STM32F746G_Discovery\Common-D__UVISION_VERSION="525" -D_RTE_ -DSTM32F746xx -D__USE_STM32F746G_DISCOVERY__ -D_MSC_VER -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1" -DJEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE="ENABLED" -DJEG_USE_FRAME_SYNC_UP_FLAG="ENABLED" -DJEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE="32" -DJEG_USE_EXTRA_16BIT_BUS_ACCESS="ENABLED" -DJEG_USE_DMA_MEMORY_COPY_ACCELERATION="ENABLED"-o .\out\cartridge.o --omf_browse .\out\cartridge.crf --depend .\out\cartridge.d)
+I (..\..\jeg\cartridge.h)(0x5AFF5336)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
-I (..\..\jeg\jeg_cfg.h)(0x5AFED479)
+I (..\..\jeg\.\common.h)(0x5AFF4828)
+I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x599F2F9E)
+I (C:\Keil_v5\ARM\ARMCC\include\assert.h)(0x599F2F9A)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599F2F9C)
-F (..\..\jeg\cpu6502.c)(0x5ADFAFBD)(--c99 --gnu -c --cpu Cortex-M7.fp.sp -D__MICROLIB -g -O3 -Otime --apcs=interwork --split_sections --enum_is_int -I ..\..\app_platform -I ..\..\jeg --wchar32 --loop_optimization_level=2 --no_unaligned_access --diag_suppress=64,177-I.\RTE\Device\STM32F746NGHx-I.\RTE\_STM32F746-Discovery-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Driver\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.6.0\Board-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\BSP\STM32746G-Discovery-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\CMSIS\Device\ST\STM32F7xx\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\STM32F7xx_HAL_Driver\Inc-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\MDK\Boards\ST\STM32F746G_Discovery\Common-D__UVISION_VERSION="525" -D_RTE_ -DSTM32F746xx -D__USE_STM32F746G_DISCOVERY__ -D_MSC_VER -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1" -DJEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE="ENABLED" -DJEG_USE_FRAME_SYNC_UP_FLAG="ENABLED" -DJEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE="32" -DJEG_USE_EXTRA_16BIT_BUS_ACCESS="ENABLED" -DJEG_USE_DMA_MEMORY_COPY_ACCELERATION="ENABLED"-o .\out\cpu6502.o --omf_browse .\out\cpu6502.crf --depend .\out\cpu6502.d)
-I (..\..\jeg\cpu6502.h)(0x5ADFAFBD)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599F2F9C)
+I (..\..\jeg\jeg_cfg.h)(0x5AFF4936)
+F (..\..\jeg\cpu6502.c)(0x5B029ED4)(--c99 --gnu -c --cpu Cortex-M7.fp.sp -D__MICROLIB -g -O3 -Otime --apcs=interwork --split_sections --enum_is_int -I ..\..\app_platform -I ..\..\jeg --wchar32 --loop_optimization_level=2 --no_unaligned_access --diag_suppress=64,177-I.\RTE\Device\STM32F746NGHx-I.\RTE\_STM32F746-Discovery-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Driver\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.6.0\Board-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\BSP\STM32746G-Discovery-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\CMSIS\Device\ST\STM32F7xx\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\STM32F7xx_HAL_Driver\Inc-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\MDK\Boards\ST\STM32F746G_Discovery\Common-D__UVISION_VERSION="525" -D_RTE_ -DSTM32F746xx -D__USE_STM32F746G_DISCOVERY__ -D_MSC_VER -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1" -DJEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE="ENABLED" -DJEG_USE_FRAME_SYNC_UP_FLAG="ENABLED" -DJEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE="32" -DJEG_USE_EXTRA_16BIT_BUS_ACCESS="ENABLED" -DJEG_USE_DMA_MEMORY_COPY_ACCELERATION="ENABLED"-o .\out\cpu6502.o --omf_browse .\out\cpu6502.crf --depend .\out\cpu6502.d)
+I (..\..\jeg\cpu6502.h)(0x5B029EEB)
+I (..\..\jeg\.\common.h)(0x5AFF4828)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x599F2F9E)
-I (..\..\jeg\jeg_cfg.h)(0x5AFED479)
-I (..\..\jeg\cpu6502_opcodes.h)(0x5AE067AA)
-I (..\..\jeg\cpu6502_debug.h)(0x5ADFAFBD)
+I (C:\Keil_v5\ARM\ARMCC\include\assert.h)(0x599F2F9A)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599F2F9C)
-F (..\..\jeg\cpu6502_opcodes.c)(0x5AE0677A)(--c99 --gnu -c --cpu Cortex-M7.fp.sp -D__MICROLIB -g -O3 -Otime --apcs=interwork --split_sections --enum_is_int -I ..\..\app_platform -I ..\..\jeg --wchar32 --loop_optimization_level=2 --no_unaligned_access --diag_suppress=64,177-I.\RTE\Device\STM32F746NGHx-I.\RTE\_STM32F746-Discovery-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Driver\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.6.0\Board-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\BSP\STM32746G-Discovery-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\CMSIS\Device\ST\STM32F7xx\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\STM32F7xx_HAL_Driver\Inc-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\MDK\Boards\ST\STM32F746G_Discovery\Common-D__UVISION_VERSION="525" -D_RTE_ -DSTM32F746xx -D__USE_STM32F746G_DISCOVERY__ -D_MSC_VER -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1" -DJEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE="ENABLED" -DJEG_USE_FRAME_SYNC_UP_FLAG="ENABLED" -DJEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE="32" -DJEG_USE_EXTRA_16BIT_BUS_ACCESS="ENABLED" -DJEG_USE_DMA_MEMORY_COPY_ACCELERATION="ENABLED"-o .\out\cpu6502_opcodes.o --omf_browse .\out\cpu6502_opcodes.crf --depend .\out\cpu6502_opcodes.d)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599F2F9C)
+I (..\..\jeg\jeg_cfg.h)(0x5AFF4936)
 I (..\..\jeg\cpu6502_opcodes.h)(0x5AE067AA)
-I (..\..\jeg\jeg_cfg.h)(0x5AFED479)
-F (..\..\jeg\nes.c)(0x5AFEC72C)(--c99 --gnu -c --cpu Cortex-M7.fp.sp -D__MICROLIB -g -O3 -Otime --apcs=interwork --split_sections --enum_is_int -I ..\..\app_platform -I ..\..\jeg --wchar32 --loop_optimization_level=2 --no_unaligned_access --diag_suppress=64,177-I.\RTE\Device\STM32F746NGHx-I.\RTE\_STM32F746-Discovery-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Driver\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.6.0\Board-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\BSP\STM32746G-Discovery-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\CMSIS\Device\ST\STM32F7xx\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\STM32F7xx_HAL_Driver\Inc-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\MDK\Boards\ST\STM32F746G_Discovery\Common-D__UVISION_VERSION="525" -D_RTE_ -DSTM32F746xx -D__USE_STM32F746G_DISCOVERY__ -D_MSC_VER -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1" -DJEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE="ENABLED" -DJEG_USE_FRAME_SYNC_UP_FLAG="ENABLED" -DJEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE="32" -DJEG_USE_EXTRA_16BIT_BUS_ACCESS="ENABLED" -DJEG_USE_DMA_MEMORY_COPY_ACCELERATION="ENABLED"-o .\out\nes.o --omf_browse .\out\nes.crf --depend .\out\nes.d)
-I (..\..\jeg\nes.h)(0x5AEB9962)
+I (..\..\jeg\cpu6502_debug.h)(0x5AFF4801)
+F (..\..\jeg\cpu6502_opcodes.c)(0x5AFF485D)(--c99 --gnu -c --cpu Cortex-M7.fp.sp -D__MICROLIB -g -O3 -Otime --apcs=interwork --split_sections --enum_is_int -I ..\..\app_platform -I ..\..\jeg --wchar32 --loop_optimization_level=2 --no_unaligned_access --diag_suppress=64,177-I.\RTE\Device\STM32F746NGHx-I.\RTE\_STM32F746-Discovery-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Driver\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.6.0\Board-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\BSP\STM32746G-Discovery-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\CMSIS\Device\ST\STM32F7xx\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\STM32F7xx_HAL_Driver\Inc-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\MDK\Boards\ST\STM32F746G_Discovery\Common-D__UVISION_VERSION="525" -D_RTE_ -DSTM32F746xx -D__USE_STM32F746G_DISCOVERY__ -D_MSC_VER -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1" -DJEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE="ENABLED" -DJEG_USE_FRAME_SYNC_UP_FLAG="ENABLED" -DJEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE="32" -DJEG_USE_EXTRA_16BIT_BUS_ACCESS="ENABLED" -DJEG_USE_DMA_MEMORY_COPY_ACCELERATION="ENABLED"-o .\out\cpu6502_opcodes.o --omf_browse .\out\cpu6502_opcodes.crf --depend .\out\cpu6502_opcodes.d)
+I (..\..\jeg\cpu6502_opcodes.h)(0x5AE067AA)
+I (..\..\jeg\jeg_cfg.h)(0x5AFF4936)
+I (..\..\jeg\.\common.h)(0x5AFF4828)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x599F2F9E)
-I (..\..\jeg\ppu.h)(0x5AFECB27)
-I (..\..\jeg\jeg_cfg.h)(0x5AFED479)
-I (..\..\jeg\cpu6502.h)(0x5ADFAFBD)
-I (..\..\jeg\cartridge.h)(0x5AFC0A50)
-I (..\..\jeg\cpu6502_debug.h)(0x5ADFAFBD)
+I (C:\Keil_v5\ARM\ARMCC\include\assert.h)(0x599F2F9A)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599F2F9C)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599F2F9C)
+F (..\..\jeg\nes.c)(0x5B029F5C)(--c99 --gnu -c --cpu Cortex-M7.fp.sp -D__MICROLIB -g -O3 -Otime --apcs=interwork --split_sections --enum_is_int -I ..\..\app_platform -I ..\..\jeg --wchar32 --loop_optimization_level=2 --no_unaligned_access --diag_suppress=64,177-I.\RTE\Device\STM32F746NGHx-I.\RTE\_STM32F746-Discovery-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Driver\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.6.0\Board-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\BSP\STM32746G-Discovery-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\CMSIS\Device\ST\STM32F7xx\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\STM32F7xx_HAL_Driver\Inc-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\MDK\Boards\ST\STM32F746G_Discovery\Common-D__UVISION_VERSION="525" -D_RTE_ -DSTM32F746xx -D__USE_STM32F746G_DISCOVERY__ -D_MSC_VER -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1" -DJEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE="ENABLED" -DJEG_USE_FRAME_SYNC_UP_FLAG="ENABLED" -DJEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE="32" -DJEG_USE_EXTRA_16BIT_BUS_ACCESS="ENABLED" -DJEG_USE_DMA_MEMORY_COPY_ACCELERATION="ENABLED"-o .\out\nes.o --omf_browse .\out\nes.crf --depend .\out\nes.d)
+I (..\..\jeg\nes.h)(0x5AFF4846)
+I (..\..\jeg\ppu.h)(0x5B029FA8)
+I (..\..\jeg\.\common.h)(0x5AFF4828)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
+I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x599F2F9E)
+I (C:\Keil_v5\ARM\ARMCC\include\assert.h)(0x599F2F9A)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599F2F9C)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599F2F9C)
+I (..\..\jeg\jeg_cfg.h)(0x5AFF4936)
+I (..\..\jeg\cpu6502.h)(0x5B029EEB)
+I (..\..\jeg\cartridge.h)(0x5AFF5336)
+I (..\..\jeg\cpu6502_debug.h)(0x5AFF4801)
 F (..\..\jeg\ui.c)(0x5AF2E4F8)()
-F (..\..\jeg\fce.h)(0x5AFC7ABC)()
-F (..\..\jeg\hal.h)(0x5AFEC3E8)()
-F (..\..\jeg\fce.c)(0x5AFECE1A)(--c99 --gnu -c --cpu Cortex-M7.fp.sp -D__MICROLIB -g -O3 -Otime --apcs=interwork --split_sections --enum_is_int -I ..\..\app_platform -I ..\..\jeg --wchar32 --loop_optimization_level=2 --no_unaligned_access --diag_suppress=64,177-I.\RTE\Device\STM32F746NGHx-I.\RTE\_STM32F746-Discovery-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Driver\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.6.0\Board-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\BSP\STM32746G-Discovery-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\CMSIS\Device\ST\STM32F7xx\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\STM32F7xx_HAL_Driver\Inc-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\MDK\Boards\ST\STM32F746G_Discovery\Common-D__UVISION_VERSION="525" -D_RTE_ -DSTM32F746xx -D__USE_STM32F746G_DISCOVERY__ -D_MSC_VER -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1" -DJEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE="ENABLED" -DJEG_USE_FRAME_SYNC_UP_FLAG="ENABLED" -DJEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE="32" -DJEG_USE_EXTRA_16BIT_BUS_ACCESS="ENABLED" -DJEG_USE_DMA_MEMORY_COPY_ACCELERATION="ENABLED"-o .\out\fce.o --omf_browse .\out\fce.crf --depend .\out\fce.d)
-I (..\..\jeg\nes.h)(0x5AEB9962)
+F (..\..\jeg\fce.h)(0x5AFF4835)()
+F (..\..\jeg\hal.h)(0x5AFF481B)()
+F (..\..\jeg\fce.c)(0x5AFF4889)(--c99 --gnu -c --cpu Cortex-M7.fp.sp -D__MICROLIB -g -O3 -Otime --apcs=interwork --split_sections --enum_is_int -I ..\..\app_platform -I ..\..\jeg --wchar32 --loop_optimization_level=2 --no_unaligned_access --diag_suppress=64,177-I.\RTE\Device\STM32F746NGHx-I.\RTE\_STM32F746-Discovery-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Driver\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.6.0\Board-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\BSP\STM32746G-Discovery-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\CMSIS\Device\ST\STM32F7xx\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\STM32F7xx_HAL_Driver\Inc-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\MDK\Boards\ST\STM32F746G_Discovery\Common-D__UVISION_VERSION="525" -D_RTE_ -DSTM32F746xx -D__USE_STM32F746G_DISCOVERY__ -D_MSC_VER -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1" -DJEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE="ENABLED" -DJEG_USE_FRAME_SYNC_UP_FLAG="ENABLED" -DJEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE="32" -DJEG_USE_EXTRA_16BIT_BUS_ACCESS="ENABLED" -DJEG_USE_DMA_MEMORY_COPY_ACCELERATION="ENABLED"-o .\out\fce.o --omf_browse .\out\fce.crf --depend .\out\fce.d)
+I (..\..\jeg\nes.h)(0x5AFF4846)
+I (..\..\jeg\ppu.h)(0x5B029FA8)
+I (..\..\jeg\.\common.h)(0x5AFF4828)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x599F2F9E)
-I (..\..\jeg\ppu.h)(0x5AFECB27)
-I (..\..\jeg\jeg_cfg.h)(0x5AFED479)
-I (..\..\jeg\cpu6502.h)(0x5ADFAFBD)
-I (..\..\jeg\cartridge.h)(0x5AFC0A50)
-I (..\..\jeg\cpu6502_debug.h)(0x5ADFAFBD)
+I (C:\Keil_v5\ARM\ARMCC\include\assert.h)(0x599F2F9A)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599F2F9C)
-I (..\..\jeg\hal.h)(0x5AFEC3E8)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599F2F9C)
+I (..\..\jeg\jeg_cfg.h)(0x5AFF4936)
+I (..\..\jeg\cpu6502.h)(0x5B029EEB)
+I (..\..\jeg\cartridge.h)(0x5AFF5336)
+I (..\..\jeg\cpu6502_debug.h)(0x5AFF4801)
+I (..\..\jeg\hal.h)(0x5AFF481B)
 I (..\..\app_platform\app_platform.h)(0x5AFADA70)
 I (..\..\app_platform\.\app_cfg.h)(0x5A43D0EE)
 I (..\..\app_platform\.\..\..\sources\gmsi\gmsi.h)(0x5A158824)
@@ -951,7 +974,7 @@ I (..\..\app_platform\.\..\..\sources\gmsi\.\utilities\template\.\t_queue.h)(0x5
 I (..\..\app_platform\.\..\..\sources\gmsi\.\utilities\template\.\t_pool.h)(0x5A43A145)
 I (..\..\app_platform\.\..\..\sources\gmsi\.\utilities\template\.\t_list.h)(0x5A43A148)
 I (..\..\app_platform\.\..\..\sources\gmsi\.\..\app_cfg.h)(0x5A0DAB10)
-I (..\..\app_platform\.\..\..\sources\gmsi\.\..\..\example\app_cfg.h)(0x5AFED963)
+I (..\..\app_platform\.\..\..\sources\gmsi\.\..\..\example\app_cfg.h)(0x5B02986F)
 I (..\..\app_platform\.\..\..\sources\gmsi\.\hal\hal.h)(0x5A158824)
 I (..\..\app_platform\.\..\..\sources\gmsi\.\hal\.\app_cfg.h)(0x5A43A157)
 I (..\..\app_platform\.\..\..\sources\gmsi\.\hal\.\component\component.h)(0x5A43A212)
@@ -1080,7 +1103,6 @@ I (..\..\app_platform\.\..\..\sources\gmsi\.\service\.\gui\.\tgui\.\..\..\app_cf
 I (..\..\app_platform\.\..\..\sources\gmsi\.\service\.\time\time.h)(0x5A4375A4)
 I (..\..\app_platform\.\..\..\sources\gmsi\.\service\.\time\.\app_cfg.h)(0x5A4375A9)
 I (..\..\app_platform\.\..\..\sources\gmsi\.\service\.\time\.\..\app_cfg.h)(0x5A158824)
-I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599F2F9C)
 I (..\..\app_platform\.\bsp.h)(0x5AF9ECF8)
 I (..\..\app_platform\.\.\STM32F746G-Discovery\bsp.h)(0x5AFADE10)
 I (..\..\app_platform\.\.\STM32F746G-Discovery\.\app_cfg.h)(0x5AF9E943)
@@ -1122,22 +1144,35 @@ I (C:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.6.0\Board\Board_GLCD.h)(0x5877704C)
 I (C:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\MDK\Boards\ST\STM32F746G_Discovery\Common\GLCD_Config.h)(0x5593F300)
 I (..\..\app_platform\.\stdout_USART.h)(0x5AEDD06C)
 I (..\..\app_platform\.\file_io.h)(0x5ADDEB31)
-F (..\..\jeg\cpu6502.h)(0x5ADFAFBD)()
-F (..\..\jeg\cpu6502_debug.h)(0x5ADFAFBD)()
+F (..\..\jeg\cpu6502.h)(0x5B029EEB)()
+F (..\..\jeg\cpu6502_debug.h)(0x5AFF4801)()
 F (..\..\jeg\cpu6502_opcodes.h)(0x5AE067AA)()
-F (..\..\jeg\jeg_cfg.h)(0x5AFED479)()
-F (..\..\jeg\ppu_pixel_based.c)(0x5AFED93D)(--c99 --gnu -c --cpu Cortex-M7.fp.sp -D__MICROLIB -g -O3 -Otime --apcs=interwork --split_sections --enum_is_int -I ..\..\app_platform -I ..\..\jeg --wchar32 --loop_optimization_level=2 --no_unaligned_access --diag_suppress=64,177-I.\RTE\Device\STM32F746NGHx-I.\RTE\_STM32F746-Discovery-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Driver\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.6.0\Board-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\BSP\STM32746G-Discovery-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\CMSIS\Device\ST\STM32F7xx\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\STM32F7xx_HAL_Driver\Inc-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\MDK\Boards\ST\STM32F746G_Discovery\Common-D__UVISION_VERSION="525" -D_RTE_ -DSTM32F746xx -D__USE_STM32F746G_DISCOVERY__ -D_MSC_VER -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1" -DJEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE="ENABLED" -DJEG_USE_FRAME_SYNC_UP_FLAG="ENABLED" -DJEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE="32" -DJEG_USE_EXTRA_16BIT_BUS_ACCESS="ENABLED" -DJEG_USE_DMA_MEMORY_COPY_ACCELERATION="ENABLED"-o .\out\ppu_pixel_based.o --omf_browse .\out\ppu_pixel_based.crf --depend .\out\ppu_pixel_based.d)
-I (..\..\jeg\ppu.h)(0x5AFECB27)
+F (..\..\jeg\jeg_cfg.h)(0x5AFF4936)()
+F (..\..\jeg\ppu_pixel_based.c)(0x5B02A01F)(--c99 --gnu -c --cpu Cortex-M7.fp.sp -D__MICROLIB -g -O3 -Otime --apcs=interwork --split_sections --enum_is_int -I ..\..\app_platform -I ..\..\jeg --wchar32 --loop_optimization_level=2 --no_unaligned_access --diag_suppress=64,177-I.\RTE\Device\STM32F746NGHx-I.\RTE\_STM32F746-Discovery-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Driver\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.6.0\Board-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\BSP\STM32746G-Discovery-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\CMSIS\Device\ST\STM32F7xx\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\STM32F7xx_HAL_Driver\Inc-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\MDK\Boards\ST\STM32F746G_Discovery\Common-D__UVISION_VERSION="525" -D_RTE_ -DSTM32F746xx -D__USE_STM32F746G_DISCOVERY__ -D_MSC_VER -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1" -DJEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE="ENABLED" -DJEG_USE_FRAME_SYNC_UP_FLAG="ENABLED" -DJEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE="32" -DJEG_USE_EXTRA_16BIT_BUS_ACCESS="ENABLED" -DJEG_USE_DMA_MEMORY_COPY_ACCELERATION="ENABLED"-o .\out\ppu_pixel_based.o --omf_browse .\out\ppu_pixel_based.crf --depend .\out\ppu_pixel_based.d)
+I (..\..\jeg\ppu.h)(0x5B029FA8)
+I (..\..\jeg\.\common.h)(0x5AFF4828)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x599F2F9E)
-I (..\..\jeg\jeg_cfg.h)(0x5AFED479)
-I (..\..\jeg\nes.h)(0x5AEB9962)
-I (..\..\jeg\cpu6502.h)(0x5ADFAFBD)
-I (..\..\jeg\cartridge.h)(0x5AFC0A50)
-I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599F2F9C)
-I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599F2F9C)
 I (C:\Keil_v5\ARM\ARMCC\include\assert.h)(0x599F2F9A)
-F (..\..\jeg\ppu.c)(0x5AFC9DF6)()
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599F2F9C)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599F2F9C)
+I (..\..\jeg\jeg_cfg.h)(0x5AFF4936)
+I (..\..\jeg\nes.h)(0x5AFF4846)
+I (..\..\jeg\cpu6502.h)(0x5B029EEB)
+I (..\..\jeg\cartridge.h)(0x5AFF5336)
+F (..\..\jeg\ppu.c)(0x5B029F9C)(--c99 --gnu -c --cpu Cortex-M7.fp.sp -D__MICROLIB -g -O3 -Otime --apcs=interwork --split_sections --enum_is_int -I ..\..\app_platform -I ..\..\jeg --wchar32 --loop_optimization_level=2 --no_unaligned_access --diag_suppress=64,177-I.\RTE\Device\STM32F746NGHx-I.\RTE\_STM32F746-Discovery-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Driver\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.6.0\Board-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\BSP\STM32746G-Discovery-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\CMSIS\Device\ST\STM32F7xx\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\STM32F7xx_HAL_Driver\Inc-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\MDK\Boards\ST\STM32F746G_Discovery\Common-D__UVISION_VERSION="525" -D_RTE_ -DSTM32F746xx -D__USE_STM32F746G_DISCOVERY__ -D_MSC_VER -D__USE_LCD -D__USE_TIMER0 -D__USE_FPGA -DUSE_JEG -D__USER_DEFINED_APP_CFG_H__ -DGLCD_MIRROR_Y="1" -DJEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE="ENABLED" -DJEG_USE_FRAME_SYNC_UP_FLAG="ENABLED" -DJEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE="32" -DJEG_USE_EXTRA_16BIT_BUS_ACCESS="ENABLED" -DJEG_USE_DMA_MEMORY_COPY_ACCELERATION="ENABLED"-o .\out\ppu.o --omf_browse .\out\ppu.crf --depend .\out\ppu.d)
+I (..\..\jeg\ppu.h)(0x5B029FA8)
+I (..\..\jeg\.\common.h)(0x5AFF4828)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
+I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x599F2F9E)
+I (C:\Keil_v5\ARM\ARMCC\include\assert.h)(0x599F2F9A)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x599F2F9C)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599F2F9C)
+I (..\..\jeg\jeg_cfg.h)(0x5AFF4936)
+I (..\..\jeg\nes.h)(0x5AFF4846)
+I (..\..\jeg\cpu6502.h)(0x5B029EEB)
+I (..\..\jeg\cartridge.h)(0x5AFF5336)
+F (..\..\jeg\common.h)(0x5AFF4828)()
 F (..\..\LiteNES\roms\Super_Tank.s)(0x5ADDA8C9)(--cpu Cortex-M7.fp.sp -g --apcs=interwork --pd "__MICROLIB SETA 1"-I.\RTE\Device\STM32F746NGHx-I.\RTE\_STM32F746-Discovery-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Driver\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.6.0\Board-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\BSP\STM32746G-Discovery-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\CMSIS\Device\ST\STM32F7xx\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\STM32F7xx_HAL_Driver\Inc-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\MDK\Boards\ST\STM32F746G_Discovery\Common--pd "__UVISION_VERSION SETA 525" --pd "_RTE_ SETA 1" --pd "STM32F746xx SETA 1"--list .\out\super_tank.lst --xref -o .\out\super_tank.o --depend .\out\super_tank.d)
 I (..\..\LiteNES\roms\Super Tank (Battle City Pirate) (J) [p1].nes)(0x3E2A15D2)
 F (..\..\LiteNES\roms\Road Fighter.s)(0x5AFBFA52)(--cpu Cortex-M7.fp.sp -g --apcs=interwork --pd "__MICROLIB SETA 1"-I.\RTE\Device\STM32F746NGHx-I.\RTE\_STM32F746-Discovery-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Driver\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.6.0\Board-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\BSP\STM32746G-Discovery-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\CMSIS\Device\ST\STM32F7xx\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\Drivers\STM32F7xx_HAL_Driver\Inc-IC:\Keil_v5\ARM\PACK\Keil\STM32F7xx_DFP\2.9.0\MDK\Boards\ST\STM32F746G_Discovery\Common--pd "__UVISION_VERSION SETA 525" --pd "_RTE_ SETA 1" --pd "STM32F746xx SETA 1"--list ".\out\road fighter.lst" --xref -o ".\out\road fighter.o" --depend ".\out\road fighter.d")
@@ -1177,7 +1212,7 @@ I (..\..\app_platform\STM32F746G-Discovery\.\..\..\..\sources\gmsi\.\utilities\t
 I (..\..\app_platform\STM32F746G-Discovery\.\..\..\..\sources\gmsi\.\utilities\template\.\t_pool.h)(0x5A43A145)
 I (..\..\app_platform\STM32F746G-Discovery\.\..\..\..\sources\gmsi\.\utilities\template\.\t_list.h)(0x5A43A148)
 I (..\..\app_platform\STM32F746G-Discovery\.\..\..\..\sources\gmsi\.\..\app_cfg.h)(0x5A0DAB10)
-I (..\..\app_platform\STM32F746G-Discovery\.\..\..\..\sources\gmsi\.\..\..\example\app_cfg.h)(0x5AFED963)
+I (..\..\app_platform\STM32F746G-Discovery\.\..\..\..\sources\gmsi\.\..\..\example\app_cfg.h)(0x5B02986F)
 I (..\..\app_platform\STM32F746G-Discovery\.\..\..\..\sources\gmsi\.\hal\hal.h)(0x5A158824)
 I (..\..\app_platform\STM32F746G-Discovery\.\..\..\..\sources\gmsi\.\hal\.\app_cfg.h)(0x5A43A157)
 I (..\..\app_platform\STM32F746G-Discovery\.\..\..\..\sources\gmsi\.\hal\.\component\component.h)(0x5A43A212)

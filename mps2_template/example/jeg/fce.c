@@ -1,10 +1,8 @@
 #include "nes.h"
 #include "cpu6502_debug.h"
-#include <string.h>
-#include <stdint.h>
-#include <stdbool.h>
-//#include "app_platform.h"
+
 #include "hal.h"
+#include ".\common.h"
 #include "jeg_cfg.h"
 
 #ifndef this
@@ -143,8 +141,7 @@ int32_t fce_load_rom(uint8_t *pchROM, uint_fast32_t wSize)
         nes_init(&this.tNESConsole);
     #endif
         return nes_setup_rom(&this.tNESConsole, pchROM, wSize);
-    } while(false);
-    
+    } while(false);    
     
     return -1;
 }

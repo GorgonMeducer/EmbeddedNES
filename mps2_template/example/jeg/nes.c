@@ -123,7 +123,8 @@ static uint_fast8_t ppu_bus_read (nes_t *ptNES, uint_fast16_t hwAddress)
         chData=cartridge_read_chr(&ptNES->cartridge, hwAddress);
         
     } else if (hwAddress<0x3F00) {
-        uint_fast8_t chPhysicTableIndex = find_name_attribute_table_index(ptNES->cartridge.mirror, hwAddress) ;
+        uint_fast8_t chPhysicTableIndex = 
+            find_name_attribute_table_index(ptNES->cartridge.chMirror, hwAddress) ;
         chData = ptNES->ppu.tNameAttributeTable[chPhysicTableIndex].chBuffer[hwAddress & 0x3FF];
         
     } else if (hwAddress<0x4000) {
@@ -139,11 +140,16 @@ static uint_fast8_t ppu_bus_read (nes_t *ptNES, uint_fast16_t hwAddress)
 
 static void write_name_attribute_table(nes_t *ptNES, uint_fast16_t hwAddress, uint_fast8_t chData)
 {
-    uint_fast8_t chPhysicTableIndex = find_name_attribute_table_index(ptNES->cartridge.mirror, hwAddress);//mirror_lookup[(ptNES->cartridge.mirror)*4+((hwAddress & 0xFFF) >>10)];
+    uint_fast8_t chPhysicTableIndex = 
+        find_name_attribute_table_index(ptNES->cartridge.chMirror, hwAddress);
     name_attribute_table_t *ptTable = &(ptNES->ppu.tNameAttributeTable[chPhysicTableIndex]);
     
     hwAddress &= 0x3FF;
+    
+#if JEG_USE_BACKGROUND_BUFFERING == ENABLED
     uint8_t chOldData = ptTable->chBuffer[hwAddress];
+#endif
+
     ptTable->chBuffer[hwAddress] = chData;
     
 #if JEG_USE_BACKGROUND_BUFFERING == ENABLED
@@ -329,20 +335,27 @@ void nes_init(nes_t *ptNES)
 #endif
 }
 
-int_fast32_t nes_setup_rom(nes_t *nes, uint8_t *data, uint_fast32_t size) 
+nes_err_t nes_setup_rom(nes_t *ptNES, uint8_t *pchData, uint_fast32_t wSize) 
 {
-    int result;
+    nes_err_t tResult = nes_err_illegal_pointer;
+    
+    do {
+        if (NULL == ptNES || NULL == pchData) {
+            break;
+        }
 
-    nes->controller_data[0]=0;
-    nes->controller_data[1]=0;
-    nes->controller_shift_reg[0]=0;
-    nes->controller_shift_reg[1]=0;
+        ptNES->controller_data[0] = 0;
+        ptNES->controller_data[1] = 0;
+        ptNES->controller_shift_reg[0] = 0;
+        ptNES->controller_shift_reg[1] = 0;
 
-    result=cartridge_setup(&nes->cartridge, data, size);
-    if (result==0) {
-        nes_reset(nes);
-    }
-    return result;
+        tResult = cartridge_setup(&(ptNES->cartridge), pchData, wSize);
+        if (nes_ok == tResult) {
+            nes_reset(ptNES);
+        }
+    } while(0);
+    
+    return tResult;
 }
 
 #if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == DISABLED
