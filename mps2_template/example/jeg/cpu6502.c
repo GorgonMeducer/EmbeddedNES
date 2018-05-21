@@ -1,9 +1,8 @@
 #include "cpu6502.h"
 #include "cpu6502_opcodes.h"
 #include "cpu6502_debug.h"
-#include <stdbool.h>
-#include <stdint.h>
-#include <string.h>
+
+#include ".\common.h"
 #include "jeg_cfg.h"
 
 
@@ -119,9 +118,10 @@ void cpu6502_reset(cpu6502_t *cpu) {
 }
 
 
-int cpu6502_run(cpu6502_t *cpu, int cycles_to_run) {
+uint_fast32_t cpu6502_run(cpu6502_t *cpu, int_fast32_t cycles_to_run) 
+{
   const opcode_tbl_entry_t *ptOpcode;
-  int cycles_passed; // cycles used in one iteration
+  uint_fast32_t cycles_passed; // cycles used in one iteration
   int address=0; // calculated address for memory interaction
   int temp_value, temp_value2; // temporary value used for calculation
 

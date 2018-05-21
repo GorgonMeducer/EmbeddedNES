@@ -1,9 +1,9 @@
 #ifndef __JEG_HAL_H__
 #define __JEG_HAL_H__
 
-#include <stdint.h>
 #include "app_platform.h"
 #include "nes.h"
+#include ".\common.h"
 #include "jeg_cfg.h"
 
 #define SCREEN_HEIGHT           240

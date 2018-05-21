@@ -1,8 +1,7 @@
 #ifndef CPU6502_H
 #define CPU6502_H
 
-#include <stdint.h>
-#include <stdbool.h>
+#include ".\common.h"
 #include "jeg_cfg.h"
 
 typedef enum {INTERRUPT_NONE=0, INTERRUPT_NMI, INTERRUPT_IRQ} cpu6502_interrupt_enum_t;
@@ -81,7 +80,9 @@ extern void cpu6502_init(cpu6502_t *cpu, void *reference, cpu6502_read_func_t re
 #endif
 
 extern void cpu6502_reset(cpu6502_t *cpu); // reset cpu to powerup state
-extern int cpu6502_run(cpu6502_t *cpu, int n_cycles); // run cpu for (at least) n_cycles; a started instruction will not be "truncated";
+
+//! \brief run cpu for (at least) n_cycles; a started instruction will not be "truncated";
+extern uint_fast32_t cpu6502_run(cpu6502_t *cpu, int_fast32_t n_cycles); 
                                                // returns number of cycles cpu ran
 extern void cpu6502_trigger_interrupt(cpu6502_t *cpu, cpu6502_interrupt_enum_t interrupt); // trigger an interrupt
 

@@ -1,9 +1,8 @@
 #include "ppu.h"
 #include "nes.h"
-#include <stdio.h>
-#include <string.h>
+
+#include ".\common.h"
 #include "jeg_cfg.h"
-#include <assert.h>
 
 //! \name PPU Control Register bit mask
 //! @{
@@ -158,8 +157,9 @@ void ppu_dma_access(ppu_t *ppu, uint_fast8_t chData)
 {
     uint_fast16_t address_temp = chData << 8;
 
-    assert(0 == ppu->oam_address);
+    
 #if JEG_USE_DMA_MEMORY_COPY_ACCELERATION == ENABLED
+    assert(0 == ppu->oam_address);
     uint8_t *pchSrc = ppu->nes->cpu.fnDMAGetSourceAddress(ppu->nes, address_temp);
     
 #   if JEG_USE_OPTIMIZED_SPRITE_PROCESSING == ENABLED
@@ -192,16 +192,16 @@ void ppu_dma_access(ppu_t *ppu, uint_fast8_t chData)
         uint_fast8_t v = ppu->nes->cpu.read(ppu->nes, address_temp++);
         
 #   if JEG_USE_SPRITE_BUFFER == ENABLED
-        ppu->tModifiedSpriteTable.chBuffer[i]=v;
+        ppu->tModifiedSpriteTable.chBuffer[(ppu->oam_address + i) & 0xFF] = v;
 #   else
 #       if JEG_USE_OPTIMIZED_SPRITE_PROCESSING == ENABLED
         if (!(i & 0x03)) {
-            if (ppu->tSpriteTable.chBuffer[i] != v) {
+            if (ppu->tSpriteTable.chBuffer[(ppu->oam_address + i) & 0xFF] != v) {
                 ppu->bOAMUpdated = true;
             }
         }
 #       endif
-        ppu->tSpriteTable.chBuffer[i]=v; 
+        ppu->tSpriteTable.chBuffer[(ppu->oam_address + i) & 0xFF] = v;
 #   endif
     }
 #   if JEG_USE_SPRITE_BUFFER == ENABLED
@@ -444,7 +444,6 @@ static inline uint_fast8_t fetch_sprite_info_on_specified_line(ppu_t *ptPPU, uin
 
 #if JEG_USE_OPTIMIZED_SPRITE_PROCESSING == ENABLED
 
-
     for(int_fast32_t j = ptPPU->SpriteYOrderList.chCurrent; j < ptPPU->SpriteYOrderList.chVisibleCount; j++) {
         uint_fast8_t chIndex = ptPPU->SpriteYOrderList.List[j].chIndex;
         
@@ -676,7 +675,7 @@ static void fetch_background_tile_info(ppu_t *ptPPU)
     
         //uint_fast32_t data = 0;
         uint_fast8_t chTableIndex = 
-        find_name_attribute_table_index(ptPPU->nes->cartridge.mirror, (ptPPU->v&0x0FFF));
+        find_name_attribute_table_index(ptPPU->nes->cartridge.chMirror, (ptPPU->v&0x0FFF));
         
         name_attribute_table_t *ptTable = &(ptPPU->tNameAttributeTable[chTableIndex]);
         
@@ -782,7 +781,7 @@ static void ppu_mix_background_and_foreground(ppu_t *ptPPU)
 #define VISIBLE_CYCLE           (ppu->cycle >= 1 && ppu->cycle <= 256)
 #define FETCH_CYCLE             (PRE_FETCH_CYCLE || VISIBLE_CYCLE)
 
-int_fast32_t ppu_update(ppu_t *ppu) 
+uint_fast32_t ppu_update(ppu_t *ppu) 
 {
     //! tick
     int_fast32_t cycles = (ppu->nes->cpu.cycle_number - ppu->last_cycle_number) * 3;

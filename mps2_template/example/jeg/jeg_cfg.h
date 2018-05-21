@@ -106,7 +106,7 @@
  *!        need to check the sprite status for each scanline. 
  */
 #ifndef JEG_USE_SPRITE_BUFFER
-#   define  JEG_USE_SPRITE_BUFFER                       ENABLED
+#   define  JEG_USE_SPRITE_BUFFER                       DISABLED
 #endif
 
 /*----------------------------------------------------------------------------*

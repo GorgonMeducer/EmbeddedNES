@@ -1121,6 +1121,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\jeg\ppu.c</FilePath>
             </File>
+            <File>
+              <FileName>common.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\jeg\common.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -2432,6 +2437,11 @@
                   </Cads>
                 </FileArmAds>
               </FileOption>
+            </File>
+            <File>
+              <FileName>common.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\jeg\common.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -3812,6 +3822,11 @@
                   </Cads>
                 </FileArmAds>
               </FileOption>
+            </File>
+            <File>
+              <FileName>common.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\jeg\common.h</FilePath>
             </File>
           </Files>
         </Group>
