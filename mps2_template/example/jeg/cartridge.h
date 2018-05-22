@@ -1,8 +1,7 @@
 #ifndef CARTRIDGE_H
 #define CARTRIDGE_H
 
-#include <stdint.h>
-#include ".\common.h"
+#include "common.h"
 #include "jeg_cfg.h"
 
 //! \name iNES header 

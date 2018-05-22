@@ -1,7 +1,7 @@
 #include "ppu.h"
 #include "nes.h"
 
-#include ".\common.h"
+#include "common.h"
 #include "jeg_cfg.h"
 
 //! \name PPU Control Register bit mask
@@ -406,15 +406,15 @@ static inline uint_fast8_t fetch_sprite_info_on_specified_line(ppu_t *ptPPU, uin
 #else
     // evaluate sprite
     for(int_fast32_t j = 0; j < 64; j++) {
-        int_fast32_t row = ptPPU->scanline-ptPPU->SpriteInfo[j].chY;
+        int_fast32_t row = ptPPU->scanline-ptPPU->tSpriteTable.SpriteInfo[j].chY;
         if (    (row < 0)
             ||  (row >= chSpriteSize)) {
             continue;
         }
         if (chCount < JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE) {
-            ptPPU->sprite_patterns[chCount]   = fetch_sprite_pattern(ptPPU, j, row);
-            ptPPU->sprite_positions[chCount]  = ptPPU->SpriteInfo[j].chPosition;
-            ptPPU->sprite_priorities[chCount] = ptPPU->SpriteInfo[j].Attributes.Priority;
+            ptPPU->sprite_patterns[chCount]   = fetch_sprite_pattern(ptPPU, ptPPU->tSpriteTable.SpriteInfo + j, row);
+            ptPPU->sprite_positions[chCount]  = ptPPU->tSpriteTable.SpriteInfo[j].chPosition;
+            ptPPU->sprite_priorities[chCount] = ptPPU->tSpriteTable.SpriteInfo[j].Attributes.Priority;
             ptPPU->sprite_indicies[chCount]   = j;
             chCount++;
         }

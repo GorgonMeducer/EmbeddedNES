@@ -2,7 +2,7 @@
 #include "cpu6502_opcodes.h"
 #include "cpu6502_debug.h"
 
-#include ".\common.h"
+#include "common.h"
 #include "jeg_cfg.h"
 
 

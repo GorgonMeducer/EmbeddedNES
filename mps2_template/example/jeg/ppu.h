@@ -1,7 +1,7 @@
 #ifndef PPU_H
 #define PPU_H
 
-#include ".\common.h"
+#include "common.h"
 #include "jeg_cfg.h"
 
 typedef struct nes_t nes_t;
