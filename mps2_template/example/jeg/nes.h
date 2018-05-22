@@ -4,7 +4,7 @@
 #include "ppu.h"
 #include "cpu6502.h"
 #include "cartridge.h"
-#include ".\common.h"
+#include "common.h"
 #include "jeg_cfg.h"
 
 
@@ -27,7 +27,7 @@ extern bool nes_init(nes_t *, nes_cfg_t *);
 #else
 extern void nes_init(nes_t *ptNES);
 #endif
-extern int_fast32_t nes_setup_rom(nes_t *, uint8_t *, uint_fast32_t );
+extern nes_err_t nes_setup_rom(nes_t *, uint8_t *, uint_fast32_t );
 
 extern void nes_setup_video(nes_t *, uint8_t *);
 

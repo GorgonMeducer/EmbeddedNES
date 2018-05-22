@@ -1,6 +1,5 @@
-
 #include "cartridge.h"
-#include ".\common.h"
+#include "common.h"
 #include "jeg_cfg.h"
 
 nes_err_t cartridge_setup(cartridge_t *ptCartridge, uint8_t *pchData, uint_fast32_t wSize) 

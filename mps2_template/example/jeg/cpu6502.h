@@ -1,7 +1,7 @@
 #ifndef CPU6502_H
 #define CPU6502_H
 
-#include ".\common.h"
+#include "common.h"
 #include "jeg_cfg.h"
 
 typedef enum {INTERRUPT_NONE=0, INTERRUPT_NMI, INTERRUPT_IRQ} cpu6502_interrupt_enum_t;
