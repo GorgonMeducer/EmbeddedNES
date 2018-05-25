@@ -96,9 +96,9 @@ void SysTick_Handler (void)
         
         //STREAM_OUT.Stream.Flush();
     }
-    
+#if DEMO_USE_FILE_IO == ENABLED
     FILE_IO.Dependent.TimerTickService();
-
+#endif
     /*! call application platform 1ms event handler */
     app_platform_1ms_event_handler();
 }
@@ -111,7 +111,7 @@ static void system_init(void)
 
     SysTick_Config(SystemCoreClock  / 1000);  //!< Generate interrupt every 1 ms 
 }
-
+#if DEMO_USE_FILE_IO == ENABLED
 static void file_io_service_init(void)
 {
     NO_INIT static file_io_delay_item_t s_tDelayObjPool[DELAY_OBJ_POOL_SIZE];
@@ -155,10 +155,12 @@ static void file_io_service_init(void)
                     
     );
 }
-
+#endif
 static void app_init(void)
 {   
+#if DEMO_USE_FILE_IO == ENABLED
     file_io_service_init();
+#endif
 }
 
 /*
@@ -186,7 +188,7 @@ For compiler 6
 /*----------------------------------------------------------------------------
   Main function
  *----------------------------------------------------------------------------*/
-
+#if DEMO_USE_FILE_IO == ENABLED
 NO_INIT static uint8_t s_cROMBuffer[NES_ROM_BUFFER_SIZE * 1024];
 
 static int_fast32_t load_nes_rom(uint8_t *pchBuffer, uint32_t wSize)
@@ -230,7 +232,7 @@ static int_fast32_t load_nes_rom(uint8_t *pchBuffer, uint32_t wSize)
     
     return wTotalSize;
 }
-
+#endif
 //! \name default roms
 //! @{
 extern const uint8_t NES_ROM_1[];               //!< city tank

@@ -616,7 +616,7 @@ static void fetch_background_tile_info(ppu_t *ptPPU)
     ptPPU->tile_data <<= 4;
     
     uint_fast8_t chTableIndex = find_name_attribute_table_index(
-                                        ptPPU->nes->cartridge.mirror, 
+                                        ptPPU->nes->cartridge.chMirror, 
                                         ptPPU->v & 0x0FFF);
     name_attribute_table_t *ptTable = &(ptPPU->tNameAttributeTable[chTableIndex]);
     
