@@ -41,7 +41,7 @@
 /*============================ TYPES Part One ================================*/
 
 def_structure(__es_simple_frame_fsm_internal)
-    inherit(mem_block_t)
+    implement(mem_block_t)
     uint16_t hwLength;
     uint16_t hwCounter;
     uint16_t hwCheckSUM;
@@ -57,13 +57,13 @@ simple_fsm(es_simple_frame_decoder,
         bool bUnsupportFrame;
         block_t *ptBlock;
         void *pTag;
-        inherit(__es_simple_frame_fsm_internal)
+        implement(__es_simple_frame_fsm_internal)
     ))
     
 simple_fsm(es_simple_frame_encoder,
     def_params(
         i_byte_pipe_t *ptPipe;          //!< pipe
-        inherit(__es_simple_frame_fsm_internal)
+        implement(__es_simple_frame_fsm_internal)
     ))
 
 declare_class(es_simple_frame_t)
@@ -97,7 +97,7 @@ typedef struct {
     i_byte_pipe_t   *ptPipe; 
     void  *fnParser;
     union {
-        inherit(mem_block_t)
+        implement(mem_block_t)
         struct {
             bool        bStaticBufferMode;
             block_t *   ptBlock;
@@ -403,9 +403,9 @@ private fsm_implementation(es_simple_frame_decoder)
                 }
                 
                 CRC(this.hwCheckSUM, chData);
-                update_state_to(WAIT_FOR_LENGTH_H);
-                
                 ((uint8_t *)&this.hwLength)[0] = chData;
+                
+                update_state_to(WAIT_FOR_LENGTH_H);
             )
                 
             state(WAIT_FOR_LENGTH_H,
@@ -424,9 +424,9 @@ private fsm_implementation(es_simple_frame_decoder)
                     //! data is too big 
                     this.bUnsupportFrame = true;
                 } 
+                this.hwCounter = 0;
                 
                 update_state_to(WAIT_FOR_DATA);
-                this.hwCounter = 0;
             )
               
             state(WAIT_FOR_DATA,
@@ -443,8 +443,6 @@ private fsm_implementation(es_simple_frame_decoder)
                 if (++this.hwCounter >= this.hwLength) {
                     transfer_to(WAIT_FOR_CHECK_SUM_L);
                 }
-                
-                fsm_continue();
             )
               
             state(WAIT_FOR_CHECK_SUM_L,
