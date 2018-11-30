@@ -16,7 +16,7 @@
         <TargetCommonOption>
           <Device>CMSDK_CM7_SP</Device>
           <Vendor>ARM</Vendor>
-          <PackID>Keil.V2M-MPS2_CMx_BSP.1.6.0</PackID>
+          <PackID>Keil.V2M-MPS2_CMx_BSP.1.7.0</PackID>
           <PackURL>http://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00400000) IROM(0x00000000,0x00400000) CPUTYPE("Cortex-M7") FPU3(SFPU) CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -184,6 +184,7 @@
             <hadXRAM>0</hadXRAM>
             <uocXRam>0</uocXRam>
             <RvdsVP>2</RvdsVP>
+            <RvdsMve>0</RvdsMve>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -1224,14 +1225,13 @@
       <TargetName>V2M-MPS2-jeg</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pArmCC>6100000::V6.10::..\..\Program Files\ARMCompiler6.10</pArmCC>
-      <pCCUsed>6100000::V6.10::..\..\Program Files\ARMCompiler6.10</pCCUsed>
+      <pCCUsed>6110000::V6.11::..\..\Program Files\ARMCompiler6.11</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>CMSDK_CM7_SP</Device>
           <Vendor>ARM</Vendor>
-          <PackID>Keil.V2M-MPS2_CMx_BSP.1.6.0</PackID>
+          <PackID>Keil.V2M-MPS2_CMx_BSP.1.7.0</PackID>
           <PackURL>http://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00400000) IROM(0x00000000,0x00400000) CPUTYPE("Cortex-M7") FPU3(SFPU) CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -1387,7 +1387,7 @@
             <AdsLsun>1</AdsLsun>
             <AdsLven>1</AdsLven>
             <AdsLsxf>1</AdsLsxf>
-            <RvctClst>0</RvctClst>
+            <RvctClst>1</RvctClst>
             <GenPPlst>0</GenPPlst>
             <AdsCpuType>"Cortex-M7"</AdsCpuType>
             <RvctDeviceName></RvctDeviceName>
@@ -1399,6 +1399,7 @@
             <hadXRAM>0</hadXRAM>
             <uocXRam>0</uocXRam>
             <RvdsVP>2</RvdsVP>
+            <RvdsMve>0</RvdsMve>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -1526,7 +1527,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>5</Optim>
+            <Optim>0</Optim>
             <oTime>1</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -1549,8 +1550,8 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls>-fms-extensions -Wno-microsoft-anon-tag -Wno-nonportable-include-path -Wno-tautological-constant-out-of-range-compare</MiscControls>
-              <Define>_MSC_VER __USE_LCD __USE_TIMER0 __USE_FPGA USE_JEG  __USER_DEFINED_APP_CFG_H__ GLCD_MIRROR_Y=1 JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE=ENABLED JEG_USE_FRAME_SYNC_UP_FLAG=ENABLED JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE=32 JEG_USE_EXTRA_16BIT_BUS_ACCESS=ENABLED JEG_USE_DMA_MEMORY_COPY_ACCELERATION=ENABLED</Define>
+              <MiscControls>-Omax -fms-extensions -Wno-microsoft-anon-tag -Wno-nonportable-include-path -Wno-tautological-constant-out-of-range-compare</MiscControls>
+              <Define>_MSC_VER __USE_LCD  USE_JEG  __USER_DEFINED_APP_CFG_H__ GLCD_MIRROR_Y=1 JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE=ENABLED JEG_USE_FRAME_SYNC_UP_FLAG=ENABLED JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE=32 JEG_USE_EXTRA_16BIT_BUS_ACCESS=ENABLED JEG_USE_DMA_MEMORY_COPY_ACCELERATION=ENABLED</Define>
               <Undefine></Undefine>
               <IncludePath>..\..\app_platform;..\..\jeg</IncludePath>
             </VariousControls>
@@ -2784,6 +2785,7 @@
             <hadXRAM>0</hadXRAM>
             <uocXRam>0</uocXRam>
             <RvdsVP>2</RvdsVP>
+            <RvdsMve>0</RvdsMve>
             <hadIRAM2>1</hadIRAM2>
             <hadIROM2>1</hadIROM2>
             <StupSel>8</StupSel>
@@ -4333,8 +4335,8 @@
       </file>
       <file attr="config" category="header" name="CMSIS\Config\RTE_Device.h" version="1.0.0">
         <instance index="0">RTE\Device\CMSDK_CM7_SP\RTE_Device.h</instance>
-        <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.0" condition="CMSDK_CM7 CMSIS Device"/>
-        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.6.0"/>
+        <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.0" condition="CMSDK_CM7 CMSIS"/>
+        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.7.0"/>
         <targetInfos>
           <targetInfo name="FastModels"/>
           <targetInfo name="Simulator"/>
@@ -4346,8 +4348,8 @@
       </file>
       <file attr="config" category="source" condition="ARMCC" name="Device\CMSDK_CM7\Source\ARM\startup_CMSDK_CM7.s" version="1.0.0">
         <instance index="0">RTE\Device\CMSDK_CM7_SP\startup_CMSDK_CM7.s</instance>
-        <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.0" condition="CMSDK_CM7 CMSIS Device"/>
-        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.6.0"/>
+        <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.0" condition="CMSDK_CM7 CMSIS"/>
+        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.7.0"/>
         <targetInfos>
           <targetInfo name="FastModels"/>
           <targetInfo name="Simulator"/>
@@ -4359,8 +4361,8 @@
       </file>
       <file attr="config" category="source" name="Device\CMSDK_CM7\Source\system_CMSDK_CM7.c" version="1.0.0">
         <instance index="0">RTE\Device\CMSDK_CM7_SP\system_CMSDK_CM7.c</instance>
-        <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.0" condition="CMSDK_CM7 CMSIS Device"/>
-        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.6.0"/>
+        <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.0" condition="CMSDK_CM7 CMSIS"/>
+        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.7.0"/>
         <targetInfos>
           <targetInfo name="FastModels"/>
           <targetInfo name="Simulator"/>

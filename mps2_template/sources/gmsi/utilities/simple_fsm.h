@@ -39,24 +39,24 @@
 #define fsm(__NAME) fsm_##__NAME##_t
 
 #define __simple_fsm(__FSM_TYPE, ...)                               \
-        DECLARE_CLASS(__FSM_TYPE)                                   \
-        DEF_CLASS(__FSM_TYPE)                                       \
+        declare_class(__FSM_TYPE)                                   \
+        def_class(__FSM_TYPE)                                       \
             uint_fast8_t chState;                                   \
             __VA_ARGS__                                             \
-        END_DEF_CLASS(__FSM_TYPE)
+        end_def_class(__FSM_TYPE)
 
 #define simple_fsm(__NAME, ...)                                     \
         __simple_fsm(fsm(__NAME), __VA_ARGS__)
 
 #define __extern_simple_fsm(__FSM_TYPE, ...)                        \
-        DECLARE_CLASS(__FSM_TYPE)                                   \
-        EXTERN_CLASS(__FSM_TYPE)                                    \
+        declare_class(__FSM_TYPE)                                   \
+        extern_class(__FSM_TYPE)                                    \
             uint_fast8_t chState;                                   \
             __VA_ARGS__                                             \
-        END_EXTERN_CLASS(__FSM_TYPE)                                
+        end_extern_class(__FSM_TYPE)                                
 
 #define __declare_simple_fsm(__FSM_TYPE)                            \
-        DECLARE_CLASS(__FSM_TYPE)
+        declare_class(__FSM_TYPE)
 #define declare_simple_fsm(__NAME)  __declare_simple_fsm(fsm(__NAME))
 
 
@@ -111,9 +111,13 @@
 #define call_fsm(__NAME, __FSM, ...)                                            \
         __NAME((__FSM) __VA_ARGS__)
 
-#define state(__STATE, ...)                                                     \
-        case __STATE:                                                           \
-            {__VA_ARGS__;}
+#define __state(__STATE, ...)                                                   \
+            case __STATE:{                                                      \
+        __state_entry_##__STATE:                                                \
+                __VA_ARGS__;                                                    \
+            }break;
+            
+#define state(__STATE, ...)                 __state(__STATE, __VA_ARGS__)
 
 #define on_start(...)                       {__VA_ARGS__;}
 
@@ -123,11 +127,13 @@
 #define fsm_report(__ERROR) do {reset_fsm(); return (fsm_rt_t)(__ERROR); } while(0);
 #define fsm_wait_for_obj()  return fsm_rt_wait_for_obj;
 #define fsm_on_going()      return fsm_rt_on_going;
-#define fsm_continue()      break
+
+//! fsm_continue is deprecated, should not be used anymore
+//#define fsm_continue()      break
 
 
 #define update_state_to(__STATE)                                                \
-        { ptThis->chState = (__STATE); }
+        { ptThis->chState = (__STATE); goto __state_entry_##__STATE;}
 
 #define transfer_to(__STATE)                                                    \
          { update_state_to(__STATE); fsm_on_going() } 
@@ -136,7 +142,7 @@
 #define __fsm_initialiser(__NAME, ...)                                          \
         fsm(__NAME) *__NAME##_init(fsm(__NAME) *ptFSM __VA_ARGS__)              \
         {                                                                       \
-            CLASS(fsm(__NAME)) *ptThis = ( CLASS(fsm(__NAME)) *)ptFSM;          \
+            class(fsm(__NAME)) *ptThis = ( class(fsm(__NAME)) *)ptFSM;          \
             if (NULL == ptThis) {                                               \
                 return NULL;                                                    \
             }                                                                   \
@@ -173,6 +179,8 @@
             case 0:                                                             \
                 ptThis->chState++;                                              \
             __VA_ARGS__                                                         \
+            default:                                                            \
+            return fsm_rt_err;                                                  \
         }                                                                       \
                                                                                 \
         return fsm_rt_on_going;                                                 \
@@ -181,7 +189,7 @@
 #define __implement_fsm_ex(__NAME, __TYPE, ...)                                 \
     fsm_rt_t __NAME( __TYPE *ptFSM __VA_ARGS__ )                                \
     {                                                                           \
-        CLASS(__TYPE) *ptThis = (CLASS(__TYPE) *)ptFSM;                         \
+        class(__TYPE) *ptThis = (class(__TYPE) *)ptFSM;                         \
         if (NULL == ptThis) {                                                   \
             return fsm_rt_err;                                                  \
         }                                                           
@@ -200,9 +208,10 @@
             } while(1);                                                         
             
 #define privilege_state(__STATE, ...)                                           \
-            __privilege_state((__STATE), __VA_ARGS__)                                      
+            __privilege_state(__STATE, __VA_ARGS__)                                      
             
-#define privilege_group(...)  {while(1) {__VA_ARGS__;} break;}
+
+#define privilege_group(...)  { __VA_ARGS__;}
 
 #define privilege_body(...)                                                     \
         do {                                                                    \

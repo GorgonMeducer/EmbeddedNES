@@ -20,8 +20,10 @@
 #define __USE_ARM_COMPILER_H__
 
 /*============================ INCLUDES ======================================*/
+#include <cmsis_compiler.h>
+
 #if __IS_COMPILER_IAR__
-#   include<intrinsics.h>
+#   include <intrinsics.h>
 #endif
 
 /*============================ MACROS ========================================*/
@@ -81,14 +83,12 @@
             REG_RSVD_0x100
 #endif
 
-//! ALU integer width in byte
-# define ATOM_INT_SIZE                   4
 
 //! \brief The mcu memory align mode
-# define MCU_MEM_ALIGN_SIZE             ATOM_INT_SIZE
+# define MCU_MEM_ALIGN_SIZE             sizeof(int)
 
 #ifndef __volatile__
-#define __volatile__
+#define __volatile__                    volatile
 #endif
 
 //! \brief 1 cycle nop operation
@@ -99,11 +99,12 @@
 
 //! \brief none standard memory types
 #if __IS_COMPILER_IAR__
-#   define FLASH                const
-#   define EEPROM               const
+#   define ROM_FLASH            _Pragma(__STR(location=".rom.flash")) const
+#   define ROM_EEPROM           _Pragma(__STR(location=".rom.eeprom")) const
 #   define NO_INIT              __no_init
 #   define ROOT                 __root
 #   define INLINE               inline
+#   define NO_INLINE            noinline
 #   define ALWAYS_INLINE        __attribute__((always_inline))
 #   define WEAK                 __weak
 #   define RAMFUNC              __ramfunc
@@ -111,35 +112,19 @@
 #   define __ALIGN(__N)         _Pragma(__STR(data_alignment=__N))
 #   define __AT_ADDR(__ADDR)    @ __ADDR
 #   define __SECTION(__SEC)     _Pragma(__STR(location=__SEC))
-
+#   define __WEAK_ALIAS(__ORIGIN, __ALIAS) \
+                                _Pragma(__STR(weak __ORIGIN=__ALIAS))
 #   define PACKED               __packed
 #   define UNALIGNED            __packed
 #   define TRANSPARENT_UNION    __attribute__((transparent_union))
 
-#elif __IS_COMPILER_GCC__
-#   define FLASH                const
-#   define EEPROM               const
-#   define NO_INIT              __attribute__(( section( ".bss.noinit")))
-#   define ROOT                 __attribute__((used))    
-#   define INLINE               inline
-#   define ALWAYS_INLINE        __attribute__((always_inline))
-#   define WEAK                 __attribute__((weak))
-#   define RAMFUNC              __attribute__((section (".textrw")))
-#   define __asm__              __asm
-#   define __ALIGN(__N)         __attribute__((aligned (__N)))
-#   define __AT_ADDR(__ADDR)    __attribute__((at(__ADDR))) 
-#   define __SECTION(__SEC)     __attribute__((section (__SEC)))
-
-#   define PACKED               __attribute__((packed))
-#   define UNALIGNED            __attribute__((packed))
-#   define TRANSPARENT_UNION    __attribute__((transparent_union))
-
 #elif __IS_COMPILER_ARM_COMPILER_5__
-#   define FLASH                const
-#   define EEPROM               const
+#   define ROM_FLASH            __attribute__(( section( ".rom.flash"))) const
+#   define ROM_EEPROM           __attribute__(( section( ".rom.eeprom"))) const
 #   define NO_INIT              __attribute__( ( section( ".bss.noinit"),zero_init) )
 #   define ROOT                 __attribute__((used))    
 #   define INLINE               __inline
+#   define NO_INLINE            __attribute__((noinline))
 #   define ALWAYS_INLINE        __attribute__((always_inline))
 #   define WEAK                 __attribute__((weak))
 #   define RAMFUNC              __attribute__((section (".textrw")))
@@ -147,18 +132,20 @@
 #   define __ALIGN(__N)         __attribute__((aligned (__N))) 
 #   define __AT_ADDR(__ADDR)    __attribute__((at(__ADDR)))
 #   define __SECTION(__SEC)     __attribute__((section (__SEC)))
-
-
+#   define __WEAK_ALIAS(__ORIGIN, __ALIAS) \
+                                __attribute__((weakref(__STR(__ALIAS))))
+                                
 #   define PACKED               __packed
 #   define UNALIGNED            __packed
 #   define TRANSPARENT_UNION    __attribute__((transparent_union))
 
 #elif __IS_COMPILER_ARM_COMPILER_6__
-#   define FLASH                const
-#   define EEPROM               const
+#   define ROM_FLASH            __attribute__(( section( ".rom.flash"))) const
+#   define ROM_EEPROM           __attribute__(( section( ".rom.eeprom"))) const
 #   define NO_INIT              __attribute__( ( section( ".bss.noinit")) )
 #   define ROOT                 __attribute__((used))    
 #   define INLINE               __inline
+#   define NO_INLINE            __attribute__((noinline))
 #   define ALWAYS_INLINE        __attribute__((always_inline))
 #   define WEAK                 __attribute__((weak))
 #   define RAMFUNC              __attribute__((section (".textrw")))
@@ -166,14 +153,38 @@
 #   define __ALIGN(__N)         __attribute__((aligned (__N))) 
 #   define __AT_ADDR(__ADDR)    __attribute__((section (".ARM.__at_" #__ADDR)))
 #   define __SECTION(__SEC)     __attribute__((section (__SEC)))
+#   define __WEAK_ALIAS(__ORIGIN, __ALIAS) \
+                                __attribute__((weakref(__STR(__ALIAS))))
 
 #   define PACKED               __attribute__((packed))
 #   define UNALIGNED            __unaligned
 #   define TRANSPARENT_UNION    __attribute__((transparent_union))
 
+#else  /*__IS_COMPILER_GCC__: Using GCC as default for those GCC compliant compilers*/
+#   define ROM_FLASH            __attribute__(( section( ".rom.flash"))) const
+#   define ROM_EEPROM           __attribute__(( section( ".rom.eeprom"))) const
+#   define NO_INIT              __attribute__(( section( ".bss.noinit")))
+#   define ROOT                 __attribute__((used))    
+#   define INLINE               inline
+#   define NO_INLINE            __attribute__((noinline))
+#   define ALWAYS_INLINE        __attribute__((always_inline))
+#   define WEAK                 __attribute__((weak))
+#   define RAMFUNC              __attribute__((section (".textrw")))
+#   define __asm__              __asm
+#   define __ALIGN(__N)         __attribute__((aligned (__N)))
+#   define __AT_ADDR(__ADDR)    __attribute__((at(__ADDR))) 
+#   define __SECTION(__SEC)     __attribute__((section (__SEC)))
+#   define __WEAK_ALIAS(__ORIGIN, __ALIAS) \
+                                __attribute__((weakref(__STR(__ALIAS))))
+
+#   define PACKED               __attribute__((packed))
+#   define UNALIGNED            __attribute__((packed))
+#   define TRANSPARENT_UNION    __attribute__((transparent_union))
+
 #endif
 
-
+#define WEAK_ALIAS(__ORIGIN, __ALIAS)   \
+                            __WEAK_ALIAS(__ORIGIN, __ALIAS)
 #define AT_ADDR(__ADDR)     __AT_ADDR(__ADDR)
 #define ALIGN(__N)          __ALIGN(__N)
 #define SECTION(__SEC)      __SECTION(__SEC)
@@ -185,68 +196,64 @@
   /*!< Macro to enable all interrupts. */
 #if __IS_COMPILER_IAR__
 #   define ENABLE_GLOBAL_INTERRUPT()            __enable_interrupt()
-#elif __IS_COMPILER_ARM_COMPILER_5__ 
-#   define ENABLE_GLOBAL_INTERRUPT()            __enable_irq()
-#elif __IS_COMPILER_ARM_COMPILER_6__
-#   define ENABLE_GLOBAL_INTERRUPT()            __asm__ __volatile__ (" CPSIE i")
 #else
-#   define ENABLE_GLOBAL_INTERRUPT()            __asm__ __volatile__ (" CPSIE i")
+#   define ENABLE_GLOBAL_INTERRUPT()            __enable_irq()
 #endif
 
   /*!< Macro to disable all interrupts. */
 #if __IS_COMPILER_IAR__
-#   define DISABLE_GLOBAL_INTERRUPT()           __disable_interrupt()
+#   define DISABLE_GLOBAL_INTERRUPT()           ____disable_irq()
+
+static ALWAYS_INLINE uint32_t ____disable_irq(void) 
+{
+    uint32_t wPRIMASK = __get_interrupt_state();
+    __disable_irq();
+    return wPRIMASK & 0x1;
+}
+
 #elif __IS_COMPILER_ARM_COMPILER_5__
 #   define DISABLE_GLOBAL_INTERRUPT()           __disable_irq()
 #elif __IS_COMPILER_ARM_COMPILER_6__
+#   define DISABLE_GLOBAL_INTERRUPT()           __disable_irq()
+#elif __IS_COMPILER_GCC_
+#   define DISABLE_GLOBAL_INTERRUPT()           __disable_irq()
+#else /* for other compilers, using gcc assembly syntax to implement */
+
 #   define DISABLE_GLOBAL_INTERRUPT()           ____disable_irq()
 
-static __inline__ unsigned int __attribute__((__always_inline__, __nodebug__))
-____disable_irq(void) {
-  unsigned int cpsr;
-
-  __asm__ __volatile__("mrs %[cpsr], primask\n"
-                       "cpsid i\n"
-                       : [cpsr] "=r"(cpsr));
-  return cpsr & 0x1;
-}
-
-/**
-  \brief   Set Priority Mask
-  \details Assigns the given value to the Priority Mask Register.
-  \param [in]    priMask  Priority Mask
- */
-__attribute__((always_inline)) static inline void ____set_PRIMASK(unsigned int priMask)
+static ALWAYS_INLINE uint32_t ____disable_irq(void) 
 {
-    __asm__ volatile ("MSR primask, %0" : : "r" (priMask) : "memory");
-}
+    uint32_t cpsr;
 
-#else
-#   define DISABLE_GLOBAL_INTERRUPT()           __asm__ __volatile__ (" CPSID i");
+    __asm__ __volatile__("mrs %[cpsr], primask\n"
+                        "cpsid i\n"
+                        : [cpsr] "=r"(cpsr));
+    return cpsr & 0x1;
+}
 #endif
 
 #if __IS_COMPILER_IAR__
 #   define GET_GLOBAL_INTERRUPT_STATE()         __get_interrupt_state()
 #   define SET_GLOBAL_INTERRUPT_STATE(__STATE)  __set_interrupt_state(__STATE)
 typedef __istate_t   istate_t;
-#elif __IS_COMPILER_ARM_COMPILER_5__ 
-#   define GET_GLOBAL_INTERRUPT_STATE()         __disable_irq()
-#   define SET_GLOBAL_INTERRUPT_STATE(__STATE)  if (!__STATE) { __enable_irq(); }
-typedef int   istate_t;
-#elif __IS_COMPILER_ARM_COMPILER_6__
-#   define GET_GLOBAL_INTERRUPT_STATE()         ____disable_irq()
-#   define SET_GLOBAL_INTERRUPT_STATE(__STATE)  ____set_PRIMASK(__STATE)        
+#elif __IS_COMPILER_ARM_COMPILER_5__ || __IS_COMPILER_ARM_COMPILER_6__
+#   define GET_GLOBAL_INTERRUPT_STATE()         __get_PRIMASK()
+#   define SET_GLOBAL_INTERRUPT_STATE(__STATE)  __set_PRIMASK(__STATE)
 typedef int   istate_t;
 #elif __IS_COMPILER_GCC__
-typedef int   istate_t;
 #   define GET_GLOBAL_INTERRUPT_STATE()         __get_PRIMASK()
+#   define SET_GLOBAL_INTERRUPT_STATE(__STATE)  __set_PRIMASK(__STATE)
+typedef uint32_t   istate_t;
+#else
+typedef uint32_t   istate_t;
+#   define GET_GLOBAL_INTERRUPT_STATE()         ____get_PRIMASK()
 
 /**
   \brief   Get Priority Mask
   \details Returns the current state of the priority mask bit from the Priority Mask Register.
   \return               Priority Mask value
  */
-__attribute__((always_inline)) static inline uint32_t __get_PRIMASK(void)
+__attribute__((always_inline)) static inline uint32_t ____get_PRIMASK(void)
 {
     unsigned int result;
 
@@ -254,21 +261,17 @@ __attribute__((always_inline)) static inline uint32_t __get_PRIMASK(void)
     return(result);
 }
 
-#   define SET_GLOBAL_INTERRUPT_STATE(__STATE)  __set_PRIMASK(__STATE)
+#   define SET_GLOBAL_INTERRUPT_STATE(__STATE)  ____set_PRIMASK(__STATE)
 
 /**
   \brief   Set Priority Mask
   \details Assigns the given value to the Priority Mask Register.
   \param [in]    priMask  Priority Mask
  */
-__attribute__((always_inline)) static inline void __set_PRIMASK(unsigned int priMask)
+__attribute__((always_inline)) static inline void ____set_PRIMASK(uint32_t priMask)
 {
     __asm__ volatile ("MSR primask, %0" : : "r" (priMask) : "memory");
 }
-
-
-#else
-#error No support for interrupt state access
 #endif
 
 /*============================ TYPES =========================================*/
@@ -294,7 +297,13 @@ __attribute__((always_inline)) static inline void __set_PRIMASK(unsigned int pri
 #elif   defined(__CORTEX_M33__)
 #include "cortex_m33_compiler.h"
 #else
-#error No supported compiler.h file!
+
+//! \brief The mcu memory endian mode
+# define __BIG_ENDIAN__                 false
+
+/*ARM Cortex M4 implementation for interrupt priority shift*/
+# define ARM_INTERRUPT_LEVEL_BITS       4
+
 #endif
 
 /*!  \note using the ANSI-C99 standard type,if the file stdint.h dose not exit

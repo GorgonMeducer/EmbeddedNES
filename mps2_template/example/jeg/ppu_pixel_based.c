@@ -206,7 +206,7 @@ void ppu_dma_access(ppu_t *ppu, uint_fast8_t chData)
     }
 #   if JEG_USE_SPRITE_BUFFER == ENABLED
     ppu->bRequestRefreshSpriteBuffer = true;
-#endif
+#   endif
 #endif
 
     ppu->nes->cpu.stall_cycles += 513;

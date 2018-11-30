@@ -73,8 +73,7 @@
 
 /*============================ MACROFIED FUNCTIONS ===========================*/
 
-#define __CLASS(__NAME)             __##__NAME
-#define CLASS(__NAME)               __CLASS(__NAME)
+
 
 
 //! \brief macro for initializing an event
@@ -96,6 +95,15 @@
 #define WHICH(...)                  struct { __VA_ARGS__ };
 
 
+
+/*! \NOTE: Never define __OOC_DEBUG__ unless you know the consequence and how  
+ *!        the issue could be solved. But in anyway, there is nothing you can 
+ *!        do about this header file. 
+ */
+#ifndef __OOC_DEBUG__
+
+#define __CLASS(__NAME)             __##__NAME
+
 #define DECLARE_CLASS(__NAME)                                                   \
      typedef union __NAME __NAME;                
 
@@ -103,8 +111,6 @@
     typedef struct __##__NAME __##__NAME;                                       \
     struct __##__NAME {                                                         \
         __VA_ARGS__
-#define DEF_CLASS(__NAME, ...)      __DEF_CLASS(__NAME, __VA_ARGS__)
-
           
 #define __END_DEF_CLASS(__NAME, ...)                                            \
     };                                                                          \
@@ -114,7 +120,47 @@
                 (sizeof(__##__NAME) + sizeof(uint_fast8_t) - 1)                 \
             /   sizeof(uint_fast8_t)];                                          \
     };
-#define END_DEF_CLASS(__NAME, ...)  __END_DEF_CLASS(__NAME, __VA_ARGS__)
+    
+#define __EXTERN_CLASS(__NAME,...)                                              \
+    union __NAME {                                                              \
+        __VA_ARGS__                                                             \
+        uint_fast8_t __NAME##__chMask[(sizeof(struct{                           \
+        __VA_ARGS__
+
+
+#define __END_EXTERN_CLASS(__NAME, ...)                                         \
+        }) + sizeof(uint_fast8_t) - 1) / sizeof(uint_fast8_t)];                 \
+    };
+    
+#else
+
+#define __CLASS(__NAME)             __NAME
+
+#define DECLARE_CLASS(__NAME)                                                   \
+     typedef struct __NAME __NAME;                
+
+#define __DEF_CLASS(__NAME,...)                                                 \
+    struct __NAME {                                                             \
+        __VA_ARGS__
+          
+#define __END_DEF_CLASS(__NAME, ...)                                            \
+    };                                                                          
+    
+#define __EXTERN_CLASS(__NAME,...)                                              \
+    struct __NAME {                                                             \
+        __VA_ARGS__                                                             
+
+#define __END_EXTERN_CLASS(__NAME, ...)                                         \
+    };
+    
+#endif
+
+#define END_DEF_CLASS(__NAME, ...)      __END_DEF_CLASS(__NAME, __VA_ARGS__)
+#define DEF_CLASS(__NAME, ...)          __DEF_CLASS(__NAME, __VA_ARGS__)
+#define CLASS(__NAME)                   __CLASS(__NAME)
+
+#define EXTERN_CLASS(__NAME, ...)       __EXTERN_CLASS(__NAME, __VA_ARGS__)
+#define END_EXTERN_CLASS(__NAME, ...)   __END_EXTERN_CLASS(__NAME, __VA_ARGS__)
 
 /*! \brief macro for initializing class in compiler-time
  *! \param __TYPE class name
@@ -140,16 +186,7 @@
             __EXTERN_CLASS_OBJ( __TYPE, __OBJ )
 
 
-#define __EXTERN_CLASS(__NAME,...)                                              \
-    union __NAME {                                                              \
-        __VA_ARGS__                                                             \
-        uint_fast8_t __NAME##__chMask[(sizeof(struct{                           \
-        __VA_ARGS__
-#define EXTERN_CLASS(__NAME, ...)   __EXTERN_CLASS(__NAME, __VA_ARGS__)
 
-#define END_EXTERN_CLASS(__NAME, ...)                                           \
-        }) + sizeof(uint_fast8_t) - 1) / sizeof(uint_fast8_t)];                 \
-    };
 
 /*! \note Support for protected members
  */
@@ -196,7 +233,11 @@
 
 //! \brief macro for inheritance
 
-#define INHERIT_EX(__TYPE, __NAME)                                              \
+#define INHERIT_EX(__TYPE, __NAME)          __TYPE  __NAME;                                                 
+
+//! \brief macro for inheritance
+
+#define IMPLEMENT_EX(__TYPE, __NAME)                                            \
             union {                                                             \
                 __TYPE  __NAME;                                                 \
                 __TYPE;                                                         \
@@ -205,24 +246,24 @@
 /*! \note When deriving a new class from a base class, you should use INHERIT 
  *        other than IMPLEMENT, although they looks the same now.
  */
-#define __INHERIT(__TYPE)           INHERIT_EX(__TYPE, base__##__TYPE)
+#define __INHERIT(__TYPE)           INHERIT_EX(__TYPE, use_as_##__TYPE)
 #define INHERIT(__TYPE)             __INHERIT(__TYPE)
 
 /*! \note You can only use IMPLEMENT when defining INTERFACE. For Implement 
  *        interface when defining CLASS, you should use DEF_CLASS_IMPLEMENT 
  *        instead.
  */
-#define __IMPLEMENT(__INTERFACE)    INHERIT_EX(__INTERFACE, base__##__INTERFACE)
+#define __IMPLEMENT(__INTERFACE)    IMPLEMENT_EX(__INTERFACE, use_as_##__INTERFACE)
 #define IMPLEMENT(__INTERFACE)      __IMPLEMENT(__INTERFACE)  
 
 /*! \note if you have used INHERIT or IMPLEMENT to define a CLASS / INTERFACE, 
           you can use OBJ_CONVERT_AS to extract the reference to the inherited 
           object. 
   \*/
-#define __OBJ_CONVERT_AS(__OBJ, __INTERFACE)    (__OBJ.base__##__INTERFACE)
+#define __OBJ_CONVERT_AS(__OBJ, __INTERFACE)    (__OBJ.use_as_##__INTERFACE)
 #define OBJ_CONVERT_AS(__OBJ, __INTERFACE)      __OBJ_CONVERT_AS((__OBJ), __INTERFACE)          
 
-#define __REF_OBJ_AS(__OBJ, __TYPE)             (&(__OBJ.base__##__TYPE))
+#define __REF_OBJ_AS(__OBJ, __TYPE)             (&(__OBJ.use_as_##__TYPE))
 #define REF_OBJ_AS(__OBJ, __TYPE)               __REF_OBJ_AS((__OBJ), __TYPE)
 
 #define REF_INTERFACE(__INTERFACE)      const __INTERFACE *ptMethod;
@@ -273,6 +314,7 @@
 
 
 typedef fsm_rt_t DELEGATE_HANDLE_FUNC(void *pArg, void *pParam);
+
 
 DECLARE_CLASS( DELEGATE_HANDLE )
 //! \name general event handler
