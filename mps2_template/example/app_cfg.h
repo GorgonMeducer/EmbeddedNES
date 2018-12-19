@@ -109,7 +109,7 @@
 //      <o>Default ROM Number               <1=> City Tank          <2=> Road Fighter
 //                                          <3=> Super Mario Bro    <4=> Contra
 //      <i>Specify the default rom : 1 - City Tank,  2 - Road Fighter, 3 - Super Mario, 4 - Contra (Not supported yet)
-#define NES_DEFAULT_ROM_NUMBER              3
+#define NES_DEFAULT_ROM_NUMBER              2
 //  </h>
 
 
