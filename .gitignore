@@ -16,3 +16,11 @@ mps2_template/example/build/mdk/Out/startup_cmsdk_cm7.lst
 *.gabwan01
 *.zip
 *.deb
+*.lst
+*.dep
+*.lst
+*.lst
+mps2_template/sources/gmsi/service/memory/stream2block/stream2block.h~RFbdf5df1.TMP
+*.lst
+*.lst
+*.lst

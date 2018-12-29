@@ -31,21 +31,24 @@
 /*============================ MACROFIED FUNCTIONS ===========================*/
 /*============================ TYPES =========================================*/
 
-DECLARE_CLASS(pool_t)
-DEF_CLASS(pool_t)
+declare_class(pool_t)
+def_class(pool_t)
     __single_list_node_t    *ptFreeList;
     uint_fast16_t           tCounter;
     __EPOOL_MUTEX_TYPE      tMutex;
-END_DEF_CLASS(pool_t)
+    void *                  pTarget;
+end_def_class(pool_t)
 
-typedef void pool_item_init_event_handler_t(void *pItem, uint_fast16_t hwItemSize);
+typedef void pool_item_init_event_handler_t(void *pTarget, 
+                                            void *pItem, 
+                                            uint_fast32_t hwItemSize);
 
 /*============================ GLOBAL VARIABLES ==============================*/
 /*============================ LOCAL VARIABLES ===============================*/
 /*============================ PROTOTYPES ====================================*/
 /*============================ IMPLEMENTATION ================================*/
 
-bool pool_init(pool_t *ptPool)
+bool pool_init(pool_t *ptPool, void *pTarget)
 {
     class_internal(ptPool, ptThis, pool_t);
     if (NULL == ptPool) {
@@ -54,6 +57,7 @@ bool pool_init(pool_t *ptPool)
 
     this.ptFreeList = NULL;
     this.tCounter   = 0;
+    this.pTarget = pTarget;
 
     return true;
 }
@@ -78,13 +82,13 @@ bool pool_add_heap_ex( pool_t *ptPool,
 
 
     do {
-        __EPOOL_ATOM_ACCESS(
+        __EPOOL_ATOM_ACCESS(){
             LIST_STACK_PUSH(this.ptFreeList, ptBuffer);
             this.tCounter++;
-        )
+        }
         
         if (NULL != fnHandler) {
-            (*fnHandler)(ptBuffer, wItemSize);
+            (*fnHandler)(this.pTarget, ptBuffer, wItemSize);
         }
         ptBuffer = (void *)((uint8_t *)ptBuffer + wItemSize);
         
@@ -113,7 +117,7 @@ void *pool_new(pool_t *ptPool)
         return NULL;
     }
 
-    __EPOOL_ATOM_ACCESS(
+    __EPOOL_ATOM_ACCESS(){
         do {
             if (NULL == ((CLASS(pool_t) *)ptPool)->ptFreeList) {
                 break;
@@ -123,7 +127,7 @@ void *pool_new(pool_t *ptPool)
             
             this.tCounter--;
         } while (false);
-    )
+    }
 
     return (void *)ptItem;
 }
@@ -136,10 +140,10 @@ void pool_free(pool_t *ptPool, void *ptItem)
         return;
     }
 
-    __EPOOL_ATOM_ACCESS(
+    __EPOOL_ATOM_ACCESS(){
         LIST_STACK_PUSH(this.ptFreeList, ptItem);
         this.tCounter++;
-    )
+    }
 }
 
 uint_fast32_t pool_get_item_count(pool_t *ptPool)
@@ -165,6 +169,14 @@ __EPOOL_MUTEX_TYPE *pool_get_mutex(pool_t *ptPool)
     }
 
     return &(this.tMutex);
+}
+
+void *pool_get_target(pool_t *ptPool)
+{
+    class_internal(ptPool, ptThis, pool_t);
+    assert(ptPool != NULL);
+    
+    return this.pTarget;
 }
 
 /*EOF*/

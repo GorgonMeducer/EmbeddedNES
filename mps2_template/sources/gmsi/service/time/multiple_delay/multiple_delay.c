@@ -189,7 +189,7 @@ private void add_to_delay_list(  multiple_delay_item_t *ptItem,
                                 multiple_delay_item_t **ppList) 
 {
     class_internal(ptItem, ptTarget, multiple_delay_item_t);
-    __MD_ATOM_ACCESS (
+    __MD_ATOM_ACCESS (){
         do {
             class_internal((*ppList), ptListItem, multiple_delay_item_t);
             
@@ -207,7 +207,7 @@ private void add_to_delay_list(  multiple_delay_item_t *ptItem,
             ppList = (multiple_delay_item_t **)&(ptListItem->ptNext);
             
         } while(true);
-    )
+    }
 }
 
 private bool remove_from_delay_list( multiple_delay_item_t *ptItem, 
@@ -215,7 +215,7 @@ private bool remove_from_delay_list( multiple_delay_item_t *ptItem,
 {
     class_internal(ptItem, ptTarget, multiple_delay_item_t);
     bool bResult = false;
-    __MD_ATOM_ACCESS (
+    __MD_ATOM_ACCESS (){
         do {
             class_internal((*ppList), ptListItem, multiple_delay_item_t);
             
@@ -233,7 +233,7 @@ private bool remove_from_delay_list( multiple_delay_item_t *ptItem,
             
             
         } while(true);
-    )
+    }
 
     return bResult;
 }
@@ -300,9 +300,9 @@ private multiple_delay_item_t * request_delay(
             break;
         }
         
-        __MD_ATOM_ACCESS(
+        //__MD_ATOM_ACCESS(){
             wCurrentCounter = this.wCounter;
-        )
+        //}
         if ((uint32_t)(wCurrentCounter + wDelay) < wCurrentCounter) {
             //! prevent overflow
             break;
@@ -409,7 +409,7 @@ private bool init(  multiple_delay_t *ptObj,  multiple_delay_cfg_t *ptCFG )
             break; 
         } else if (NULL == ptCFG->pchBuffer) {
             break;
-        } else if (ptCFG->wSize < sizeof(multiple_delay_item_t)) {
+        } else if (ptCFG->nSize < sizeof(multiple_delay_item_t)) {
             break;
         }
         
@@ -422,7 +422,7 @@ private bool init(  multiple_delay_t *ptObj,  multiple_delay_cfg_t *ptCFG )
         
         EPOOL_ADD_HEAP(  multiple_delay_item_heap_t,
                     ref_obj_as(this, EPOOL(multiple_delay_item_heap_t)),
-                    ptCFG->pchBuffer, ptCFG->wSize);
+                    ptCFG->pchBuffer, ptCFG->nSize);
 
         return NULL != init_fsm(multiple_delay_task, 
                         &base_obj(fsm(multiple_delay_task)), 
@@ -458,9 +458,9 @@ private fsm_implementation(multiple_delay_task)
                 fsm_report(GSF_ERR_INVALID_PTR);
             }
             
-            __MD_ATOM_ACCESS(
+            //__MD_ATOM_ACCESS(){
                 target.wSavedCounter = target.wCounter;
-            )
+            //}
             
             if (target.wOldCounter == target.wSavedCounter) {
                 fsm_on_going();
@@ -481,10 +481,10 @@ private fsm_implementation(multiple_delay_task)
                 
                 if (ptItem->wTargetTime <= target.wSavedCounter) {
  
-                    __MD_ATOM_ACCESS (
+                    __MD_ATOM_ACCESS (){
                         //! timeout detected
                         LIST_STACK_POP(target.ptDelayList, ptItem);
-                    )
+                    }
                     
                     if (ptItem->tPriority == MULTIPLE_DELAY_LOW_PRIORITY) {
                         //! add the item to the low priority timeout list

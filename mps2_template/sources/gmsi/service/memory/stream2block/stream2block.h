@@ -50,7 +50,7 @@
                                                                                 \
     private bool __NAME##_stream_buffer_init(stream_buffer_cfg_t *ptCFG)        \
     {                                                                           \
-        BLOCK.Heap.Init(&s_t##__NAME##_BlockPool);                              \
+        BLOCK.Heap.Init(&s_t##__NAME##_BlockPool, NULL);                        \
         return STREAM_BUFFER.Init(&s_t##__NAME##StreamBuffer, ptCFG);           \
     }                                                                           \
     private bool __NAME##_stream_add_buffer(void *pBuffer, uint_fast32_t wSize)\
@@ -203,13 +203,13 @@
                 BLOCK.Size.Get(ref_obj_as((*ptBlock), block_t));                \
             s_t##__NAME##StreamOutService.hwIndex = 0;                          \
                                                                                 \
-            SAFE_ATOM_CODE(                                                     \
+            SAFE_ATOM_CODE(){                                                   \
                 __NAME##_serial_port_enable_tx_cpl_interrupt();                 \
                                                                                 \
                 __NAME##_serial_port_fill_byte(                                 \
                     s_t##__NAME##StreamOutService.pchBuffer                     \
                         [s_t##__NAME##StreamOutService.hwIndex++]);             \
-            )                                                                   \
+            }                                                                   \
         }                                                                       \
     }                                                                           \
     void __NAME##_insert_serial_port_tx_cpl_event_handler(void)                 \
@@ -392,10 +392,10 @@
     }                                                                           \
     private void __NAME##_reset_stream_in_rx_timer(void)                        \
     {                                                                           \
-        SAFE_ATOM_CODE (                                                        \
+        SAFE_ATOM_CODE (){                                                      \
             s_t##__NAME##StreamInService.hwTimeoutCounter =                     \
                 STREAM_IN_RCV_TIMEOUT;                                          \
-        )                                                                       \
+        }                                                                       \
     }                                                                           \
     private void __NAME##_input_stream_req_read_event_handler(                  \
                     stream_buffer_t *ptObj)                                     \
