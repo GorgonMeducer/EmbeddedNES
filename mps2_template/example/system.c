@@ -46,7 +46,7 @@
 
 #ifndef IO_CHANNEL_BUFFER_ITEM_COUNT
 #   warning No defined IO_CHANNEL_BUFFER_ITEM_COUNT, default value 8 is used
-#   define IO_CHANNEL_BUFFER_ITEM_COUNT                   (8)
+#   define IO_CHANNEL_BUFFER_ITEM_COUNT                     (8)
 #endif
 
 #if IO_STREAM_BLOCK_BUFFER_ITEM_COUNT < (IO_CHANNEL_BUFFER_ITEM_COUNT * 2 + 1) 
