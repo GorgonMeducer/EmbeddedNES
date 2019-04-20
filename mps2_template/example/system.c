@@ -71,6 +71,9 @@
 #define __NES_DEFAULT_ROM(__N)      __DEFAULT_ROM(__N)
 #define NES_DEFAULT_ROM             __NES_DEFAULT_ROM(NES_DEFAULT_ROM_NUMBER)
 
+#define __DEFAULT_ROM_ITEM(__N)     {(uint8_t *)NES_ROM_##__N, &NES_ROM_##__N##_Length,}
+#define NES_DEFAULT_ROM_ITEM(__N)      __DEFAULT_ROM_ITEM(__N)
+
 /*============================ MACROFIED FUNCTIONS ===========================*/
 /*============================ TYPES =========================================*/
 /*============================ GLOBAL VARIABLES ==============================*/
@@ -245,6 +248,18 @@ extern const uint8_t NES_ROM_4[];               //!< Contra(USA)
 extern const uint32_t NES_ROM_4_Length;
 //! @}
 
+struct {
+    uint8_t *pchROM;
+    const uint32_t *pwSize;
+}c_tDefaultROM[] = {
+    NES_DEFAULT_ROM_ITEM(1),
+    NES_DEFAULT_ROM_ITEM(2),
+    NES_DEFAULT_ROM_ITEM(3),
+    NES_DEFAULT_ROM_ITEM(4)
+};
+
+
+
 int main (void) 
 {
     system_init();
@@ -285,8 +300,13 @@ int main (void)
         } while(false);
 #endif
         if (!bLoadingSuccess) {
+        
+            NO_INIT static uint8_t s_chDefaultROMIndex;
+            s_chDefaultROMIndex ++;
+            s_chDefaultROMIndex %= 3;
+            
             //! use default
-            if (fce_load_rom(NES_DEFAULT_ROM) != 0){
+            if (fce_load_rom(c_tDefaultROM[s_chDefaultROMIndex].pchROM, (*c_tDefaultROM[s_chDefaultROMIndex].pwSize)) != 0){
                 break;
             }
         }        
