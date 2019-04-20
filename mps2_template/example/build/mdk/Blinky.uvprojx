@@ -383,6 +383,11 @@
           <GroupName>Source Files</GroupName>
           <Files>
             <File>
+              <FileName>signal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\sources\gmsi\utilities\arm\signal.c</FilePath>
+            </File>
+            <File>
               <FileName>hal.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\LiteNES\src\hal.c</FilePath>
@@ -486,11 +491,6 @@
             </GroupArmAds>
           </GroupOption>
           <Files>
-            <File>
-              <FileName>signal.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\sources\gmsi\utilities\arm\signal.c</FilePath>
-            </File>
             <File>
               <FileName>gmsi.c</FileName>
               <FileType>1</FileType>
@@ -1599,6 +1599,62 @@
           <GroupName>Source Files</GroupName>
           <Files>
             <File>
+              <FileName>signal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\sources\gmsi\utilities\arm\signal.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>0</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>0</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <uGnu>2</uGnu>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <v6Lto>2</v6Lto>
+                    <v6WtE>2</v6WtE>
+                    <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+            <File>
               <FileName>hal.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\LiteNES\src\hal.c</FilePath>
@@ -1702,11 +1758,6 @@
             </GroupArmAds>
           </GroupOption>
           <Files>
-            <File>
-              <FileName>signal.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\sources\gmsi\utilities\arm\signal.c</FilePath>
-            </File>
             <File>
               <FileName>gmsi.c</FileName>
               <FileType>1</FileType>
@@ -2985,6 +3036,11 @@
           <GroupName>Source Files</GroupName>
           <Files>
             <File>
+              <FileName>signal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\sources\gmsi\utilities\arm\signal.c</FilePath>
+            </File>
+            <File>
               <FileName>hal.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\LiteNES\src\hal.c</FilePath>
@@ -3088,11 +3144,6 @@
             </GroupArmAds>
           </GroupOption>
           <Files>
-            <File>
-              <FileName>signal.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\sources\gmsi\utilities\arm\signal.c</FilePath>
-            </File>
             <File>
               <FileName>gmsi.c</FileName>
               <FileType>1</FileType>
@@ -4115,24 +4166,24 @@
       </api>
     </apis>
     <components>
-      <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.1.1" condition="ARMv6_7_8-M Device">
-        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.3.0"/>
+      <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.1.2" condition="ARMv6_7_8-M Device">
+        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.4.0"/>
         <targetInfos>
           <targetInfo name="STM32F746-Discovery"/>
           <targetInfo name="V2M-MPS2-LiteNES"/>
           <targetInfo name="V2M-MPS2-jeg"/>
         </targetInfos>
       </component>
-      <component Cbundle="ARM Compiler" Cclass="Compiler" Cgroup="I/O" Csub="STDIN" Cvariant="User" Cvendor="Keil" Cversion="1.4.0" condition="ARMCC Cortex-M">
-        <package name="ARM_Compiler" schemaVersion="1.4.9" url="http://www.keil.com/pack/" vendor="Keil" version="1.4.0"/>
+      <component Cbundle="ARM Compiler" Cclass="Compiler" Cgroup="I/O" Csub="STDIN" Cvariant="User" Cvendor="Keil" Cversion="1.2.0" condition="ARMCC Cortex-M">
+        <package name="ARM_Compiler" schemaVersion="1.4.9" url="http://www.keil.com/pack/" vendor="Keil" version="1.5.0"/>
         <targetInfos>
           <targetInfo name="STM32F746-Discovery"/>
           <targetInfo name="V2M-MPS2-LiteNES"/>
           <targetInfo name="V2M-MPS2-jeg"/>
         </targetInfos>
       </component>
-      <component Cbundle="ARM Compiler" Cclass="Compiler" Cgroup="I/O" Csub="STDOUT" Cvariant="User" Cvendor="Keil" Cversion="1.4.0" condition="ARMCC Cortex-M" isTargetSpecific="1">
-        <package name="ARM_Compiler" schemaVersion="1.4.9" url="http://www.keil.com/pack/" vendor="Keil" version="1.4.0"/>
+      <component Cbundle="ARM Compiler" Cclass="Compiler" Cgroup="I/O" Csub="STDOUT" Cvariant="User" Cvendor="Keil" Cversion="1.2.0" condition="ARMCC Cortex-M" isTargetSpecific="1">
+        <package name="ARM_Compiler" schemaVersion="1.4.9" url="http://www.keil.com/pack/" vendor="Keil" version="1.5.0"/>
         <targetInfos>
           <targetInfo name="STM32F746-Discovery"/>
           <targetInfo name="V2M-MPS2-LiteNES"/>
@@ -4140,152 +4191,152 @@
         </targetInfos>
       </component>
       <component Capiversion="1.0.0" Cbundle="STM32F746G-Discovery" Cclass="Board Support" Cgroup="Buttons" Cvendor="Keil" Cversion="1.1.1" condition="STM32F7 HAL GPIO">
-        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.9.0"/>
+        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
           <targetInfo name="STM32F746-Discovery"/>
         </targetInfos>
       </component>
       <component Cbundle="STM32F746G-Discovery" Cclass="Board Support" Cgroup="Drivers" Csub="SDRAM" Cvendor="Keil" Cversion="1.1.1" condition="STM32F746G-Discovery BSP SDRAM">
-        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.9.0"/>
+        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
           <targetInfo name="STM32F746-Discovery"/>
         </targetInfos>
       </component>
       <component Capiversion="1.0.0" Cbundle="STM32F746G-Discovery" Cclass="Board Support" Cgroup="Graphic LCD" Cvendor="Keil" Cversion="1.1.1" condition="STM32F746G-Discovery GLCD">
-        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.9.0"/>
+        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
           <targetInfo name="STM32F746-Discovery"/>
         </targetInfos>
       </component>
       <component Capiversion="1.0.0" Cbundle="STM32F746G-Discovery" Cclass="Board Support" Cgroup="LED" Cvendor="Keil" Cversion="1.1.1" condition="STM32F7 HAL GPIO">
-        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.9.0"/>
+        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
           <targetInfo name="STM32F746-Discovery"/>
         </targetInfos>
       </component>
       <component Capiversion="1.0.0" Cbundle="V2M-MPS2" Cclass="Board Support" Cgroup="Buttons" Cvendor="Keil" Cversion="2.0.0" condition="V2M-MPS2 Common">
-        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.6.0"/>
+        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.7.0"/>
         <targetInfos>
           <targetInfo name="V2M-MPS2-LiteNES"/>
           <targetInfo name="V2M-MPS2-jeg"/>
         </targetInfos>
       </component>
-      <component Cbundle="V2M-MPS2" Cclass="Board Support" Cgroup="Common" Cvendor="Keil" Cversion="2.0.0" condition="CMSDK CMSIS Device">
-        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.6.0"/>
+      <component Cbundle="V2M-MPS2" Cclass="Board Support" Cgroup="Common" Cvendor="Keil" Cversion="2.0.0" condition="CMSDK CMSIS">
+        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.7.0"/>
         <targetInfos>
           <targetInfo name="V2M-MPS2-LiteNES"/>
           <targetInfo name="V2M-MPS2-jeg"/>
         </targetInfos>
       </component>
       <component Capiversion="1.0.0" Cbundle="V2M-MPS2" Cclass="Board Support" Cgroup="Graphic LCD" Cvendor="Keil" Cversion="2.0.0" condition="V2M-MPS2 Common">
-        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.6.0"/>
+        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.7.0"/>
         <targetInfos>
           <targetInfo excluded="1" name="V2M-MPS2-LiteNES" versionMatchMode=""/>
           <targetInfo excluded="1" name="V2M-MPS2-jeg" versionMatchMode=""/>
         </targetInfos>
       </component>
       <component Capiversion="1.0.0" Cbundle="V2M-MPS2" Cclass="Board Support" Cgroup="LED" Cvendor="Keil" Cversion="2.0.0" condition="V2M-MPS2 Common">
-        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.6.0"/>
+        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.7.0"/>
         <targetInfos>
           <targetInfo name="V2M-MPS2-LiteNES"/>
           <targetInfo name="V2M-MPS2-jeg"/>
         </targetInfos>
       </component>
       <component Capiversion="1.0.0" Cbundle="V2M-MPS2" Cclass="Board Support" Cgroup="Touchscreen" Cvendor="Keil" Cversion="2.0.0" condition="V2M-MPS2 Common">
-        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.6.0"/>
+        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.7.0"/>
         <targetInfos>
           <targetInfo name="V2M-MPS2-LiteNES"/>
           <targetInfo name="V2M-MPS2-jeg"/>
         </targetInfos>
       </component>
-      <component Capiversion="2.1.0" Cclass="CMSIS Driver" Cgroup="USART" Cvendor="Keil" Cversion="1.0.0" condition="CMSDK CMSIS Device">
-        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.6.0"/>
+      <component Capiversion="2.1.0" Cclass="CMSIS Driver" Cgroup="USART" Cvendor="Keil" Cversion="1.0.3" condition="CMSDK CMSIS">
+        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.7.0"/>
         <targetInfos>
           <targetInfo name="V2M-MPS2-LiteNES"/>
           <targetInfo name="V2M-MPS2-jeg"/>
         </targetInfos>
       </component>
-      <component Capiversion="2.1.0" Cclass="CMSIS Driver" Cgroup="USART" Cvendor="Keil" Cversion="1.8.0" condition="STM32F7 CMSIS_Driver USART">
-        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.9.0"/>
+      <component Capiversion="2.1.0" Cclass="CMSIS Driver" Cgroup="USART" Cvendor="Keil" Cversion="1.10.0" condition="STM32F7 CMSIS_Driver USART">
+        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
           <targetInfo name="STM32F746-Discovery"/>
         </targetInfos>
       </component>
-      <component Capiversion="1.0.0" Cclass="Device" Cgroup="STM32Cube Framework" Csub="Classic" Cvendor="Keil" Cversion="1.2.0" condition="STM32F7 Framework Classic">
-        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.9.0"/>
+      <component Capiversion="1.0.0" Cclass="Device" Cgroup="STM32Cube Framework" Csub="Classic" Cvendor="Keil" Cversion="1.2.6" condition="STM32F7 Framework Classic">
+        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
           <targetInfo name="STM32F746-Discovery"/>
         </targetInfos>
       </component>
-      <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="Common" Cvendor="Keil" Cversion="1.2.0" condition="STM32F7 HAL Common">
-        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.9.0"/>
+      <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="Common" Cvendor="Keil" Cversion="1.2.6" condition="STM32F7 HAL Common">
+        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
           <targetInfo name="STM32F746-Discovery"/>
         </targetInfos>
       </component>
-      <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="Cortex" Cvendor="Keil" Cversion="1.2.0" condition="STM32F7 HAL">
-        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.9.0"/>
+      <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="Cortex" Cvendor="Keil" Cversion="1.2.6" condition="STM32F7 HAL">
+        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
           <targetInfo name="STM32F746-Discovery"/>
         </targetInfos>
       </component>
-      <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="DMA" Cvendor="Keil" Cversion="1.2.0" condition="STM32F7 HAL">
-        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.9.0"/>
+      <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="DMA" Cvendor="Keil" Cversion="1.2.6" condition="STM32F7 HAL">
+        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
           <targetInfo name="STM32F746-Discovery"/>
         </targetInfos>
       </component>
-      <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="GPIO" Cvendor="Keil" Cversion="1.2.0" condition="STM32F7 HAL">
-        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.9.0"/>
+      <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="GPIO" Cvendor="Keil" Cversion="1.2.6" condition="STM32F7 HAL">
+        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
           <targetInfo name="STM32F746-Discovery"/>
         </targetInfos>
       </component>
-      <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="LTDC" Cvendor="Keil" Cversion="1.2.0" condition="STM32F7x6_7x7_7x8_7x9 HAL">
-        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.9.0"/>
+      <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="LTDC" Cvendor="Keil" Cversion="1.2.6" condition="STM32F7x6_7x7_7x8_7x9_750 HAL">
+        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
           <targetInfo name="STM32F746-Discovery"/>
         </targetInfos>
       </component>
-      <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="PWR" Cvendor="Keil" Cversion="1.2.0" condition="STM32F7 HAL">
-        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.9.0"/>
+      <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="PWR" Cvendor="Keil" Cversion="1.2.6" condition="STM32F7 HAL">
+        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
           <targetInfo name="STM32F746-Discovery"/>
         </targetInfos>
       </component>
-      <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="RCC" Cvendor="Keil" Cversion="1.2.0" condition="STM32F7 HAL GPIO">
-        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.9.0"/>
+      <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="RCC" Cvendor="Keil" Cversion="1.2.6" condition="STM32F7x5_7x6_7x7_7x9_750 HAL GPIO">
+        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
           <targetInfo name="STM32F746-Discovery"/>
         </targetInfos>
       </component>
-      <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="SDRAM" Cvendor="Keil" Cversion="1.2.0" condition="STM32F7 HAL DMA">
-        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.9.0"/>
+      <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="SDRAM" Cvendor="Keil" Cversion="1.2.6" condition="STM32F7 HAL DMA">
+        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
           <targetInfo name="STM32F746-Discovery"/>
         </targetInfos>
       </component>
-      <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="UART" Cvendor="Keil" Cversion="1.2.0" condition="STM32F7 HAL DMA">
-        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.9.0"/>
+      <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="UART" Cvendor="Keil" Cversion="1.2.6" condition="STM32F7 HAL DMA">
+        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
           <targetInfo name="STM32F746-Discovery"/>
         </targetInfos>
       </component>
-      <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="USART" Cvendor="Keil" Cversion="1.2.0" condition="STM32F7 HAL DMA">
-        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.9.0"/>
+      <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="USART" Cvendor="Keil" Cversion="1.2.6" condition="STM32F7 HAL DMA">
+        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
           <targetInfo name="STM32F746-Discovery"/>
         </targetInfos>
       </component>
-      <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.0" condition="CMSDK_CM7 CMSIS Device">
-        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.6.0"/>
+      <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.0" condition="CMSDK_CM7 CMSIS">
+        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.7.0"/>
         <targetInfos>
           <targetInfo name="V2M-MPS2-LiteNES"/>
           <targetInfo name="V2M-MPS2-jeg"/>
         </targetInfos>
       </component>
-      <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.2.0" condition="STM32F7 CMSIS">
-        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.9.0"/>
+      <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.2.2" condition="STM32F7 CMSIS">
+        <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
           <targetInfo name="STM32F746-Discovery"/>
         </targetInfos>
