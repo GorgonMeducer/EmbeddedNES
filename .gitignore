@@ -24,3 +24,6 @@ mps2_template/sources/gmsi/service/memory/stream2block/stream2block.h~RFbdf5df1.
 *.lst
 *.lst
 *.lst
+*.__i
+*._ia
+*.dbgconf

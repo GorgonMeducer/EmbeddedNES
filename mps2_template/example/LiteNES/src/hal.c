@@ -70,12 +70,22 @@ To port this project, replace the following functions by your own:
       4..0  = B4..0 (Blue)
 */
 typedef union {
+#if DEMO_MPS2_USE_VGA != ENABLED
     struct {
+    
         uint16_t    B   :5;
         uint16_t    G   :6;
         uint16_t    R   :5;
     };
-    uint16_t hwValue;
+    uint16_t tValue;
+#else
+    struct {
+        uint32_t    B   :4;
+        uint32_t    G   :4;
+        uint32_t    R   :4;
+    };
+    uint32_t tValue;
+#endif
 }color_t;
 
 typedef struct {
@@ -203,12 +213,16 @@ void nes_draw_pixels(void *ptTag, uint_fast8_t y, uint_fast8_t x, uint_fast8_t c
     
 #if __USE_TILE__
     tile_t *ptTile = &s_tScreenBuffer[y>>3][x >> 3];
+#   if DEMO_MPS2_USE_VGA == ENABLED
+    uint_fast8_t chTileY = (y & 0x07);
+#   else
     uint_fast8_t chTileY = 7 - (y & 0x07);
+#   endif
     uint_fast8_t chTileX = x & 0x07;
     color_t tColor = s_tColorMap[chColor];
     color_t *ptTarget = &((*ptTile)[chTileY][chTileX].tColor);
     
-    if ((*ptTarget).hwValue != tColor.hwValue) {
+    if ((*ptTarget).tValue != tColor.tValue) {
         this.wDirtyMatrix[y>>3] |= 1 << (x >> 3);
     }
     *ptTarget = tColor;   
@@ -310,11 +324,32 @@ void nes_hal_init(void)
         uint32_t n = 0;
         for (;n < UBOUND(s_tColorMap);n++) {
             pal_t color = palette[n];
+        #if DEMO_MPS2_USE_VGA != ENABLED
             s_tColorMap[n].B = color.b >> 3;
             s_tColorMap[n].G = color.g >> 2;
             s_tColorMap[n].R = color.r >> 3;
+        #else
+            s_tColorMap[n].B = color.b >> 4;
+            s_tColorMap[n].G = color.g >> 4;
+            s_tColorMap[n].R = color.r >> 4;
+        #endif
         }
     } while(false);
+}
+
+
+
+void display_draw_bitmap(   uint32_t x, 
+                            uint32_t y, 
+                            uint32_t width, 
+                            uint32_t height, 
+                            const uint8_t *bitmap)
+{
+#if DEMO_MPS2_USE_VGA != ENABLED
+    GLCD_DrawBitmap(x,y,width, height, bitmap);
+#else
+    VGA_DrawBitmap(x,y,width, height, bitmap);
+#endif
 }
 
 /* Update screen at FPS rate by allegro's drawing function. 
@@ -347,13 +382,13 @@ void nes_flip_display(frame_t *ptThis)
                                 s_MaskNumbersLookupTable[((uint8_t *)&wMask)[2]] +
                                 s_MaskNumbersLookupTable[((uint8_t *)&wMask)[3]];
         if (chTotal >= 16) {
-            GLCD_DrawBitmap((320-SCREEN_WIDTH)>>1,y*8,SCREEN_WIDTH,8, (uint8_t *)s_tLineBuffer[y*8]);
+            display_draw_bitmap((TARGET_SCREEN_WIDTH-SCREEN_WIDTH)>>1,y*8,SCREEN_WIDTH,8, (uint8_t *)s_tLineBuffer[y*8]);
         } else {
             for (x = 0; x < (SCREEN_WIDTH >> 3); x++) {
                 if (!(wMask & (1<<x))) {
                     continue;
                 }
-                GLCD_DrawBitmap(((320-SCREEN_WIDTH)>>1) + x * 8, y * 8, 8,8, (uint8_t *)&s_tScreenBuffer[y][x]);
+                display_draw_bitmap(((320-SCREEN_WIDTH)>>1) + x * 8, y * 8, 8,8, (uint8_t *)&s_tScreenBuffer[y][x]);
             }
         }
     #else
@@ -361,7 +396,7 @@ void nes_flip_display(frame_t *ptThis)
             if (!(wMask & (1<<x))) {
                 continue;
             }
-            GLCD_DrawBitmap(((GLCD_WIDTH-SCREEN_WIDTH)>>1) + x * 8, ((GLCD_HEIGHT-SCREEN_HEIGHT)>>1) + y * 8, 8,8, (uint8_t *)&s_tScreenBuffer[y][x]);
+            display_draw_bitmap(((TARGET_SCREEN_WIDTH-SCREEN_WIDTH)>>1) + x * 8, /*((TARGET_SCREEN_HEIGHT-SCREEN_HEIGHT)>>1) +*/ y * 8, 8,8, (uint8_t *)&s_tScreenBuffer[y][x]);
         }
     #endif
         
@@ -371,7 +406,7 @@ void nes_flip_display(frame_t *ptThis)
     
     
     #else
-        GLCD_DrawBitmap((GLCD_WIDTH-SCREEN_WIDTH)>>1,((GLCD_HEIGHT-SCREEN_HEIGHT)>>1),SCREEN_WIDTH,SCREEN_HEIGHT, (uint8_t *)s_tScreenBuffer);
+        GLCD_DrawBitmap((TARGET_SCREEN_WIDTH-SCREEN_WIDTH)>>1,((TARGET_SCREEN_HEIGHT-SCREEN_HEIGHT)>>1),SCREEN_WIDTH,SCREEN_HEIGHT, (uint8_t *)s_tScreenBuffer);
     #endif
     //}
 }
@@ -386,11 +421,11 @@ void nes_flip_display(void)
     for (y = 0; y < (SCREEN_HEIGHT >> 3); y++) {
         for (x = 0; x < (SCREEN_WIDTH >> 3); x++) {
             
-            GLCD_DrawBitmap(((320-SCREEN_WIDTH)>>1) + x * 8, y * 8, 8,8, (uint8_t *)&s_tScreenBuffer[y][x]);
+            GLCD_DrawBitmap(((TARGET_SCREEN_WIDTH-SCREEN_WIDTH)>>1) + x * 8, y * 8, 8,8, (uint8_t *)&s_tScreenBuffer[y][x]);
         }
     }
     #else
-        GLCD_DrawBitmap((320-SCREEN_WIDTH)>>1,0,SCREEN_WIDTH,SCREEN_HEIGHT, (uint8_t *)s_tScreenBuffer);
+        GLCD_DrawBitmap((TARGET_SCREEN_WIDTH-SCREEN_WIDTH)>>1,0,SCREEN_WIDTH,SCREEN_HEIGHT, (uint8_t *)s_tScreenBuffer);
     #endif
     //}
 }

@@ -1417,7 +1417,7 @@
             <UseExternalTool>1</UseExternalTool>
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
-            <Capability>0</Capability>
+            <Capability>1</Capability>
             <DriverSelection>4096</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
@@ -2728,7 +2728,7 @@
       </Groups>
     </Target>
     <Target>
-      <TargetName>STM32F746-Discovery</TargetName>
+      <TargetName>STM32F746-Discovery-Lib</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
@@ -4190,7 +4190,7 @@
       <api Capiversion="1.00" Cclass="Board Support" Cgroup="Buttons" exclusive="0">
         <package name="MDK-Middleware" schemaVersion="1.0" url="http://www.keil.com/pack/" vendor="Keil" version="6.2.0"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo name="STM32F746-Discovery-Lib"/>
           <targetInfo name="V2M-MPS2-LiteNES"/>
           <targetInfo name="V2M-MPS2-jeg"/>
         </targetInfos>
@@ -4198,7 +4198,7 @@
       <api Capiversion="1.00" Cclass="Board Support" Cgroup="Graphic LCD" exclusive="0">
         <package name="MDK-Middleware" schemaVersion="1.0" url="http://www.keil.com/pack/" vendor="Keil" version="6.2.0"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo name="STM32F746-Discovery-Lib"/>
           <targetInfo excluded="1" name="V2M-MPS2-LiteNES" versionMatchMode=""/>
           <targetInfo excluded="1" name="V2M-MPS2-jeg" versionMatchMode=""/>
         </targetInfos>
@@ -4206,7 +4206,7 @@
       <api Capiversion="1.00" Cclass="Board Support" Cgroup="LED" exclusive="0">
         <package name="MDK-Middleware" schemaVersion="1.0" url="http://www.keil.com/pack/" vendor="Keil" version="6.2.0"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo name="STM32F746-Discovery-Lib"/>
           <targetInfo name="V2M-MPS2-LiteNES"/>
           <targetInfo name="V2M-MPS2-jeg"/>
         </targetInfos>
@@ -4221,7 +4221,7 @@
       <api Capiversion="2.02" Cclass="CMSIS Driver" Cgroup="USART" exclusive="0">
         <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.0.0-Beta6"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo name="STM32F746-Discovery-Lib"/>
           <targetInfo name="V2M-MPS2-LiteNES"/>
           <targetInfo name="V2M-MPS2-jeg"/>
         </targetInfos>
@@ -4229,7 +4229,7 @@
       <api Capiversion="1.1.0" Cclass="Device" Cgroup="STM32Cube Framework" exclusive="1">
         <package name="STM32H7xx_DFP" schemaVersion="1.4" url="http://www.keil.com/pack" vendor="Keil" version="2.0.0"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo includeInLib="1" name="STM32F746-Discovery-Lib"/>
         </targetInfos>
       </api>
     </apis>
@@ -4237,7 +4237,7 @@
       <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.2.0" condition="ARMv6_7_8-M Device">
         <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.5.1"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo name="STM32F746-Discovery-Lib"/>
           <targetInfo name="V2M-MPS2-LiteNES"/>
           <targetInfo name="V2M-MPS2-jeg"/>
         </targetInfos>
@@ -4245,7 +4245,7 @@
       <component Cbundle="ARM Compiler" Cclass="Compiler" Cgroup="I/O" Csub="STDIN" Cvariant="User" Cvendor="Keil" Cversion="1.2.0" condition="ARMCC Cortex-M">
         <package name="ARM_Compiler" schemaVersion="1.4.9" url="http://www.keil.com/pack/" vendor="Keil" version="1.6.1"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo name="STM32F746-Discovery-Lib"/>
           <targetInfo name="V2M-MPS2-LiteNES"/>
           <targetInfo name="V2M-MPS2-jeg"/>
         </targetInfos>
@@ -4253,7 +4253,7 @@
       <component Cbundle="ARM Compiler" Cclass="Compiler" Cgroup="I/O" Csub="STDOUT" Cvariant="User" Cvendor="Keil" Cversion="1.2.0" condition="ARMCC Cortex-M" isTargetSpecific="1">
         <package name="ARM_Compiler" schemaVersion="1.4.9" url="http://www.keil.com/pack/" vendor="Keil" version="1.6.1"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo name="STM32F746-Discovery-Lib"/>
           <targetInfo name="V2M-MPS2-LiteNES"/>
           <targetInfo name="V2M-MPS2-jeg"/>
         </targetInfos>
@@ -4261,25 +4261,25 @@
       <component Capiversion="1.0.0" Cbundle="STM32F746G-Discovery" Cclass="Board Support" Cgroup="Buttons" Cvendor="Keil" Cversion="1.1.1" condition="STM32F7 HAL GPIO">
         <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo name="STM32F746-Discovery-Lib"/>
         </targetInfos>
       </component>
       <component Cbundle="STM32F746G-Discovery" Cclass="Board Support" Cgroup="Drivers" Csub="SDRAM" Cvendor="Keil" Cversion="1.1.1" condition="STM32F746G-Discovery BSP SDRAM">
         <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo name="STM32F746-Discovery-Lib"/>
         </targetInfos>
       </component>
       <component Capiversion="1.0.0" Cbundle="STM32F746G-Discovery" Cclass="Board Support" Cgroup="Graphic LCD" Cvendor="Keil" Cversion="1.1.1" condition="STM32F746G-Discovery GLCD">
         <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo name="STM32F746-Discovery-Lib"/>
         </targetInfos>
       </component>
       <component Capiversion="1.0.0" Cbundle="STM32F746G-Discovery" Cclass="Board Support" Cgroup="LED" Cvendor="Keil" Cversion="1.1.1" condition="STM32F7 HAL GPIO">
         <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo name="STM32F746-Discovery-Lib"/>
         </targetInfos>
       </component>
       <component Capiversion="1.0.0" Cbundle="V2M-MPS2" Cclass="Board Support" Cgroup="Buttons" Cvendor="Keil" Cversion="2.0.0" condition="V2M-MPS2 Common">
@@ -4327,86 +4327,86 @@
       <component Capiversion="2.1.0" Cclass="CMSIS Driver" Cgroup="USART" Cvendor="Keil" Cversion="1.10.0" condition="STM32F7 CMSIS_Driver USART">
         <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo name="STM32F746-Discovery-Lib"/>
         </targetInfos>
       </component>
       <component Capiversion="1.0.0" Cclass="Device" Cgroup="STM32Cube Framework" Csub="Classic" Cvendor="Keil" Cversion="1.2.6" condition="STM32F7 Framework Classic">
         <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo includeInLib="1" name="STM32F746-Discovery-Lib"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="Common" Cvendor="Keil" Cversion="1.2.6" condition="STM32F7 HAL Common">
         <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo includeInLib="1" name="STM32F746-Discovery-Lib"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="Cortex" Cvendor="Keil" Cversion="1.2.6" condition="STM32F7 HAL">
         <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo includeInLib="1" name="STM32F746-Discovery-Lib"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="DMA" Cvendor="Keil" Cversion="1.2.6" condition="STM32F7 HAL">
         <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo includeInLib="1" name="STM32F746-Discovery-Lib"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="GPIO" Cvendor="Keil" Cversion="1.2.6" condition="STM32F7 HAL">
         <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo includeInLib="1" name="STM32F746-Discovery-Lib"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="LTDC" Cvendor="Keil" Cversion="1.2.6" condition="STM32F7x6_7x7_7x8_7x9_750 HAL">
         <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo includeInLib="1" name="STM32F746-Discovery-Lib"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="PWR" Cvendor="Keil" Cversion="1.2.6" condition="STM32F7 HAL">
         <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo includeInLib="1" name="STM32F746-Discovery-Lib"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="RCC" Cvendor="Keil" Cversion="1.2.6" condition="STM32F7x5_7x6_7x7_7x9_750 HAL GPIO">
         <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo includeInLib="1" name="STM32F746-Discovery-Lib"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="SDRAM" Cvendor="Keil" Cversion="1.2.6" condition="STM32F7 HAL DMA">
         <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo includeInLib="1" name="STM32F746-Discovery-Lib"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="UART" Cvendor="Keil" Cversion="1.2.6" condition="STM32F7 HAL DMA">
         <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo includeInLib="1" name="STM32F746-Discovery-Lib"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="STM32Cube HAL" Csub="USART" Cvendor="Keil" Cversion="1.2.6" condition="STM32F7 HAL DMA">
         <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo includeInLib="1" name="STM32F746-Discovery-Lib"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.0" condition="CMSDK_CM7 CMSIS">
         <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.7.0"/>
         <targetInfos>
-          <targetInfo name="V2M-MPS2-LiteNES"/>
-          <targetInfo name="V2M-MPS2-jeg"/>
+          <targetInfo includeInLib="1" name="V2M-MPS2-LiteNES"/>
+          <targetInfo includeInLib="1" name="V2M-MPS2-jeg"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.2.2" condition="STM32F7 CMSIS">
         <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo includeInLib="1" name="STM32F746-Discovery-Lib"/>
         </targetInfos>
       </component>
     </components>
@@ -4509,7 +4509,7 @@
         <component Capiversion="1.0.0" Cclass="Device" Cgroup="STM32Cube Framework" Csub="Classic" Cvendor="Keil" Cversion="1.2.6" condition="STM32F7 Framework Classic"/>
         <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo name="STM32F746-Discovery-Lib"/>
         </targetInfos>
       </file>
       <file attr="config" category="source" condition="STM32F746_ARMCC" name="Drivers\CMSIS\Device\ST\STM32F7xx\Source\Templates\arm\startup_stm32f746xx.s" version="1.2.0">
@@ -4517,7 +4517,7 @@
         <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.2.2" condition="STM32F7 CMSIS"/>
         <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo name="STM32F746-Discovery-Lib"/>
         </targetInfos>
       </file>
       <file attr="config" category="header" name="MDK\Templates\Inc\stm32f7xx_hal_conf.h" version="1.2.0">
@@ -4525,7 +4525,7 @@
         <component Capiversion="1.0.0" Cclass="Device" Cgroup="STM32Cube Framework" Csub="Classic" Cvendor="Keil" Cversion="1.2.6" condition="STM32F7 Framework Classic"/>
         <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo name="STM32F746-Discovery-Lib"/>
         </targetInfos>
       </file>
       <file attr="config" category="source" name="Drivers\CMSIS\Device\ST\STM32F7xx\Source\Templates\system_stm32f7xx.c" version="1.2.0">
@@ -4533,7 +4533,7 @@
         <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.2.2" condition="STM32F7 CMSIS"/>
         <package name="STM32F7xx_DFP" schemaVersion="1.3" url="http://www.keil.com/pack" vendor="Keil" version="2.11.0"/>
         <targetInfos>
-          <targetInfo name="STM32F746-Discovery"/>
+          <targetInfo name="STM32F746-Discovery-Lib"/>
         </targetInfos>
       </file>
     </files>

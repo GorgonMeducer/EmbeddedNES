@@ -1,0 +1,20 @@
+--create .\Out\msp2_file_io_template.lib
+.\out\app_platform.o
+.\out\bsp_1.o
+.\out\stm32f7xx_hal.o
+.\out\stm32f7xx_hal_cortex.o
+.\out\stm32f7xx_hal_dma.o
+.\out\stm32f7xx_hal_dma_ex.o
+.\out\stm32f7xx_hal_gpio.o
+.\out\stm32f7xx_hal_ltdc.o
+.\out\stm32f7xx_hal_ltdc_ex.o
+.\out\stm32f7xx_hal_pwr.o
+.\out\stm32f7xx_hal_pwr_ex.o
+.\out\stm32f7xx_hal_rcc.o
+.\out\stm32f7xx_hal_rcc_ex.o
+.\out\stm32f7xx_hal_sdram.o
+.\out\stm32f7xx_hal_uart.o
+.\out\stm32f7xx_hal_usart.o
+.\out\stm32f7xx_ll_fmc.o
+.\out\startup_stm32f746xx.o
+.\out\system_stm32f7xx.o
