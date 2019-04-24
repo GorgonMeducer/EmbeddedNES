@@ -127,6 +127,7 @@
 #define DEMO_MULTIPLE_DELAY                 DISABLED
 #define DEMO_FRAME_USE_BLOCK_MODE           ENABLED
 #define DEMO_USE_FILE_IO                    DISABLED
+#define DEMO_MPS2_USE_VGA                   DISABLED
 
 /*============================ MACROFIED FUNCTIONS ===========================*/
 /*============================ TYPES =========================================*/

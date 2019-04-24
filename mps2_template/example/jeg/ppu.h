@@ -80,7 +80,7 @@ typedef union {
 } sprite_table_t;
 
 typedef struct ppu_t {
-    nes_t *nes; // reference to nes console
+    void *ptTarget; // reference to nes console
 
     // ppu state
     uint_fast64_t last_cycle_number; // measured in cpu cycles
@@ -158,15 +158,8 @@ typedef struct ppu_t {
     int ppustatus;
     int oam_address;
     int buffered_data;
-
-    // memory interface to vram and vrom
-    ppu_read_func_t   *read;
-    ppu_write_func_t  *write;
   
-#if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
-    ppu_draw_pixel_func_t *fnDrawPixel;
-    void *ptTag;
-#else
+#if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE != ENABLED
     // frame data interface
     uint8_t *video_frame_data;
 #endif
@@ -178,11 +171,7 @@ typedef struct ppu_t {
 
 #if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
 typedef struct {
-    nes_t                   *ptNES; 
-    ppu_read_func_t         *fnRead; 
-    ppu_write_func_t        *fnWrite;
-    ppu_draw_pixel_func_t   *fnDrawPixel;
-    void *ptTag;
+    void                    *ptTarget; 
 }ppu_cfg_t;
 
 extern bool ppu_init(ppu_t *ppu, ppu_cfg_t *ptCFG);
@@ -190,9 +179,7 @@ extern bool ppu_init(ppu_t *ppu, ppu_cfg_t *ptCFG);
 extern void ppu_init(ppu_t *ppu, nes_t *nes, ppu_read_func_t read, ppu_write_func_t write);
 #endif
 
-void ppu_setup_video(ppu_t *ppu, uint8_t *video_frame_data);
-
-void ppu_reset(ppu_t *ppu);
+extern void ppu_reset(ppu_t *ppu);
 
 //! \brief read data [8bit] from address [16bit]
 extern uint_fast8_t ppu_read(ppu_t *ppu, uint_fast16_t hwAddress) ; 
@@ -203,9 +190,10 @@ extern void ppu_write(ppu_t *ppu, uint_fast16_t hwAddress, uint_fast8_t chData);
 //! \bridef dedicated PPU DMA access 
 extern void ppu_dma_access(ppu_t *ppu, uint_fast8_t chData);
 
-extern uint_fast32_t ppu_update(ppu_t *ppu); // update ppu to current cpu cycle, return number of cpu cycles to next frame
+// update ppu to current cpu cycle, return number of cpu cycles to next frame
+extern uint_fast32_t ppu_update(ppu_t *ppu); 
 
-#if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == DISABLED
+#if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE != ENABLED
 extern void ppu_setup_video(ppu_t *ppu, uint8_t *video_frame_data);
 #endif
 

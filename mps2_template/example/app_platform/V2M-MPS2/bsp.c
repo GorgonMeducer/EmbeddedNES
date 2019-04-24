@@ -69,5 +69,43 @@ bool bsp_init(void)
 
 void bsp_1ms_event_handler(void)
 {}
+
+typedef union {
+    struct {
+        uint32_t    B : 4;
+        uint32_t    G : 4;
+        uint32_t    R : 4;
+        uint32_t      : 20;
+    };
+    uint32_t wValue;
+}vga_pixel_t;
+
+typedef struct {
+    vga_pixel_t tPixels[128][512];
+}vga_frame_t;
+
+#define VGA_BUFFER          (*(vga_frame_t *)(0x41100000))
+
+int32_t VGA_DrawBitmap (uint32_t x, 
+                        uint32_t y, 
+                        uint32_t width, 
+                        uint32_t height, 
+                        const uint8_t *bitmap)
+{
+    const uint32_t *pwPixels = (const uint32_t *)bitmap;
+    if (y<128) {
+        return 0;
+    }
+    y-= 128;
+    do {
+        memcpy(&VGA_BUFFER.tPixels[y++][x], pwPixels, width*4);
+        pwPixels+= width;
+        if (y >= 128) {
+            break;
+        }
+    } while(--height);
+    
+    return 0;
+}
   
 /* EOF */

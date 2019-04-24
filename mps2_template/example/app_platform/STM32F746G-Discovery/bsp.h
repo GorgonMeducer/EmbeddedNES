@@ -99,6 +99,9 @@ void USART##__NUM##_TX_CPL_Handler(void)                                \
 #define USE_SERIAL_PORT_OUTPUT_ADAPTER(__NUM)                           \
             __USE_SERIAL_PORT_OUTPUT_ADAPTER(__NUM)                  
 
+#define TARGET_SCREEN_WIDTH        GLCD_WIDTH
+#define TARGET_SCREEN_HEIGHT       GLCD_HEIGHT
+
 /*============================ TYPES =========================================*/     
 /*============================ GLOBAL VARIABLES ==============================*/
 /*============================ LOCAL VARIABLES ===============================*/

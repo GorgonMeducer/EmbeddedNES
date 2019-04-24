@@ -12,21 +12,19 @@ typedef struct nes_t {
   cpu6502_t cpu;
   ppu_t ppu;
   cartridge_t cartridge;
+  void *ptTarget;
   uint8_t controller_data[2];
   uint8_t controller_shift_reg[2];
   uint8_t ram_data[0x800];
 } nes_t;
 
-#if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
+
 typedef struct {
-    ppu_draw_pixel_func_t *fnDrawPixel;
-    void *ptTag;
+    void *ptTarget;
 }nes_cfg_t;
 
 extern bool nes_init(nes_t *, nes_cfg_t *);
-#else
-extern void nes_init(nes_t *ptNES);
-#endif
+
 extern nes_err_t nes_setup_rom(nes_t *, uint8_t *, uint_fast32_t );
 
 extern void nes_setup_video(nes_t *, uint8_t *);

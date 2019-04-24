@@ -98,6 +98,14 @@ void USART##__NUM##_TX_CPL_Handler(void)                                \
 
 #define USE_SERIAL_PORT_OUTPUT_ADAPTER(__NUM)                           \
             __USE_SERIAL_PORT_OUTPUT_ADAPTER(__NUM)                  
+            
+#if DEMO_MPS2_USE_VGA    != ENABLED
+#define TARGET_SCREEN_WIDTH        GLCD_WIDTH
+#define TARGET_SCREEN_HEIGHT       GLCD_HEIGHT
+#else
+#define TARGET_SCREEN_WIDTH        512
+#define TARGET_SCREEN_HEIGHT       128
+#endif
 
 /*============================ TYPES =========================================*/     
 /*============================ GLOBAL VARIABLES ==============================*/
@@ -113,4 +121,10 @@ extern bool is_blocking_style_enabled(void);
 extern bool bsp_init(void);
 
 extern void bsp_1ms_event_handler(void);
+
+extern int32_t VGA_DrawBitmap (uint32_t x, 
+                        uint32_t y, 
+                        uint32_t width, 
+                        uint32_t height, 
+                        const uint8_t *bitmap);
 #endif
