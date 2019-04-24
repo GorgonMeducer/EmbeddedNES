@@ -34,6 +34,31 @@
 #define PPUSTATUS_VBLANK                    (1<<7)
 //! @}
 
+extern 
+void ppu_bus_write( void *ptTarget, 
+                    uint_fast16_t hwAddress, 
+                    uint_fast8_t chData);
+extern 
+uint_fast8_t ppu_bus_read (void *ptTarget, uint_fast16_t hwAddress);
+
+extern 
+void ppu_update_cpu_stall_cycle(void *ptTarget, int_fast32_t nCycles);
+
+extern 
+int_fast32_t ppu_get_cpu_cycle_count(void *ptTarget);
+
+extern 
+uint_fast8_t ppu_get_cartridge_mirror_type(void *ptTarget);
+
+extern 
+void ppu_trigger_cpu_nmi(void *ptTarget);
+
+extern 
+void ppu_draw_pixel(void *, uint_fast8_t , uint_fast8_t , uint_fast8_t );
+
+extern 
+uint8_t *ppu_dma_get_source_address(void *ref, uint_fast16_t hwAddress);
+
 #if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
 bool ppu_init(ppu_t *ppu, ppu_cfg_t *ptCFG) 
 {
@@ -41,19 +66,12 @@ bool ppu_init(ppu_t *ppu, ppu_cfg_t *ptCFG)
     do {
         if (NULL == ppu || NULL == ptCFG) {
             break;
-        } else if (     (NULL == ptCFG->ptNES)
-                    ||  (NULL == ptCFG->fnRead)
-                    ||  (NULL == ptCFG->fnWrite)
-                    ||  (NULL == ptCFG->fnDrawPixel)) {
+        } else if (     (NULL == ptCFG->ptTarget)) {
             break;
         }
         
-        ppu->nes                = ptCFG->ptNES;
-        ppu->read               = ptCFG->fnRead;
-        ppu->write              = ptCFG->fnWrite;
-        ppu->fnDrawPixel        = ptCFG->fnDrawPixel;
-        ppu->ptTag              = ptCFG->ptTag;
-    #if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == DISABLED
+        ppu->ptTarget        = ptCFG->ptTarget;
+    #if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE != ENABLED
         ppu->video_frame_data   = NULL;
     #endif
         ppu_reset(ppu);
@@ -135,13 +153,13 @@ uint_fast8_t ppu_read(ppu_t *ppu, uint_fast16_t hwAddress)
             break;
             
         case 7:
-            value=ppu->read(ppu->nes, ppu->v);
+            value = ppu_bus_read(ppu->ptTarget, ppu->v);
             if ((ppu->v & 0x3FFF) < 0x3F00) {
                 buffered = ppu->buffered_data;
                 ppu->buffered_data = value;
                 value = buffered;
             } else {
-                ppu->buffered_data = ppu->read(ppu->nes, ppu->v - 0x1000);
+                ppu->buffered_data = ppu_bus_read(ppu->ptTarget, ppu->v - 0x1000);
             }
             ppu->v += ((ppu->ppuctrl&PPUCTRL_INCREMENT) == 0) ? 1 : 32;
             break;
@@ -160,7 +178,8 @@ void ppu_dma_access(ppu_t *ppu, uint_fast8_t chData)
     
 #if JEG_USE_DMA_MEMORY_COPY_ACCELERATION == ENABLED
     assert(0 == ppu->oam_address);
-    uint8_t *pchSrc = ppu->nes->cpu.fnDMAGetSourceAddress(ppu->nes, address_temp);
+    
+    uint8_t *pchSrc = ppu_dma_get_source_address(ppu->ptTarget, address_temp);
     
 #   if JEG_USE_OPTIMIZED_SPRITE_PROCESSING == ENABLED
     uint8_t *pchCheck = pchSrc;
@@ -209,11 +228,14 @@ void ppu_dma_access(ppu_t *ppu, uint_fast8_t chData)
 #   endif
 #endif
 
-    ppu->nes->cpu.stall_cycles += 513;
-    if (ppu->nes->cpu.cycle_number & 0x01) {
-        ppu->nes->cpu.stall_cycles++;
+    ppu_update_cpu_stall_cycle(ppu->ptTarget, 513);
+    //ppu->nes->cpu.stall_cycles += 513;
+    if (ppu_get_cpu_cycle_count(ppu->ptTarget) & 0x01) {
+        ppu_update_cpu_stall_cycle(ppu->ptTarget, 1);
     }
 }
+
+
 
 void ppu_write(ppu_t *ppu, uint_fast16_t hwAddress, uint_fast8_t chData) 
 {
@@ -282,7 +304,7 @@ void ppu_write(ppu_t *ppu, uint_fast16_t hwAddress, uint_fast8_t chData)
             }
             break;
         case 7:
-            ppu->write(ppu->nes, ppu->v, chData);
+            ppu_bus_write(ppu->ptTarget, ppu->v, chData);
             ppu->v += (0 == (ppu->ppuctrl & PPUCTRL_INCREMENT)) ? 1:32;
             break;
     }
@@ -318,8 +340,8 @@ static uint32_t fetch_sprite_pattern(ppu_t *ppu, sprite_t *ptSpriteInfo, uint_fa
     
     hwAddress = 0x1000 * table + tile * 16 + hwRow;
     
-    uint_fast8_t low_tile_byte = ppu->read(ppu->nes, hwAddress);
-    uint_fast8_t high_tile_byte = ppu->read(ppu->nes, hwAddress + 8);
+    uint_fast8_t low_tile_byte = ppu_bus_read(ppu->ptTarget, hwAddress);
+    uint_fast8_t high_tile_byte = ppu_bus_read(ppu->ptTarget, hwAddress + 8);
     uint32_t data=0;
   
     uint_fast8_t p1, p2;
@@ -539,8 +561,8 @@ static void update_background(ppu_t *ptPPU)
                     
                     for (uint_fast8_t chYOffsite = 0; chYOffsite < 8; chYOffsite++) {
                         //!< fetch low tile byte
-                        uint_fast8_t low_tile_byte = ptPPU->read ( 
-                                    ptPPU->nes,    
+                        uint_fast8_t low_tile_byte = ppu_bus_read ( 
+                                    ptPPU->ptTarget,    
                                     0x1000*((ptPPU->ppuctrl & PPUCTRL_BACKGROUND_TABLE) ? 1 : 0)
                                 +   name_table_byte*16
                                 +   chYOffsite
@@ -548,8 +570,8 @@ static void update_background(ppu_t *ptPPU)
 
                         
                         //!< fetch high tile byte
-                        uint_fast8_t high_tile_byte = ptPPU->read(
-                                    ptPPU->nes, 
+                        uint_fast8_t high_tile_byte = ppu_bus_read(
+                                    ptPPU->ptTarget, 
                                     0x1000 * ((ptPPU->ppuctrl & PPUCTRL_BACKGROUND_TABLE) ? 1 : 0)
                                 +   name_table_byte*16
                                 +   chYOffsite + 8
@@ -675,7 +697,7 @@ static void fetch_background_tile_info(ppu_t *ptPPU)
     
         //uint_fast32_t data = 0;
         uint_fast8_t chTableIndex = 
-        find_name_attribute_table_index(ptPPU->nes->cartridge.chMirror, (ptPPU->v&0x0FFF));
+        find_name_attribute_table_index(ppu_get_cartridge_mirror_type(ptPPU->ptTarget), (ptPPU->v&0x0FFF));
         
         name_attribute_table_t *ptTable = &(ptPPU->tNameAttributeTable[chTableIndex]);
         
@@ -760,7 +782,8 @@ static void ppu_mix_background_and_foreground(ppu_t *ptPPU)
         color -= 16;
     }
 #if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
-    ptPPU->fnDrawPixel(   ptPPU->ptTag, 
+    ppu_draw_pixel( ptPPU->ptTarget,
+    //ptPPU->fnDrawPixel(   ptPPU->ptTag, 
                         ptPPU->scanline,                              //!< Y
                         ptPPU->cycle-1,                               //!< X
                         ptPPU->palette[color]);                       //!< 8bit color
@@ -781,11 +804,14 @@ static void ppu_mix_background_and_foreground(ppu_t *ptPPU)
 #define VISIBLE_CYCLE           (ppu->cycle >= 1 && ppu->cycle <= 256)
 #define FETCH_CYCLE             (PRE_FETCH_CYCLE || VISIBLE_CYCLE)
 
+
+
 uint_fast32_t ppu_update(ppu_t *ppu) 
 {
     //! tick
-    int_fast32_t cycles = (ppu->nes->cpu.cycle_number - ppu->last_cycle_number) * 3;
-    ppu->last_cycle_number = ppu->nes->cpu.cycle_number;
+    int_fast32_t nCPUCycles = ppu_get_cpu_cycle_count(ppu->ptTarget);
+    int_fast32_t cycles = (nCPUCycles - ppu->last_cycle_number) * 3;
+    ppu->last_cycle_number = nCPUCycles;
 
 
 #if JEG_USE_BACKGROUND_BUFFERING == ENABLED
@@ -918,7 +944,8 @@ uint_fast32_t ppu_update(ppu_t *ppu)
         #endif
         
             if (ppu->ppuctrl & PPUCTRL_NMI) {
-                cpu6502_trigger_interrupt(&ppu->nes->cpu, INTERRUPT_NMI);
+                ppu_trigger_cpu_nmi(ppu->ptTarget);
+                //cpu6502_trigger_interrupt(&ppu->nes->cpu, INTERRUPT_NMI);
             }
         }
 

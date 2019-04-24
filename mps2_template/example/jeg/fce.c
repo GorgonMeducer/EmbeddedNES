@@ -130,7 +130,7 @@ int32_t fce_load_rom(uint8_t *pchROM, uint_fast32_t wSize)
     #if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
         {
             const nes_cfg_t tCFG = {
-                &draw_pixels,
+                //&draw_pixels,
                 &this.tFrame,
             };
             if (nes_init(&this.tNESConsole, (nes_cfg_t *)&tCFG)) {

@@ -196,7 +196,7 @@ void nes_flush_buf(PixelBuf  * __restrict pbuff) {
 
 extern void nes_flip_display(frame_t *ptFrame);
 
-void draw_pixels(void *ptTag, uint_fast8_t y, uint_fast8_t x, uint_fast8_t chColor)
+void nes_draw_pixels(void *ptTag, uint_fast8_t y, uint_fast8_t x, uint_fast8_t chColor)
 {
     frame_t *ptThis = (frame_t *)ptTag;
     //y = SCREEN_HEIGHT - y - 1;

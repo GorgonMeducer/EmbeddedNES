@@ -4,8 +4,13 @@
 #include <stdbool.h>
 #include "jeg_cfg.h"
 
+extern 
+void nes_draw_pixels(   void *ptTag, 
+                        uint_fast8_t y, 
+                        uint_fast8_t x, 
+                        uint_fast8_t chColor);
 
-static uint_fast8_t cpu6502_bus_read (void *ref, uint_fast16_t address) 
+uint_fast8_t cpu6502_bus_read (void *ref, uint_fast16_t address) 
 {
     nes_t* nes=(nes_t *)ref;
     int value;
@@ -32,7 +37,7 @@ static uint_fast8_t cpu6502_bus_read (void *ref, uint_fast16_t address)
     return 0;
 }
 
-static void cpu6502_bus_write (void *ref, uint_fast16_t address, uint_fast8_t value) 
+void cpu6502_bus_write (void *ref, uint_fast16_t address, uint_fast8_t value) 
 {
     nes_t* nes=(nes_t *)ref;
 
@@ -55,7 +60,7 @@ static void cpu6502_bus_write (void *ref, uint_fast16_t address, uint_fast8_t va
 }
 
 #if JEG_USE_EXTRA_16BIT_BUS_ACCESS == ENABLED
-static uint_fast16_t cpu6502_bus_readw (void *ref, uint_fast16_t hwAddress) 
+uint_fast16_t cpu6502_bus_readw (void *ref, uint_fast16_t hwAddress) 
 {
     nes_t* nes=(nes_t *)ref;
 
@@ -68,14 +73,14 @@ static uint_fast16_t cpu6502_bus_readw (void *ref, uint_fast16_t hwAddress)
     }
 }
 
-static void cpu6502_bus_writew (void *ref, uint_fast16_t hwAddress, uint_fast16_t hwValue) 
+void cpu6502_bus_writew (void *ref, uint_fast16_t hwAddress, uint_fast16_t hwValue) 
 {
     // it is not used...
 }
 #endif
 
 #if JEG_USE_DMA_MEMORY_COPY_ACCELERATION == ENABLED
-static uint8_t *cpu6502_dma_get_source_address(void *ref, uint_fast16_t hwAddress)
+uint8_t *ppu_dma_get_source_address(void *ref, uint_fast16_t hwAddress)
 {
     
     nes_t* nes=(nes_t *)ref;
@@ -114,7 +119,7 @@ uint_fast8_t find_name_attribute_table_index(uint_fast8_t chMode, uint_fast16_t 
 }
 
 
-static uint_fast8_t ppu_bus_read (nes_t *ptNES, uint_fast16_t hwAddress) 
+uint_fast8_t ppu_bus_read (nes_t *ptNES, uint_fast16_t hwAddress) 
 {
     uint_fast8_t chData;
     hwAddress &= 0x3FFF;
@@ -246,7 +251,7 @@ static void write_name_attribute_table(nes_t *ptNES, uint_fast16_t hwAddress, ui
 #endif
 }
 
-static void ppu_bus_write (nes_t *ptNES, uint_fast16_t hwAddress, uint_fast8_t chData) 
+void ppu_bus_write (nes_t *ptNES, uint_fast16_t hwAddress, uint_fast8_t chData) 
 {
     hwAddress &= 0x3FFF;
     
@@ -265,74 +270,41 @@ static void ppu_bus_write (nes_t *ptNES, uint_fast16_t hwAddress, uint_fast8_t c
     }
 }
 
-#if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
 bool nes_init(nes_t *ptNES, nes_cfg_t *ptCFG) 
-#else
-void nes_init(nes_t *ptNES)
-#endif
 { 
- #if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
- bool bResult = false;
- #endif
+    bool bResult = false;
+
     do {
-    #if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
         
         if (    NULL == ptNES 
             ||  NULL == ptCFG) {
             break;
-        } else if (NULL == ptCFG->fnDrawPixel) {
-            break;
-        }
-    #else
-        if ( NULL == ptNES ) {
-            break;
-        }
-    #endif
-    #if JEG_USE_DMA_MEMORY_COPY_ACCELERATION == ENABLED ||                          \
-        JEG_USE_EXTRA_16BIT_BUS_ACCESS       == ENABLED
+        } 
+        ptNES->ptTarget = ptCFG->ptTarget;
+        
         {
             cpu6502_cfg_t tCFG = {
                 ptNES,
-                &cpu6502_bus_read,
-                &cpu6502_bus_write,
-            #if JEG_USE_EXTRA_16BIT_BUS_ACCESS == ENABLED
-                &cpu6502_bus_readw,
-                &cpu6502_bus_writew,
-            #endif
-            #if JEG_USE_DMA_MEMORY_COPY_ACCELERATION == ENABLED
-                &cpu6502_dma_get_source_address,
-            #endif
             };
             if (! cpu6502_init(&ptNES->cpu, &tCFG)) {
                 break;
-            }
-        } 
-    #else
-        cpu6502_init(&ptNES->cpu, ptNES, &cpu6502_bus_read, &cpu6502_bus_write);
-    #endif
-    #if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
+            } 
+        }
+        
         {
             ppu_cfg_t tCFG = {
                 ptNES,
-                ppu_bus_read,
-                ppu_bus_write,
-                ptCFG->fnDrawPixel,
-                ptCFG->ptTag,
             };
             if (ppu_init(&ptNES->ppu, &tCFG)) {
                 break;
             }
         }
+        
         bResult = true;
-    #else
-        ppu_init(&ptNES->ppu, ptNES, ppu_bus_read, ppu_bus_write);
-    #endif
         
     } while(false);
     
-#if JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE == ENABLED
     return bResult;
-#endif
 }
 
 nes_err_t nes_setup_rom(nes_t *ptNES, uint8_t *pchData, uint_fast32_t wSize) 
@@ -381,6 +353,42 @@ void nes_set_controller(nes_t *nes, uint8_t controller1, uint8_t controller2)
 {
     nes->controller_data[0] = controller1;
     nes->controller_data[1] = controller2;
+}
+
+int_fast32_t ppu_get_cpu_cycle_count(void *ptTarget)
+{
+    nes_t *ptNES = (nes_t *)ptTarget;
+    return ptNES->cpu.cycle_number;
+}
+
+void ppu_update_cpu_stall_cycle(void *ptTarget, int_fast32_t nCycles)
+{
+    nes_t *ptNES = (nes_t *)ptTarget;
+    ptNES->cpu.stall_cycles += nCycles;
+}
+
+uint_fast8_t ppu_get_cartridge_mirror_type(void *ptTarget)
+{
+    nes_t *ptNES = (nes_t *)ptTarget;
+    return ptNES->cartridge.chMirror;
+}
+
+ 
+void ppu_trigger_cpu_nmi(void *ptTarget)
+{
+    nes_t *ptNES = (nes_t *)ptTarget;
+    cpu6502_trigger_interrupt(&(ptNES->cpu), INTERRUPT_NMI);
+}
+
+
+
+void ppu_draw_pixel(void *ptTarget, 
+                    uint_fast8_t chY, 
+                    uint_fast8_t chX, 
+                    uint_fast8_t chColor)
+{
+    nes_t *ptNES = (nes_t *)ptTarget;
+    nes_draw_pixels(ptNES->ptTarget, chY, chX, chColor);
 }
 
 #if JEG_USE_FRAME_SYNC_UP_FLAG  == ENABLED

@@ -19,7 +19,7 @@
 
 #define PUSH(v)                                                                 \
     do {                                                                        \
-        cpu->write(cpu->reference, 0x100|cpu->reg_SP, (v)&0xFF);                \
+        cpu6502_bus_write(cpu->ptTarget, 0x100|cpu->reg_SP, (v)&0xFF);         \
         cpu->reg_SP--;                                                          \
         if (cpu->reg_SP<0) {                                                    \
             cpu->reg_SP=0xFF;                                                   \
@@ -27,12 +27,12 @@
     } while(0)
 
 #if JEG_USE_EXTRA_16BIT_BUS_ACCESS == ENABLED
-#define READ16(adr)     (cpu->readw(cpu->reference, adr))
+#define READ16(adr)     (cpu6502_bus_readw(cpu->ptTarget, adr))
 #else
-#define READ16(adr)     (cpu->read(cpu->reference, adr)|(cpu->read(cpu->reference, (adr)+1)<<8))
+#define READ16(adr)     (cpu->read(cpu->ptTarget, adr)|(cpu->read(cpu->ptTarget, (adr)+1)<<8))
 #endif
-#define READ16BUG(adr)  (   (cpu->read(     cpu->reference, adr))               \
-                        |   ((cpu->read(    cpu->reference,     ((adr)&0xFF00)  \
+#define READ16BUG(adr)  (   (cpu6502_bus_read(     cpu->ptTarget, adr))               \
+                        |   ((cpu6502_bus_read(    cpu->ptTarget,     ((adr)&0xFF00)  \
                                                             +   (((adr)+1)&0xFF)\
                                        )<<8)))
 
@@ -53,57 +53,42 @@
     } while(0)
 
 
+extern 
+uint_fast8_t cpu6502_bus_read (void *ref, uint_fast16_t address) ;
+extern 
+void cpu6502_bus_write (void *ref, uint_fast16_t address, uint_fast8_t value);
+
+#if JEG_USE_EXTRA_16BIT_BUS_ACCESS == ENABLED
+extern 
+uint_fast16_t cpu6502_bus_readw (void *ref, uint_fast16_t hwAddress);
+
+#endif
+
 #if  JEG_USE_DUMMY_READS == ENABLED
 #   define DUMMY_READ(adr)
 #else
-#   define DUMMY_READ(adr) cpu->read(cpu->reference, adr);
+#   define DUMMY_READ(adr) cpu6502_bus_read(cpu->ptTarget, adr);
 #endif
 
-#if JEG_USE_DMA_MEMORY_COPY_ACCELERATION == ENABLED ||                          \
-    JEG_USE_EXTRA_16BIT_BUS_ACCESS       == ENABLED
 bool cpu6502_init(cpu6502_t *ptCPU, cpu6502_cfg_t *ptCFG) 
 {
     do {
         if (NULL == ptCPU || NULL == ptCFG) {
             break;
-        } else if (     (NULL == ptCFG->reference)
-                #if JEG_USE_DMA_MEMORY_COPY_ACCELERATION == ENABLED
-                    ||  (NULL == ptCFG->fnDMAGetSourceAddress)
-                #endif
-                #if JEG_USE_EXTRA_16BIT_BUS_ACCESS == ENABLED
-                    ||  (NULL == ptCFG->readw)
-                    ||  (NULL == ptCFG->writew)
-                #endif
-                    ||  (NULL == ptCFG->read)
-                    ||  (NULL == ptCFG->write)) {
+        } else if (NULL == ptCFG->ptTarget) {
             break;
         }
     
-        ptCPU->reference =              ptCFG->reference;
-        ptCPU->read =                   ptCFG->read;
-        ptCPU->write =                  ptCFG->write;
-    #if JEG_USE_EXTRA_16BIT_BUS_ACCESS == ENABLED
-        ptCPU->readw =                  ptCFG->readw;
-        ptCPU->writew =                 ptCFG->writew;
-    #endif
-    #if JEG_USE_DMA_MEMORY_COPY_ACCELERATION == ENABLED
-        ptCPU->fnDMAGetSourceAddress =  ptCFG->fnDMAGetSourceAddress;
-    #endif
+        ptCPU->ptTarget =  ptCFG->ptTarget;
         return true;
     } while(false);
 
     return false;
 }
-#else
-void cpu6502_init(cpu6502_t *cpu, void *reference, cpu6502_read_func_t read, cpu6502_write_func_t write) 
-{
-    cpu->reference = reference;
-    cpu->read=read;
-    cpu->write=write;
-}
-#endif
 
-void cpu6502_reset(cpu6502_t *cpu) {
+
+void cpu6502_reset(cpu6502_t *cpu) 
+{
   // load program counter with address stored at 0xFFFC (low byte) and 0xFFFD (high byte)
     cpu->reg_A = 0;
     cpu->reg_X = 0;
@@ -151,7 +136,7 @@ uint_fast32_t cpu6502_run(cpu6502_t *cpu, int_fast32_t cycles_to_run)
     }
 
     // read op code
-    ptOpcode = &opcode_tbl[cpu->read(cpu->reference, cpu->reg_PC)];
+    ptOpcode = &opcode_tbl[cpu6502_bus_read(cpu->ptTarget, cpu->reg_PC)];
 
     // handle address mode
     switch (ptOpcode->address_mode) {
@@ -184,20 +169,20 @@ uint_fast32_t cpu6502_run(cpu6502_t *cpu, int_fast32_t cycles_to_run)
         address=0;
         break;
       case ADR_INDEXED_INDIRECT:
-        address=READ16BUG((cpu->read(cpu->reference, cpu->reg_PC+1)+cpu->reg_X)&0xFF);
+        address=READ16BUG((cpu6502_bus_read(cpu->ptTarget, cpu->reg_PC+1)+cpu->reg_X)&0xFF);
         break;
       case ADR_INDIRECT:
         address=READ16BUG(READ16(cpu->reg_PC+1));
         break;
       case ADR_INDIRECT_INDEXED:
-        address=READ16BUG(cpu->read(cpu->reference, cpu->reg_PC+1))+cpu->reg_Y;
+        address=READ16BUG(cpu6502_bus_read(cpu->ptTarget, cpu->reg_PC+1))+cpu->reg_Y;
         if (PAGE_DIFFERS(address-cpu->reg_Y, address)) {
           cycles_passed+=ptOpcode->page_cross_cycles;
           DUMMY_READ(address-0x100);                                            // dummy read
         }
         break;
       case ADR_RELATIVE:
-        address=cpu->read(cpu->reference, cpu->reg_PC+1);
+        address = cpu6502_bus_read(cpu->ptTarget, cpu->reg_PC+1);
         if (address<0x80) {
           address+=cpu->reg_PC+2;
         }
@@ -206,13 +191,13 @@ uint_fast32_t cpu6502_run(cpu6502_t *cpu, int_fast32_t cycles_to_run)
         }
         break;
       case ADR_ZERO_PAGE:
-        address=cpu->read(cpu->reference, cpu->reg_PC+1)&0xFF;
+        address = cpu6502_bus_read(cpu->ptTarget, cpu->reg_PC+1)&0xFF;
         break;
       case ADR_ZERO_PAGE_X:
-        address=(cpu->read(cpu->reference, cpu->reg_PC+1)+cpu->reg_X)&0xFF;
+        address=(cpu6502_bus_read(cpu->ptTarget, cpu->reg_PC+1)+cpu->reg_X)&0xFF;
         break;
       case ADR_ZERO_PAGE_Y:
-        address=(cpu->read(cpu->reference, cpu->reg_PC+1)+cpu->reg_Y)&0xFF;
+        address=(cpu6502_bus_read(cpu->ptTarget, cpu->reg_PC+1)+cpu->reg_Y)&0xFF;
         break;
     }
 
@@ -223,8 +208,8 @@ uint_fast32_t cpu6502_run(cpu6502_t *cpu, int_fast32_t cycles_to_run)
 
     switch(ptOpcode->operation) {
       case OP_ADC:
-        temp_value2=cpu->read(cpu->reference, address);
-        temp_value=cpu->reg_A+temp_value2+cpu->status_C;
+        temp_value2 = cpu6502_bus_read(cpu->ptTarget, address);
+        temp_value = cpu->reg_A+temp_value2+cpu->status_C;
         #if JEG_USE_6502_DECIMAL_MODE == ENABLED
         if (cpu->status_D) { // bcd mode
           if (( (cpu->reg_A&0x0F)+(temp_value2&0x0F)+cpu->status_C)>9) {
@@ -247,7 +232,7 @@ uint_fast32_t cpu6502_run(cpu6502_t *cpu, int_fast32_t cycles_to_run)
         RECALC_ZN(cpu->reg_A);
         break;
       case OP_AND:
-        cpu->reg_A=cpu->reg_A&cpu->read(cpu->reference, address);
+        cpu->reg_A=cpu->reg_A & cpu6502_bus_read(cpu->ptTarget, address);
         RECALC_ZN(cpu->reg_A);
         break;
       case OP_ASL:
@@ -257,10 +242,10 @@ uint_fast32_t cpu6502_run(cpu6502_t *cpu, int_fast32_t cycles_to_run)
           RECALC_ZN(cpu->reg_A);
         }
         else {
-          temp_value=cpu->read(cpu->reference, address);
+          temp_value = cpu6502_bus_read(cpu->ptTarget, address);
           cpu->status_C= temp_value&0x80?1:0;
           temp_value=(temp_value&0x7F)<<1;
-          cpu->write(cpu->reference, address, temp_value);
+          cpu6502_bus_write(cpu->ptTarget, address, temp_value);
           RECALC_ZN(temp_value);
         }
         break;
@@ -274,7 +259,7 @@ uint_fast32_t cpu6502_run(cpu6502_t *cpu, int_fast32_t cycles_to_run)
         BRANCH(cpu->status_Z);
         break;
       case OP_BIT:
-        temp_value=cpu->read(cpu->reference, address);
+        temp_value = cpu6502_bus_read(cpu->ptTarget, address);
         cpu->status_V=(temp_value&0x40)?1:0;
         cpu->status_Z=(temp_value&cpu->reg_A)?0:1;
         cpu->status_N=temp_value&0x80?1:0;
@@ -315,20 +300,20 @@ uint_fast32_t cpu6502_run(cpu6502_t *cpu, int_fast32_t cycles_to_run)
         cpu->status_V=0;
         break;
       case OP_CMP:
-        COMPARE(cpu->reg_A, cpu->read(cpu->reference, address));
+        COMPARE(cpu->reg_A, cpu6502_bus_read(cpu->ptTarget, address));
         break;
       case OP_CPX:
-        COMPARE(cpu->reg_X, cpu->read(cpu->reference, address));
+        COMPARE(cpu->reg_X, cpu6502_bus_read(cpu->ptTarget, address));
         break;
       case OP_CPY:
-        COMPARE(cpu->reg_Y, cpu->read(cpu->reference, address));
+        COMPARE(cpu->reg_Y, cpu6502_bus_read(cpu->ptTarget, address));
         break;
       case OP_DEC:
-        temp_value=cpu->read(cpu->reference, address)-1;
+        temp_value = cpu6502_bus_read(cpu->ptTarget, address)-1;
         if (temp_value<0) {
           temp_value=0xFF;
         }
-        cpu->write(cpu->reference, address, temp_value);
+        cpu6502_bus_write(cpu->ptTarget, address, temp_value);
         RECALC_ZN(temp_value);
         break;
       case OP_DEX:
@@ -342,15 +327,15 @@ uint_fast32_t cpu6502_run(cpu6502_t *cpu, int_fast32_t cycles_to_run)
         RECALC_ZN(cpu->reg_Y);
         break;
       case OP_EOR:
-        cpu->reg_A=cpu->reg_A^cpu->read(cpu->reference, address);
+        cpu->reg_A=cpu->reg_A ^ cpu6502_bus_read(cpu->ptTarget, address);
         RECALC_ZN(cpu->reg_A);
         break;
       case OP_INC:
-        temp_value=cpu->read(cpu->reference, address)+1;
+        temp_value = cpu6502_bus_read(cpu->ptTarget, address)+1;
         if (temp_value>255) {
           temp_value=0x00;
         }
-        cpu->write(cpu->reference, address, temp_value);
+        cpu6502_bus_write(cpu->ptTarget, address, temp_value);
         RECALC_ZN(temp_value);
         break;
       case OP_INX:
@@ -373,15 +358,15 @@ uint_fast32_t cpu6502_run(cpu6502_t *cpu, int_fast32_t cycles_to_run)
         cpu->reg_PC=address;
         break;
       case OP_LDA:
-        cpu->reg_A=cpu->read(cpu->reference, address);
+        cpu->reg_A = cpu6502_bus_read(cpu->ptTarget, address);
         RECALC_ZN(cpu->reg_A);
         break;
       case OP_LDX:
-        cpu->reg_X=cpu->read(cpu->reference, address);
+        cpu->reg_X = cpu6502_bus_read(cpu->ptTarget, address);
         RECALC_ZN(cpu->reg_X);
         break;
       case OP_LDY:
-        cpu->reg_Y=cpu->read(cpu->reference, address);
+        cpu->reg_Y = cpu6502_bus_read(cpu->ptTarget, address);
         RECALC_ZN(cpu->reg_Y);
         break;
       case OP_LSR:
@@ -389,19 +374,18 @@ uint_fast32_t cpu6502_run(cpu6502_t *cpu, int_fast32_t cycles_to_run)
           cpu->status_C= cpu->reg_A&0x01?1:0;
           cpu->reg_A= cpu->reg_A>>1;
           RECALC_ZN(cpu->reg_A);
-        }
-        else {
-          temp_value=cpu->read(cpu->reference, address);
+        } else {
+          temp_value = cpu6502_bus_read(cpu->ptTarget, address);
           cpu->status_C= temp_value&0x01?1:0;
           temp_value>>=1;
-          cpu->write(cpu->reference, address, temp_value);
+          cpu6502_bus_write(cpu->ptTarget, address, temp_value);
           RECALC_ZN(temp_value);
         }
         break;
       case OP_NOP:
         break;
       case OP_ORA:
-        cpu->reg_A=cpu->reg_A|cpu->read(cpu->reference, address);
+        cpu->reg_A=cpu->reg_A | cpu6502_bus_read(cpu->ptTarget, address);
         RECALC_ZN(cpu->reg_A);
         break;
       case OP_PHA:
@@ -412,12 +396,12 @@ uint_fast32_t cpu6502_run(cpu6502_t *cpu, int_fast32_t cycles_to_run)
         break;
       case OP_PLA:
         cpu->reg_SP=(cpu->reg_SP+1)&0xFF;
-        cpu->reg_A=cpu->read(cpu->reference, 0x100|cpu->reg_SP);
+        cpu->reg_A = cpu6502_bus_read(cpu->ptTarget, 0x100|cpu->reg_SP);
         RECALC_ZN(cpu->reg_A);
         break;
       case OP_PLP:
         cpu->reg_SP=(cpu->reg_SP+1)&0xFF;
-        SET_FLAGS((cpu->read(cpu->reference, 0x100|cpu->reg_SP)&0xEF)|0x20);
+        SET_FLAGS((cpu6502_bus_read(cpu->ptTarget, 0x100|cpu->reg_SP)&0xEF)|0x20);
         break;
       case OP_ROL:
         if (ptOpcode->address_mode==ADR_ACCUMULATOR) {
@@ -427,11 +411,11 @@ uint_fast32_t cpu6502_run(cpu6502_t *cpu, int_fast32_t cycles_to_run)
           RECALC_ZN(cpu->reg_A);
         }
         else {
-          temp_value=cpu->read(cpu->reference, address);
+          temp_value = cpu6502_bus_read(cpu->ptTarget, address);
           temp_value=(temp_value<<1)+cpu->status_C;
           cpu->status_C=temp_value&0x100?1:0;
           temp_value&=0xFF;
-          cpu->write(cpu->reference, address, temp_value);
+          cpu6502_bus_write(cpu->ptTarget, address, temp_value);
           RECALC_ZN(temp_value);
         }
         break;
@@ -443,31 +427,31 @@ uint_fast32_t cpu6502_run(cpu6502_t *cpu, int_fast32_t cycles_to_run)
           RECALC_ZN(cpu->reg_A);
         }
         else {
-          temp_value=cpu->read(cpu->reference, address)|(cpu->status_C<<8);
+          temp_value = cpu6502_bus_read(cpu->ptTarget, address)|(cpu->status_C<<8);
           cpu->status_C=temp_value&0x01;
           temp_value>>=1;
-          cpu->write(cpu->reference, address, temp_value);
+          cpu6502_bus_write(cpu->ptTarget, address, temp_value);
           RECALC_ZN(temp_value);
         }
         break;
       case OP_RTI:
         cpu->reg_SP=(cpu->reg_SP+1)&0xFF;
-        SET_FLAGS((cpu->read(cpu->reference, 0x100|cpu->reg_SP)&0xEF)|0x20);
+        SET_FLAGS((cpu6502_bus_read(cpu->ptTarget, 0x100|cpu->reg_SP)&0xEF)|0x20);
         cpu->reg_SP=(cpu->reg_SP+1)&0xFF;
-        cpu->reg_PC=cpu->read(cpu->reference, 0x100|cpu->reg_SP);
+        cpu->reg_PC=cpu6502_bus_read(cpu->ptTarget, 0x100|cpu->reg_SP);
         cpu->reg_SP=(cpu->reg_SP+1)&0xFF;
-        cpu->reg_PC+=cpu->read(cpu->reference, 0x100|cpu->reg_SP)<<8;
+        cpu->reg_PC+=cpu6502_bus_read(cpu->ptTarget, 0x100|cpu->reg_SP)<<8;
         break;
       case OP_RTS:
         cpu->reg_SP=(cpu->reg_SP+1)&0xFF;
-        cpu->reg_PC=cpu->read(cpu->reference, 0x100|cpu->reg_SP);
+        cpu->reg_PC=cpu6502_bus_read(cpu->ptTarget, 0x100|cpu->reg_SP);
         cpu->reg_SP=(cpu->reg_SP+1)&0xFF;
-        cpu->reg_PC+=cpu->read(cpu->reference, 0x100|cpu->reg_SP)<<8;
+        cpu->reg_PC+=cpu6502_bus_read(cpu->ptTarget, 0x100|cpu->reg_SP)<<8;
         cpu->reg_PC+=1;
         break;
       case OP_SBC:
         // TODO: ugly hack
-        temp_value2=cpu->read(cpu->reference, address);
+        temp_value2=cpu6502_bus_read(cpu->ptTarget, address);
         temp_value=(cpu->reg_A-temp_value2-(1-cpu->status_C))&0xFFFF;
         RECALC_ZN(temp_value&0xFF);
         cpu->status_V=(cpu->reg_A^temp_value2)&(cpu->reg_A^temp_value)&0x80?1:0;
@@ -499,13 +483,13 @@ uint_fast32_t cpu6502_run(cpu6502_t *cpu, int_fast32_t cycles_to_run)
         cpu->status_I=1;
         break;
       case OP_STA:
-        cpu->write(cpu->reference, address, cpu->reg_A);
+        cpu6502_bus_write(cpu->ptTarget, address, cpu->reg_A);
         break;
       case OP_STX:
-        cpu->write(cpu->reference, address, cpu->reg_X);
+        cpu6502_bus_write(cpu->ptTarget, address, cpu->reg_X);
         break;
       case OP_STY:
-        cpu->write(cpu->reference, address, cpu->reg_Y);
+        cpu6502_bus_write(cpu->ptTarget, address, cpu->reg_Y);
         break;
       case OP_TAX:
         cpu->reg_X=cpu->reg_A;
