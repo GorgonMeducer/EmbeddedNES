@@ -83,13 +83,32 @@ Output:
 
 
 /*============================ MACROS ========================================*/
+#ifndef IAR_PATCH_CODE_REGION_LOCAL_SIZE
+#   define IAR_PATCH_CODE_REGION_LOCAL_SIZE     4
+#endif
+
 /*============================ MACROFIED FUNCTIONS ===========================*/
 //! \brief The safe ATOM code section macro
-#define SAFE_ATOM_CODE()                                                        \
-    code_region(&DEFAULT_CODE_REGION_ATOM_CODE)
+#define SAFE_ATOM_CODE()        code_region(&DEFAULT_CODE_REGION_ATOM_CODE)
+
+         
+#define __SAFE_ATOM_CODE(...)                                                   \
+        {                                                                       \
+            istate_t tState = DISABLE_GLOBAL_INTERRUPT();                       \
+            __VA_ARGS__;                                                        \
+            SET_GLOBAL_INTERRUPT_STATE(tState);                                 \
+        }
+    
+
 
 //! \brief Exit from the safe atom operations
-#define EXIT_SAFE_ATOM_CODE()           SET_GLOBAL_INTERRUPT_STATE(tState)   
+#define EXIT_SAFE_ATOM_CODE()           SET_GLOBAL_INTERRUPT_STATE(tState)  
+
+ 
+#define exit_safe_atom_code()           EXIT_SAFE_ATOM_CODE()
+#define safe_atom_code()                SAFE_ATOM_CODE()
+#define __safe_atom_code(...)           __SAFE_ATOM_CODE(__VA_ARGS__)
+
 
 //! \name ES_LOCKER value
 //! @{
@@ -146,8 +165,21 @@ Output:
                 (*pLocker) = UNLOCKED;                                          \
             )
 
-
-#define __CODE_REGION(__REGION_ADDR)                                            \
+#if __IS_COMPILER_IAR__
+#   define __CODE_REGION(__REGION_ADDR)                                         \
+    for(code_region_t *ptCodeRegion = (code_region_t *)(__REGION_ADDR);         \
+        NULL != ptCodeRegion;                                                   \
+        ptCodeRegion = NULL)                                                    \
+        for(uint8_t chLocal[IAR_PATCH_CODE_REGION_LOCAL_SIZE],                  \
+                TPASTE2(__code_region_, __LINE__) = 1;                          \
+            TPASTE2(__code_region_, __LINE__)-- ?                               \
+                (ptCodeRegion->ptMethods->OnEnter(  ptCodeRegion->pTarget,      \
+                                                    chLocal)                    \
+                    ,1)                                                         \
+                : 0;                                                            \
+            ptCodeRegion->ptMethods->OnLeave(ptCodeRegion->pTarget, chLocal))
+#else
+#   define __CODE_REGION(__REGION_ADDR)                                         \
     for(code_region_t *ptCodeRegion = (code_region_t *)(__REGION_ADDR);         \
         NULL != ptCodeRegion;                                                   \
         ptCodeRegion = NULL)                                                    \
@@ -159,13 +191,18 @@ Output:
                     ,1)                                                         \
                 : 0;                                                            \
             ptCodeRegion->ptMethods->OnLeave(ptCodeRegion->pTarget, chLocal))
+#endif
         
 #define EXIT_CODE_REGION()                                                      \
             ptCodeRegion->ptMethods->OnLeave(tCodeRegion.pTarget, chLocal)
 #define exit_code_region()  EXIT_CODE_REGION()
 
-#define CODE_REGION(__REGION_ADDR)     __CODE_REGION((__REGION_ADDR))
-#define code_region(__REGION_ADDR)     __CODE_REGION((__REGION_ADDR))
+#define CODE_REGION(__REGION_ADDR)          __CODE_REGION((__REGION_ADDR))
+#define code_region(__REGION_ADDR)          __CODE_REGION((__REGION_ADDR))
+#define CODE_REGION_SIMPLE(__REGION_ADDR, ...)                                  \
+            __CODE_REGION_SIMPLE((__REGION_ADDR), __VA_ARGS__)
+#define code_region_simple(__REGION_ADDR, ...)                                  \
+            __CODE_REGION_SIMPLE((__REGION_ADDR), __VA_ARGS__)
 
 
 /*============================ TYPES =========================================*/
