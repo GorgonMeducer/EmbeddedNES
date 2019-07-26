@@ -45,6 +45,7 @@ def_structure(__es_simple_frame_fsm_internal)
     uint16_t hwCheckSUM;
 end_def_structure(__es_simple_frame_fsm_internal)
 
+declare_simple_fsm(es_simple_frame_decoder)
 extern_simple_fsm(es_simple_frame_decoder,
     def_params(
         i_byte_pipe_t *ptPipe;          //!< pipe
@@ -58,6 +59,7 @@ extern_simple_fsm(es_simple_frame_decoder,
         implement(__es_simple_frame_fsm_internal)
     ))
     
+declare_simple_fsm(es_simple_frame_encoder)
 extern_simple_fsm(es_simple_frame_encoder,
     def_params(
         i_byte_pipe_t *ptPipe;          //!< pipe
@@ -66,11 +68,13 @@ extern_simple_fsm(es_simple_frame_encoder,
 
 declare_class(es_simple_frame_t)
 
+declare_simple_fsm(es_simple_frame_decoder_wrapper)
 extern_simple_fsm(es_simple_frame_decoder_wrapper,
     def_params(
         es_simple_frame_t *ptFrame;
     ))
 
+declare_simple_fsm(es_simple_frame_encoder_wrapper)
 extern_simple_fsm(es_simple_frame_encoder_wrapper,
     def_params(
         es_simple_frame_t *ptFrame;
@@ -79,13 +83,14 @@ extern_simple_fsm(es_simple_frame_encoder_wrapper,
 
 //! \name class: e-snail simple frame
 //! @{
-extern_class(es_simple_frame_t)
+extern_class(es_simple_frame_t,,
     locker_t tMutex;
     inherit(fsm(es_simple_frame_decoder))
     inherit(fsm(es_simple_frame_decoder_wrapper))
     inherit(fsm(es_simple_frame_encoder))
     inherit(fsm(es_simple_frame_encoder_wrapper))
     bool    bDynamicBufferMode;
+)
 end_extern_class(es_simple_frame_t)
 //! @}
 

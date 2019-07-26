@@ -42,9 +42,12 @@
  *----------------------------------------------------------------------------*/
 #define __STREAM_BUFFER_COMMON(__NAME, __BLOCK_SIZE)                            \
     declare_class( __NAME##_stream_buffer_block_t )                             \
-    def_class(__NAME##_stream_buffer_block_t, inherit(block_t))                 \
-        uint8_t chBuffer[__BLOCK_SIZE];                                         \
-    end_def_class(__NAME##_stream_buffer_block_t,inherit(block_t))              \
+    def_class(__NAME##_stream_buffer_block_t, which(inherit(block_t)),          \
+        uint8_t chBuffer[__BLOCK_SIZE];)                                        \
+    end_def_class(__NAME##_stream_buffer_block_t)                               \
+    extern_class(__NAME##_stream_buffer_block_t, which(inherit(block_t)),       \
+        uint8_t chBuffer[__BLOCK_SIZE];)                                        \
+    end_extern_class(__NAME##_stream_buffer_block_t)                            \
     NO_INIT private stream_buffer_t s_t##__NAME##StreamBuffer;                  \
     NO_INIT private block_pool_t s_t##__NAME##_BlockPool;                       \
                                                                                 \
@@ -77,11 +80,10 @@
     }                                                                           \
     
 #define __EXTERN_STREAM_BUFFER_COMMON(__NAME, __BLOCK_SIZE)                     \
-    DECLARE_CLASS( __NAME##_stream_buffer_block_t )                             \
-    EXTERN_CLASS(__NAME##_stream_buffer_block_t, INHERIT(block_t))              \
-        uint8_t chBuffer[__BLOCK_SIZE];                                         \
-    END_EXTERN_CLASS(__NAME##_stream_buffer_block_t,                            \
-                        INHERIT(block_t))                                       
+    declare_class( __NAME##_stream_buffer_block_t )                             \
+    extern_class(__NAME##_stream_buffer_block_t, which(inherit(block_t)),       \
+        uint8_t chBuffer[__BLOCK_SIZE];)                                        \
+    end_extern_class(__NAME##_stream_buffer_block_t)                                       
 
 
 /*----------------------------------------------------------------------------*
@@ -186,9 +188,8 @@
     NO_INIT private volatile struct {                                           \
         __NAME##_stream_buffer_block_t *ptBlock;                                \
         uint8_t *pchBuffer;                                                     \
-        uint_fast16_t hwSize;                                                   \
-        uint_fast16_t hwIndex;                                                  \
-        uint_fast16_t hwTimeoutCounter;                                         \
+        uint16_t hwSize;                                                        \
+        uint16_t hwIndex;                                                       \
     } s_t##__NAME##StreamOutService;                                            \
     private void __NAME##_request_send(void)                                    \
     {                                                                           \
@@ -475,7 +476,7 @@ extern_class(stream_buffer_t,
     which(   
         inherit(block_queue_t)                                                  //!< inherit from block_queue_t
         inherit(QUEUE(StreamBufferQueue))                                       //!< inherit from queue StreamBufferQueue
-    )) 
+    ), 
 
     bool                                    bIsOutput;                          //!< direction
     bool                                    bIsQueueInitialised;                //!< Indicate whether the queue has been inialised or not
@@ -489,11 +490,8 @@ extern_class(stream_buffer_t,
     uint8_t                                 chReservedBlock;
     uint8_t                                 chBlockLimit;
     uint8_t                                 chBlockCount;
-end_extern_class(stream_buffer_t,
-    which(   
-        inherit(block_queue_t)                                                  //!< inherit from block_queue_t
-        inherit(QUEUE(StreamBufferQueue))                                       //!< inherit from queue StreamBufferQueue
-    ))
+)
+end_extern_class(stream_buffer_t)
 //! @}
 
 typedef struct {

@@ -32,11 +32,12 @@
 /*============================ TYPES =========================================*/
 
 declare_class(pool_t)
-def_class(pool_t)
+def_class(pool_t,,
     __single_list_node_t    *ptFreeList;
     uint_fast16_t           tCounter;
     __EPOOL_MUTEX_TYPE      tMutex;
     void *                  pTarget;
+)
 end_def_class(pool_t)
 
 typedef void pool_item_init_event_handler_t(void *pTarget, 
@@ -111,7 +112,7 @@ bool pool_add_heap( pool_t *ptPool,
 void *pool_new(pool_t *ptPool)
 {
     __single_list_node_t *ptItem = NULL;
-    CLASS(pool_t) *ptThis = (CLASS(pool_t) *)ptPool;
+    class_internal(ptPool, ptThis, pool_t);
     
     if (NULL == ptPool) {
         return NULL;
@@ -119,7 +120,7 @@ void *pool_new(pool_t *ptPool)
 
     __EPOOL_ATOM_ACCESS(){
         do {
-            if (NULL == ((CLASS(pool_t) *)ptPool)->ptFreeList) {
+            if (NULL == ((class(pool_t) *)ptPool)->ptFreeList) {
                 break;
             }
             
