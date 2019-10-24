@@ -24,11 +24,14 @@
 
 #include "byte_queue/byte_queue.h"
 #include "enhanced_byte_queue/enhanced_byte_queue.h"
+#include "trace/trace.h"
 /*============================ MACROS ========================================*/
 
 #ifndef QUEUE_BUFFER_SIZE
 #   define QUEUE_BUFFER_SIZE       256
 #endif
+
+#define LOG_OUT(...)         TRACE_TOSTR(__VA_ARGS__)
 
 /*============================ MACROFIED FUNCTIONS ===========================*/
 /*============================ TYPES =========================================*/
@@ -39,7 +42,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdio.h>
-
 
 static enhanced_byte_queue_t s_tQueue;
 
@@ -80,14 +82,31 @@ int main(void)
         while(ENHANCED_BYTE_QUEUE.Peek.PeekByte(&s_tQueue, &chByte)) {
             printf("%c\r\n", chByte);
         }
-        printf("There are %d byte in the queue!\r\n", 
+        printf("There are %d byte(s) in the queue!\r\n", 
                 ENHANCED_BYTE_QUEUE.Count(&s_tQueue));
-        printf("Let's remove all peeked byte from queue... \r\n");
+        printf("Let's remove all peeked byte(s) from queue... \r\n");
         ENHANCED_BYTE_QUEUE.Peek.GetAllPeeked(&s_tQueue);
-        printf("There are %d byte in the queue!\r\n", 
+        printf("Now there are %d byte(s) in the queue!\r\n", 
                 ENHANCED_BYTE_QUEUE.Count(&s_tQueue));
     } while(0);
    
+    LOG_OUT("\r\n-[Demo of overload]------------------------------\r\n");
+    LOG_OUT((uint32_t) 0x12345678);
+    LOG_OUT("\r\n");
+    LOG_OUT(0x12345678);
+    LOG_OUT("\r\n");
+    LOG_OUT("PI is ");
+    LOG_OUT(3.1415926f);
+    LOG_OUT("\r\n");
+    
+    LOG_OUT("\r\nShow BYTE Array:\r\n");
+    LOG_OUT((uint8_t *)main, 100);
 
+    LOG_OUT("\r\nShow Half-WORD Array:\r\n");
+    LOG_OUT((uint16_t *)main, 100/sizeof(uint16_t));
+
+    LOG_OUT("\r\nShow WORD Array:\r\n");
+    LOG_OUT((uint32_t *)main, 100/sizeof(uint32_t));
+    
     while(1);
 }
