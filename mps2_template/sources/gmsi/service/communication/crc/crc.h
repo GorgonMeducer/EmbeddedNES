@@ -38,7 +38,7 @@
 
 
 /*============================ MACROFIED FUNCTIONS ===========================*/
-#define GMSI_CRC(__CRCVAL,__NEWCHAR)        crc16_check(&(__CRCVAL),(__NEWCHAR))
+#define CRC(__CRCVAL,__NEWCHAR)             crc16_check(&(__CRCVAL),(__NEWCHAR))
 #define CRC16(__CRCVAL,__NEWCHAR)           crc16_check(&(__CRCVAL),(__NEWCHAR))
 #define CRC8(__CRCVAL,__NEWCHAR)            crc8_check(&(__CRCVAL),(__NEWCHAR))
 #define CRC32_IEEE802_3(__CRCVAL,__NEWCHAR) crc32_ieee802_3_check(&(__CRCVAL),(__NEWCHAR))
@@ -81,6 +81,11 @@ extern uint8_t crc7_check(uint8_t *pchCRCValue, uint8_t chData);
  *! \return CRC16 result
  */
 extern uint16_t crc16_check(uint16_t *pwCRCValue,uint8_t chData);
+
+extern 
+uint16_t crc16_stream_check(uint16_t *pwCRCValue, 
+                            uint8_t *pchStream, 
+                            uint16_t hwSize);
 
 /*! \brief CRC8
  *! \param pchCRCValue CRC Variable
