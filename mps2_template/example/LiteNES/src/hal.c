@@ -120,7 +120,7 @@ void nes_set_bg_color(int c)
     
     uint32_t *pchBuffer = (uint32_t *)s_tScreenBuffer;
     uint32_t wCount = sizeof(s_tScreenBuffer)>>2;
-    uint32_t wColor = s_tColorMap[c].hwValue | ((uint32_t)(s_tColorMap[c].hwValue) << 16);
+    uint32_t wColor = s_tColorMap[c].tValue | ((uint32_t)(s_tColorMap[c].tValue) << 16);
     do {
         
         *pchBuffer++ = wColor;

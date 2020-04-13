@@ -1156,6 +1156,25 @@
               <FileName>nes_rom_lib.lib</FileName>
               <FileType>4</FileType>
               <FilePath>.\Out\nes_rom_lib.lib</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>0</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds/>
+              </FileOption>
             </File>
           </Files>
         </Group>
@@ -1714,7 +1733,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>-Omax -fms-extensions -Wno-microsoft-anon-tag -Wno-nonportable-include-path -Wno-tautological-constant-out-of-range-compare</MiscControls>
-              <Define>__USE_COMPILER_SPECIFIED_CMSIS_PATH__ GLCD_MIRROR_Y=1 _MSC_VER USE_JEG  __USER_DEFINED_APP_CFG_H__ JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE=ENABLED JEG_USE_FRAME_SYNC_UP_FLAG=ENABLED JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE=32 JEG_USE_EXTRA_16BIT_BUS_ACCESS=ENABLED JEG_USE_DMA_MEMORY_COPY_ACCELERATION=ENABLED</Define>
+              <Define>__USE_COMPILER_SPECIFIED_CMSIS_PATH__,GLCD_MIRROR_Y=1,_MSC_VER USE_JEG,__USER_DEFINED_APP_CFG_H__ JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE=ENABLED JEG_USE_FRAME_SYNC_UP_FLAG=ENABLED JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE=32 JEG_USE_EXTRA_16BIT_BUS_ACCESS=ENABLED JEG_USE_DMA_MEMORY_COPY_ACCELERATION=ENABLED</Define>
               <Undefine></Undefine>
               <IncludePath>..\..\app_platform;..\..\jeg</IncludePath>
             </VariousControls>
@@ -8067,10 +8086,7 @@
         <package name="MDK-Middleware" schemaVersion="1.0" url="http://www.keil.com/pack/" vendor="Keil" version="6.2.0"/>
         <targetInfos>
           <targetInfo name="STM32F746-Discovery-Lib"/>
-          <targetInfo name="V2M-MPS2-LiteNES"/>
-          <targetInfo excluded="1" name="V2M-MPS2-jeg"/>
           <targetInfo name="V2M-MPS3-jeg"/>
-          <targetInfo name="rom_lib"/>
         </targetInfos>
       </api>
       <api Capiversion="1.00" Cclass="Board Support" Cgroup="LED" exclusive="0">
@@ -8186,14 +8202,6 @@
         <targetInfos>
           <targetInfo name="V2M-MPS2-LiteNES"/>
           <targetInfo name="V2M-MPS2-jeg"/>
-          <targetInfo name="rom_lib"/>
-        </targetInfos>
-      </component>
-      <component Capiversion="1.0.0" Cbundle="V2M-MPS2" Cclass="Board Support" Cgroup="Graphic LCD" Cvendor="Keil" Cversion="2.0.0" condition="V2M-MPS2 Common">
-        <package name="V2M-MPS2_CMx_BSP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.7.0"/>
-        <targetInfos>
-          <targetInfo name="V2M-MPS2-LiteNES"/>
-          <targetInfo excluded="1" name="V2M-MPS2-jeg" versionMatchMode=""/>
           <targetInfo name="rom_lib"/>
         </targetInfos>
       </component>
