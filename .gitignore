@@ -28,3 +28,12 @@ mps2_template/sources/gmsi/service/memory/stream2block/stream2block.h~RFbdf5df1.
 *._ia
 *.dbgconf
 mps2_template/example/build/mdk/Blinky.uvguix.gabwan01
+*.axf
+*.hex
+mps2_template/example/build/mdk/Out/game.htm
+mps2_template/example/build/mdk/Out/game.lnp
+*.map
+mps2_template/example/build/mdk/Out/nes_rom_lib.lib
+mps2_template/example/build/mdk/Out/nes_rom_lib.build_log.htm
+mps2_template/example/build/mdk/Out/game.build_log.htm
+*.gabwan01

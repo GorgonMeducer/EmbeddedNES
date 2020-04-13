@@ -128,6 +128,7 @@
 #define DEMO_FRAME_USE_BLOCK_MODE           ENABLED
 #define DEMO_USE_FILE_IO                    DISABLED
 #define DEMO_MPS2_USE_VGA                   DISABLED
+#define DEMO_LCD_INVERSE_Y                  ENABLED
 
 /*============================ MACROFIED FUNCTIONS ===========================*/
 /*============================ TYPES =========================================*/

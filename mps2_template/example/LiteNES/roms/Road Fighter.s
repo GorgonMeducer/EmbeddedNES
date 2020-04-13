@@ -4,7 +4,7 @@
 
 ; Includes the binary file MyBinFile1.bin from the current source folder
 NES_ROM_2
-        INCBIN  Road Fighter (Europe).nes
+        INCBIN  ..\\..\\LiteNES\\roms\\Road Fighter (Europe).nes
 NES_ROM_2_End
 
 ; Use a relative or absolute path to other folders if necessary

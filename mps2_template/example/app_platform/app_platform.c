@@ -124,8 +124,8 @@ bool app_platform_init( void )
         bsp_init();
         SystemCoreClockUpdate();
 
-        LED_Initialize();                       /* Initializ LEDs                 */
-        Buttons_Initialize();                   /* Initializ Push Buttons         */
+        //LED_Initialize();                       /* Initializ LEDs                 */
+        //Buttons_Initialize();                   /* Initializ Push Buttons         */
 #if DEMO_USE_FILE_IO == ENABLED
     #ifdef RTE_Compiler_IO_STDOUT_User
         if (!stdout_init()) {

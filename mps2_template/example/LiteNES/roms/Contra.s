@@ -4,7 +4,7 @@
 
 ; Includes the binary file MyBinFile1.bin from the current source folder
 NES_ROM_4
-        INCBIN  Contra (USA).nes
+        INCBIN  ..\\..\\LiteNES\\roms\\Contra (USA).nes
 NES_ROM_4_End
 
 ; Use a relative or absolute path to other folders if necessary

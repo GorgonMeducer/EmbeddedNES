@@ -252,9 +252,9 @@ struct {
     uint8_t *pchROM;
     const uint32_t *pwSize;
 }c_tDefaultROM[] = {
-    NES_DEFAULT_ROM_ITEM(1),
     NES_DEFAULT_ROM_ITEM(2),
     NES_DEFAULT_ROM_ITEM(3),
+    NES_DEFAULT_ROM_ITEM(1),
     NES_DEFAULT_ROM_ITEM(4)
 };
 

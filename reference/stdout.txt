@@ -1,1 +1,0 @@
-need rom file as argument

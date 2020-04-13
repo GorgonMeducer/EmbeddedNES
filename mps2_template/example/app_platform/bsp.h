@@ -23,6 +23,8 @@
 
 #if defined(__USE_STM32F746G_DISCOVERY__)
 #   include ".\STM32F746G-Discovery\bsp.h"
+#elif defined(__USE_MPS3__)
+#   include ".\V2M-MPS3\bsp.h"
 #else
 #   include ".\V2M-MPS2\bsp.h"
 #endif

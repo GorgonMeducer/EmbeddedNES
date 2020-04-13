@@ -24,9 +24,9 @@
 #include "Device.h"
 
 #include "RTE_Components.h"             // Component selection
-#include "Board_LED.h"                  // ::Board Support:LED
-#include "Board_Buttons.h"               // ::Board Support:Button
-#include "Board_Touch.h"                // ::Board Support:Touchscreen
+//#include "Board_LED.h"                  // ::Board Support:LED
+//#include "Board_Buttons.h"               // ::Board Support:Button
+//#include "Board_Touch.h"                // ::Board Support:Touchscreen
 #include "Board_GLCD.h"                 // ::Board Support:Graphic LCD
 #include "GLCD_Config.h"                // Keil.SAM4E-EK::Board Support:Graphic LCD
 

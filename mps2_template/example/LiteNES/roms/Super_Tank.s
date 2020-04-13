@@ -4,7 +4,7 @@
 
 ; Includes the binary file MyBinFile1.bin from the current source folder
 NES_ROM_1
-        INCBIN  Super Tank (Battle City Pirate) (J) [p1].nes
+        INCBIN  ..\\..\\LiteNES\\roms\\Super Tank (Battle City Pirate) (J) [p1].nes
 NES_ROM_1_End
 
 ; Use a relative or absolute path to other folders if necessary

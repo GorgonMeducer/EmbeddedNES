@@ -209,10 +209,13 @@ extern void nes_flip_display(frame_t *ptFrame);
 void nes_draw_pixels(void *ptTag, uint_fast8_t y, uint_fast8_t x, uint_fast8_t chColor)
 {
     frame_t *ptThis = (frame_t *)ptTag;
-    //y = SCREEN_HEIGHT - y - 1;
-    
+#   if DEMO_LCD_INVERSE_Y == ENABLED
+    y = SCREEN_HEIGHT - y - 1;
+#endif
 #if __USE_TILE__
+
     tile_t *ptTile = &s_tScreenBuffer[y>>3][x >> 3];
+
 #   if DEMO_MPS2_USE_VGA == ENABLED
     uint_fast8_t chTileY = (y & 0x07);
 #   else

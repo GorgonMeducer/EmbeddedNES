@@ -4,7 +4,7 @@
 
 ; Includes the binary file MyBinFile1.bin from the current source folder
 NES_ROM_3
-        INCBIN  Super Mario Bros (E).nes
+        INCBIN  ..\\..\\LiteNES\\roms\\Super Mario Bros (E).nes
 NES_ROM_3_End
 
 ; Use a relative or absolute path to other folders if necessary
