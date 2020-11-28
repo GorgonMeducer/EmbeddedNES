@@ -17,6 +17,7 @@
  *                                                                           *
  ****************************************************************************/
 
+
 /******************************************************************************
  * HOW TO USE                                                                 *
  ******************************************************************************/
@@ -24,7 +25,7 @@
 //#include "plooc_class.h"          
 
 /*============================ INCLUDES ======================================*/
-#include <stdint.h>
+//#include <stdint.h>
 
 /*! \NOTE the uint_fast8_t used in this header file is defined in stdint.h 
           if you don't have stdint.h supported in your toolchain, you should
@@ -37,6 +38,9 @@
  */
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 /*============================ MACROS ========================================*/
 #undef private_member
 #undef protected_member
@@ -48,23 +52,29 @@
 #ifndef __PLOOC_CLASS_SIMPLE_C90_H__
 #define __PLOOC_CLASS_SIMPLE_C90_H__
 
-#   define __def_simple_class(__NAME)       struct  __NAME
-#   define def_simple_class(__NAME)         __def_simple_class(__NAME)
-#   define declare_simple_class(__NAME)     typedef struct __NAME __NAME;
+#   define __def_simple_class(__name)       struct  __name
+#   define def_simple_class(__name)         __def_simple_class(__name)
+#   define define_simple_class(__name)      def_simple_class(__name)
+#   define declare_simple_class(__name)     typedef struct __name __name;
+#   define dcl_simple_class(__name)         declare_simple_class(__name)
 
 #endif  /* __PLOOC_CLASS_SIMPLE_H__ */
 
 
-#   define private_member(__MEMBER)         __MEMBER
-#   define protected_member(__MEMBER)       __MEMBER
-#   define public_member(__MEMBER)          __MEMBER
+#   define private_member(__member)         __member
+#   define protected_member(__member)       __member
+#   define public_member(__member)          __member
 
 
 
 // code below is just try to be compatible with plooc_class_strict
+#undef declare_class
+#undef dcl_class
 #undef def_class
+#undef define_class
 #undef __def_class
 #undef end_def_class
+#undef end_define_class
 #undef __end_def_class
 #undef extern_class
 #undef __extern_class
@@ -72,82 +82,91 @@
 #undef __end_extern_class
 
           
-#define __end_def_class(__NAME)
+#define __end_def_class(__name)
 
-#define __def_class(__NAME, __MEMBER)                                           \
-    /*typedef struct __NAME __NAME; */                                          \
-    struct __NAME {                                                             \
-        __MEMBER                                                                \
+#define __def_class(__name, __member)                                           \
+    /*typedef struct __name __name; */                                          \
+    struct __name {                                                             \
+        __member                                                                \
     };                      
     
 
-#if     defined(__PLOOC_CLASS_IMPLEMENT)
+#if     defined(__PLOOC_CLASS_IMPLEMENT__) || defined(__PLOOC_CLASS_IMPLEMENT)
 
 #   undef  __class
-#   define __class(__NAME)                  __NAME
+#   define __class(__name)                  __name
 
 #   undef  class
-#   define class(__NAME)                    __class(__NAME)
+#   define class(__name)                    __class(__name)
 
             
 #   undef __class_internal
-#   define __class_internal(__SRC, __DES, __TYPE)                               \
-            class(__TYPE) *(__DES) = (class(__TYPE) *)(__SRC);                  
+#   define __class_internal(__src, __des, __type)                               \
+            class(__type) *(__des) = (class(__type) *)(__src);                  
             
 #   undef class_internal
-#   define class_internal(__SRC, __DES, __TYPE)                                 \
-            __class_internal(__SRC, __DES, __TYPE)
+#   define class_internal(__src, __des, __type)                                 \
+            __class_internal(__src, __des, __type)
 
-#define __extern_class(__NAME, __MEMBER)                                    
+#define __extern_class(__name, __member)                                    
 
-#define __end_extern_class(__NAME)
+#define __end_extern_class(__name)
         
-#elif   defined(__PLOOC_CLASS_INHERIT)
+#elif   defined(__PLOOC_CLASS_INHERIT__) || defined(__PLOOC_CLASS_INHERIT)
 
 #   undef  __class_protected
-#   define __class_protected(__NAME)            __NAME
+#   define __class_protected(__name)            __name
 
 #   undef  class_protected
-#   define class_protected(__NAME)              __class_protected(__NAME)
+#   define class_protected(__name)              __class_protected(__name)
 
 
 #   undef __protected_internal
-#   define __protected_internal(__SRC, __DES, __TYPE)                           \
-            class_protected(__TYPE) *(__DES)=(class_protected(__TYPE) *)(__SRC);
+#   define __protected_internal(__src, __des, __type)                           \
+            class_protected(__type) *(__des)=(class_protected(__type) *)(__src);
 
 #   undef protected_internal            
-#   define protected_internal(__SRC, __DES, __TYPE)                             \
-            __protected_internal(__SRC, __DES, __TYPE)                
+#   define protected_internal(__src, __des, __type)                             \
+            __protected_internal(__src, __des, __type)                
 
-#define __extern_class(__NAME, __MEMBER)                                    
+#define __extern_class(__name, __member)                                    
 
-#define __end_extern_class(__NAME)
+#define __end_extern_class(__name)
 
 #else  /* __PLOOC_CLASS_EXTERN */
 
-#define __extern_class(__NAME, __MEMBER)    __def_class(__NAME, __MEMBER)
+#define __extern_class(__name, __member)    __def_class(__name, __member)
 
-#define __end_extern_class(__NAME)
+#define __end_extern_class(__name)
 
 #endif 
 
 #undef which
-#define which(__TYPE)                   __TYPE
+#define which(__type)                   __type
                                                     
-#define def_class(__NAME, __MEMBER)     __def_class(__NAME, __MEMBER)
-                           
-#define end_def_class(__NAME)           __end_def_class(__NAME)
+#define def_class(__name, __member)     __def_class(__name, __member)
+#define define_class(__name, __member)  def_class(__name, __member)
 
-#undef declare_class
-#define declare_class(__NAME)           typedef struct __NAME __NAME;
+#define end_def_class(__name)           __end_def_class(__name)
+#define end_define_class(__name)        end_def_class(__name)
 
-#define extern_class(__NAME, __MEMBER)  __extern_class(__NAME, __MEMBER)
+#define declare_class(__name)           typedef struct __name __name;
+#define dcl_class(__name)               declare_class(__name)
 
-#define end_extern_class(__NAME)        __end_extern_class(__NAME)
+#define extern_class(__name, __member)  __extern_class(__name, __member)
 
+#define end_extern_class(__name)        __end_extern_class(__name)
+
+#undef __PLOOC_CLASS_IMPLEMENT__
+#undef __PLOOC_CLASS_INHERIT__
 #undef __PLOOC_CLASS_IMPLEMENT
 #undef __PLOOC_CLASS_INHERIT
+
 /*============================ TYPES =========================================*/
 /*============================ GLOBAL VARIABLES ==============================*/
 /*============================ LOCAL VARIABLES ===============================*/
 /*============================ PROTOTYPES ====================================*/
+
+#ifdef __cplusplus
+}
+#endif

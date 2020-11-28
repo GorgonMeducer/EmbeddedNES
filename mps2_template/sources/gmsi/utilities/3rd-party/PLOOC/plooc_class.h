@@ -18,7 +18,16 @@
  ****************************************************************************/
 
 
-#if defined(__OOC_RELEASE__)
+#if defined(__cplusplus) || defined(__OOC_CPP__)
+#   undef __PLOOC_CLASS_USE_STRICT_TEMPLATE__ 
+#   undef PLOOC_CFG_REMOVE_MEMORY_LAYOUT_BOUNDARY___USE_WITH_CAUTION___
+#   define PLOOC_CFG_REMOVE_MEMORY_LAYOUT_BOUNDARY___USE_WITH_CAUTION___
+#   ifdef __cplusplus
+extern "C" {
+#   endif
+#endif
+
+#if defined(__OOC_RELEASE__) || defined(__OOC_CPP__)
 #   undef __OOC_DEBUG__
 #   define __OOC_DEBUG__        1
 #endif
@@ -31,7 +40,7 @@
 #endif
 
 
-#if !defined(__STDC_VERSION__) || __STDC_VERSION__ < 199901L
+#if (!defined(__STDC_VERSION__) || __STDC_VERSION__ < 199901L) && !defined(__cplusplus)
 
 #ifndef __OOC_DEBUG__
 #   define __OOC_DEBUG__
@@ -55,10 +64,14 @@ __PLOOC_CLASS_USE_SIMPLE_TEMPLATE__ in ANSI-C89/90.
 #   endif
 #endif
 
+
+#ifdef __cplusplus
+}
+#endif
+
 #ifndef __PLOOC_CLASS_H__           
 #define __PLOOC_CLASS_H__           
 
- 
 /******************************************************************************
  * HOW TO USE                                                                 *
  ******************************************************************************/
@@ -67,7 +80,7 @@ __PLOOC_CLASS_USE_SIMPLE_TEMPLATE__ in ANSI-C89/90.
    
 
 /*============================ INCLUDES ======================================*/
-#include <stdint.h>
+//#include <stdint.h>
 /*! \NOTE the uint_fast8_t used in this header file is defined in stdint.h 
           if you don't have stdint.h supported in your toolchain, you should
           define uint_fast8_t all by yourself with following rule:
@@ -78,6 +91,11 @@ __PLOOC_CLASS_USE_SIMPLE_TEMPLATE__ in ANSI-C89/90.
              uint64_t
  */
 
+#include "./plooc.h"  
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 /*============================ MACROS ========================================*/
 /*!\ node if you want your code more "elegent", say you want to use "this" with 
  *        "." rather than a pointer with "->", you can add following macros to
@@ -89,21 +107,18 @@ __PLOOC_CLASS_USE_SIMPLE_TEMPLATE__ in ANSI-C89/90.
 #define this         (*ptThis)
 
 */
-#include "./plooc.h"   
-
-
 
 /*============================ MACROFIED FUNCTIONS ===========================*/
 
 //! @{
 #ifndef __PLOOC_CONNECT2
-#   define __PLOOC_CONNECT2( a, b)              a##b
+#   define __PLOOC_CONNECT2( __A, __B)              __A##__B
 #endif
 #ifndef __PLOOC_CONNECT3
-#   define __PLOOC_CONNECT3( a, b, c)           a##b##c
+#   define __PLOOC_CONNECT3( __A, __B, __C)           __A##__B##__C
 #endif
 #ifndef __PLOOC_CONNECT4
-#   define __PLOOC_CONNECT4( a, b, c, d)        a##b##c##d
+#   define __PLOOC_CONNECT4( __A, __B, __C, __D)        __A##__B##__C##__D
 #endif
 //! @}
 
@@ -124,13 +139,13 @@ __PLOOC_CLASS_USE_SIMPLE_TEMPLATE__ in ANSI-C89/90.
 
 //! @{
 #ifndef PLOOC_CONNECT2
-#   define PLOOC_CONNECT2( a, b)        __PLOOC_CONNECT2( a, b)
+#   define PLOOC_CONNECT2( __A, __B)        __PLOOC_CONNECT2( __A, __B)
 #endif
 #ifndef PLOOC_CONNECT3
-#   define PLOOC_CONNECT3( a, b, c)     __PLOOC_CONNECT3( a, b, c)
+#   define PLOOC_CONNECT3( __A, __B, __C)     __PLOOC_CONNECT3( __A, __B, __C)
 #endif
 #ifndef PLOOC_CONNECT4
-#   define PLOOC_CONNECT4( a, b, c, d)  __PLOOC_CONNECT4( a, b, c, d)
+#   define PLOOC_CONNECT4( __A, __B, __C, __D)  __PLOOC_CONNECT4( __A, __B, __C, __D)
 #endif
 //! @}
                              
@@ -139,7 +154,7 @@ __PLOOC_CLASS_USE_SIMPLE_TEMPLATE__ in ANSI-C89/90.
 #endif
 
 
-#   if !defined(__STDC_VERSION__) || __STDC_VERSION__ < 199901L
+#if (!defined(__STDC_VERSION__) || __STDC_VERSION__ < 199901L) && !defined(__cplusplus) 
 
 #   ifndef PLOOC_ALIGNOF
 #       define PLOOC_ALIGNOF(__TYPE)           __alignof__(__TYPE)
@@ -253,11 +268,15 @@ __PLOOC_CLASS_USE_SIMPLE_TEMPLATE__ in ANSI-C89/90.
 
 #endif
 
+#if defined(__cplusplus)
+}
 #endif
 
-#   if !defined(__STDC_VERSION__) || __STDC_VERSION__ < 199901L
+#endif
+
+#   if (!defined(__STDC_VERSION__) || __STDC_VERSION__ < 199901L) && !defined(__cplusplus)
 #   undef which
-#   define which(__DECLARE)                     ,_which(__DECLARE)
+#   define which(__declare)                     ,_which(__declare)
 #else
 #   undef which
 #   define which(...)                           ,_which(__VA_ARGS__)
@@ -277,22 +296,52 @@ __PLOOC_CLASS_USE_SIMPLE_TEMPLATE__ in ANSI-C89/90.
 /*============================ GLOBAL VARIABLES ==============================*/
 /*============================ PROTOTYPES ====================================*/
 /*============================ INCLUDES ======================================*/
+
+
+
 #if     defined(__PLOOC_CLASS_USE_STRICT_TEMPLATE__)
 #   include "./plooc_class_strict.h"
 #elif   defined(__PLOOC_CLASS_USE_SIMPLE_TEMPLATE__)
-#   if !defined(__STDC_VERSION__) || __STDC_VERSION__ < 199901L
+#   if (!defined(__STDC_VERSION__) || __STDC_VERSION__ < 199901L) && !defined(__cplusplus)
 #       include "./plooc_class_simple_c90.h"
 #   else
 #       include "./plooc_class_simple.h"
 #   endif
 #elif   defined(__PLOOC_CLASS_USE_BLACK_BOX_TEMPLATE__)
+#   ifndef __PLOOC_I_KNOW_BLACK_BOX_IS_INCOMPATIBLE_WITH_OTHER_TEMPLATES__
+#       warning The black box template is incompatible with other templates. When\
+ header files which contains different templates mixing together, the one contains\
+ black box template will cause conflicts in other header files. To avoid such\
+ conflicts, you can either use black box alone in a project or in a module's\
+ source code, avoid including header files which directly or indirectly including\
+ the header file of the very same module. To suppress this warning, please find the\
+ macro __PLOOC_I_KNOW_BLACK_BOX_IS_INCOMPATIBLE_WITH_OTHER_TEMPLATES__ in your\
+ project to acknowledge that you understand the facts and consequences.
+#   endif
 #   include "./plooc_class_black_box.h"
 #else
 #   include "./plooc_class_simple.h"
+#endif
+
+#ifdef __cplusplus
+extern "C" {
 #endif
 
 #undef __PLOOC_CLASS_USE_STRICT_TEMPLATE__
 #undef __PLOOC_CLASS_USE_SIMPLE_TEMPLATE__
 #undef __PLOOC_CLASS_USE_BLACK_BOX_TEMPLATE__
 #undef __PLOOC_CLASS_IMPLEMENT
+#undef __PLOOC_CLASS_IMPLEMENT__
+#undef __PLOOC_CLASS_INHERIT__
 #undef __PLOOC_CLASS_INHERIT
+
+#if defined(__cplusplus)
+#   undef class
+#   undef this
+#   undef private
+#   undef public
+#endif
+
+#if defined(__cplusplus)
+}
+#endif
