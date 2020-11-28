@@ -10,7 +10,7 @@
     <aExt>*.s*; *.src; *.a*</aExt>
     <oExt>*.obj; *.o</oExt>
     <lExt>*.lib</lExt>
-    <tExt>*.txt; *.h; *.inc</tExt>
+    <tExt>*.txt; *.h; *.inc; *.md</tExt>
     <pExt>*.plm</pExt>
     <CppX>*.cpp</CppX>
     <nMigrate>0</nMigrate>
@@ -125,7 +125,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DbgFM</Key>
-          <Name>-I -S"System Generator:FVP_MPS2_Cortex_M7_MDK" -L"armcortexm7ct" -O4102 -C0 -MC".\FVP\MPS2_Cortex-M\FVP_MPS2_Cortex-M7_MDK.exe" -MF -MA</Name>
+          <Name>-I -S"System Generator:FVP_MPS2_Cortex_M7_MDK" -L"armcortexm7ct" -O4102 -C0 -MC".\FVP\MPS2_Cortex-M\FVP_MPS2_Cortex-M7_MDK.exe" -MF -PF -MA</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -212,7 +212,7 @@
         <periodic>0</periodic>
         <aLwin>1</aLwin>
         <aCover>0</aCover>
-        <aSer1>0</aSer1>
+        <aSer1>1</aSer1>
         <aSer2>0</aSer2>
         <aPa>0</aPa>
         <viewmode>1</viewmode>
@@ -225,7 +225,7 @@
         <aSer3>0</aSer3>
         <eProf>0</eProf>
         <aLa>0</aLa>
-        <aPa1>0</aPa1>
+        <aPa1>1</aPa1>
         <AscS4>0</AscS4>
         <aSer4>0</aSer4>
         <StkLoc>0</StkLoc>
@@ -310,7 +310,7 @@
       <OPTFL>
         <tvExp>1</tvExp>
         <tvExpOptDlg>0</tvExpOptDlg>
-        <IsCurrentTarget>1</IsCurrentTarget>
+        <IsCurrentTarget>0</IsCurrentTarget>
       </OPTFL>
       <CpuCode>7</CpuCode>
       <DebugOpt>
@@ -360,7 +360,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DbgFM</Key>
-          <Name>-I -S"System Generator:FVP_MPS2_Cortex_M7_MDK" -L"armcortexm7ct" -O4102 -C0 -MC".\FVP\MPS2_Cortex-M\FVP_MPS2_Cortex-M7_MDK.exe" -MF"./fvp_cfg.txt" -MA</Name>
+          <Name>-I -S"System Generator:FVP_MPS2_Cortex_M7_MDK" -L"armcortexm7ct" -O4102 -C0 -MC".\FVP\MPS2_Cortex-M\FVP_MPS2_Cortex-M7_MDK.exe" -MF"./fvp_cfg.txt" -PF -MA</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -417,7 +417,7 @@
         <periodic>0</periodic>
         <aLwin>1</aLwin>
         <aCover>0</aCover>
-        <aSer1>0</aSer1>
+        <aSer1>1</aSer1>
         <aSer2>0</aSer2>
         <aPa>0</aPa>
         <viewmode>1</viewmode>
@@ -430,7 +430,7 @@
         <aSer3>0</aSer3>
         <eProf>0</eProf>
         <aLa>0</aLa>
-        <aPa1>0</aPa1>
+        <aPa1>1</aPa1>
         <AscS4>0</AscS4>
         <aSer4>0</aSer4>
         <StkLoc>0</StkLoc>
@@ -920,7 +920,7 @@
       <OPTFL>
         <tvExp>1</tvExp>
         <tvExpOptDlg>0</tvExpOptDlg>
-        <IsCurrentTarget>0</IsCurrentTarget>
+        <IsCurrentTarget>1</IsCurrentTarget>
       </OPTFL>
       <CpuCode>7</CpuCode>
       <DebugOpt>
@@ -1020,9 +1020,9 @@
       <DebugFlag>
         <trace>0</trace>
         <periodic>0</periodic>
-        <aLwin>0</aLwin>
+        <aLwin>1</aLwin>
         <aCover>0</aCover>
-        <aSer1>0</aSer1>
+        <aSer1>1</aSer1>
         <aSer2>0</aSer2>
         <aPa>0</aPa>
         <viewmode>1</viewmode>
@@ -1035,7 +1035,7 @@
         <aSer3>0</aSer3>
         <eProf>0</eProf>
         <aLa>0</aLa>
-        <aPa1>0</aPa1>
+        <aPa1>1</aPa1>
         <AscS4>0</AscS4>
         <aSer4>0</aSer4>
         <StkLoc>0</StkLoc>
@@ -2276,7 +2276,7 @@
 
   <Group>
     <GroupName>BSP-STM32F746G-Discovery</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -2388,7 +2388,7 @@
 
   <Group>
     <GroupName>BSP-V2M-MPS3</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -2464,7 +2464,7 @@
 
   <Group>
     <GroupName>::Device</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>1</RteFlg>

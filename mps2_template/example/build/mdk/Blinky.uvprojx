@@ -10,7 +10,7 @@
       <TargetName>V2M-MPS2-LiteNES</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -185,6 +185,7 @@
             <uocXRam>0</uocXRam>
             <RvdsVP>2</RvdsVP>
             <RvdsMve>0</RvdsMve>
+            <RvdsCdeCp>0</RvdsCdeCp>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -336,7 +337,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>--wchar32  --loop_optimization_level=2 --no_unaligned_access</MiscControls>
-              <Define>__USE_LCD __USE_TIMER0 __USE_FPGA USE_LITE_NES __USER_DEFINED_APP_CFG_H__ GLCD_MIRROR_Y=0</Define>
+              <Define>__USE_LCD __USE_TIMER0 __USE_FPGA USE_LITE_NES __USER_DEFINED_APP_CFG_H__ GLCD_MIRROR_Y=0,__PLOOC_I_KNOW_BLACK_BOX_IS_INCOMPATIBLE_WITH_OTHER_TEMPLATES__,__USER_APP_CFG_H__=\"../example/app_cfg.h\"</Define>
               <Undefine></Undefine>
               <IncludePath>..\..\LiteNES;..\..\LiteNES\src\fce;..\..\LiteNES\include;..\..\app_platform</IncludePath>
             </VariousControls>
@@ -351,7 +352,7 @@
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <useXO>0</useXO>
-            <uClangAs>0</uClangAs>
+            <ClangAsOpt>4</ClangAsOpt>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -480,7 +481,7 @@
                 <NoWarn>2</NoWarn>
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
+                <ClangAsOpt>0</ClangAsOpt>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -1041,7 +1042,7 @@
                 <NoWarn>2</NoWarn>
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
+                <ClangAsOpt>0</ClangAsOpt>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -1239,7 +1240,7 @@
                 <NoWarn>2</NoWarn>
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
+                <ClangAsOpt>0</ClangAsOpt>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -1358,7 +1359,7 @@
                 <NoWarn>2</NoWarn>
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
+                <ClangAsOpt>0</ClangAsOpt>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -1407,7 +1408,7 @@
       <TargetName>V2M-MPS2-jeg</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>6140000::V6.14::ARMCLANG</pCCUsed>
+      <pCCUsed>6150000::V6.15::ARMCLANG</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -1582,6 +1583,7 @@
             <uocXRam>0</uocXRam>
             <RvdsVP>2</RvdsVP>
             <RvdsMve>0</RvdsMve>
+            <RvdsCdeCp>0</RvdsCdeCp>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -1712,7 +1714,7 @@
             <Optim>0</Optim>
             <oTime>1</oTime>
             <SplitLS>0</SplitLS>
-            <OneElfS>0</OneElfS>
+            <OneElfS>1</OneElfS>
             <Strict>0</Strict>
             <EnumInt>1</EnumInt>
             <PlainCh>0</PlainCh>
@@ -1733,7 +1735,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>-Omax -fms-extensions -Wno-microsoft-anon-tag -Wno-nonportable-include-path -Wno-tautological-constant-out-of-range-compare</MiscControls>
-              <Define>__USE_COMPILER_SPECIFIED_CMSIS_PATH__,GLCD_MIRROR_Y=1,_MSC_VER USE_JEG,__USER_DEFINED_APP_CFG_H__ JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE=ENABLED JEG_USE_FRAME_SYNC_UP_FLAG=ENABLED JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE=32 JEG_USE_EXTRA_16BIT_BUS_ACCESS=ENABLED JEG_USE_DMA_MEMORY_COPY_ACCELERATION=ENABLED</Define>
+              <Define>__USE_COMPILER_SPECIFIED_CMSIS_PATH__,GLCD_MIRROR_Y=1,_MSC_VER USE_JEG,__USER_DEFINED_APP_CFG_H__ JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE=ENABLED JEG_USE_FRAME_SYNC_UP_FLAG=ENABLED JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE=32 JEG_USE_EXTRA_16BIT_BUS_ACCESS=ENABLED JEG_USE_DMA_MEMORY_COPY_ACCELERATION=ENABLED,__PLOOC_I_KNOW_BLACK_BOX_IS_INCOMPATIBLE_WITH_OTHER_TEMPLATES__,__USER_APP_CFG_H__=\"../example/app_cfg.h\"</Define>
               <Undefine></Undefine>
               <IncludePath>..\..\app_platform;..\..\jeg</IncludePath>
             </VariousControls>
@@ -1748,7 +1750,7 @@
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <useXO>0</useXO>
-            <uClangAs>0</uClangAs>
+            <ClangAsOpt>4</ClangAsOpt>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -1928,7 +1930,7 @@
                 <NoWarn>2</NoWarn>
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
+                <ClangAsOpt>0</ClangAsOpt>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -2373,7 +2375,7 @@
                 <NoWarn>2</NoWarn>
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
+                <ClangAsOpt>0</ClangAsOpt>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -2789,7 +2791,7 @@
                 <NoWarn>2</NoWarn>
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
+                <ClangAsOpt>0</ClangAsOpt>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -2908,7 +2910,7 @@
                 <NoWarn>2</NoWarn>
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
+                <ClangAsOpt>0</ClangAsOpt>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -2957,14 +2959,14 @@
       <TargetName>STM32F746-Discovery-Lib</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>6140000::V6.14::ARMCLANG</pCCUsed>
+      <pCCUsed>6150000::V6.15::ARMCLANG</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>STM32F746NGHx</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F7xx_DFP.2.12.0</PackID>
-          <PackURL>https://www.keil.com/pack/</PackURL>
+          <PackID>Keil.STM32F7xx_DFP.2.13.0</PackID>
+          <PackURL>http://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20010000,0x40000) IRAM2(0x20000000,0x10000) IROM(0x08000000,0x100000) IROM2(0x00200000,0x100000) CPUTYPE("Cortex-M7") FPU3(SFPU) CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
@@ -3132,6 +3134,7 @@
             <uocXRam>0</uocXRam>
             <RvdsVP>2</RvdsVP>
             <RvdsMve>0</RvdsMve>
+            <RvdsCdeCp>0</RvdsCdeCp>
             <hadIRAM2>1</hadIRAM2>
             <hadIROM2>1</hadIROM2>
             <StupSel>8</StupSel>
@@ -3283,7 +3286,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>-Omax -fms-extensions -Wno-microsoft-anon-tag -Wno-nonportable-include-path -Wno-tautological-constant-out-of-range-compare</MiscControls>
-              <Define>__USE_COMPILER_SPECIFIED_CMSIS_PATH__ __USE_STM32F746G_DISCOVERY__ _MSC_VER USE_JEG  __USER_DEFINED_APP_CFG_H__ GLCD_MIRROR_Y=1 JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE=ENABLED JEG_USE_FRAME_SYNC_UP_FLAG=ENABLED JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE=32 JEG_USE_EXTRA_16BIT_BUS_ACCESS=ENABLED JEG_USE_DMA_MEMORY_COPY_ACCELERATION=ENABLED</Define>
+              <Define>__USE_COMPILER_SPECIFIED_CMSIS_PATH__ __USE_STM32F746G_DISCOVERY__ _MSC_VER USE_JEG  __USER_DEFINED_APP_CFG_H__ GLCD_MIRROR_Y=1 JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE=ENABLED JEG_USE_FRAME_SYNC_UP_FLAG=ENABLED JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE=32 JEG_USE_EXTRA_16BIT_BUS_ACCESS=ENABLED JEG_USE_DMA_MEMORY_COPY_ACCELERATION=ENABLED,__PLOOC_I_KNOW_BLACK_BOX_IS_INCOMPATIBLE_WITH_OTHER_TEMPLATES__,__USER_APP_CFG_H__=\"../example/app_cfg.h\"</Define>
               <Undefine></Undefine>
               <IncludePath>..\..\app_platform;..\..\jeg</IncludePath>
             </VariousControls>
@@ -3298,7 +3301,7 @@
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <useXO>0</useXO>
-            <uClangAs>0</uClangAs>
+            <ClangAsOpt>4</ClangAsOpt>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -3427,7 +3430,7 @@
                 <NoWarn>2</NoWarn>
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
+                <ClangAsOpt>0</ClangAsOpt>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -3942,7 +3945,7 @@
                 <NoWarn>2</NoWarn>
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
+                <ClangAsOpt>0</ClangAsOpt>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -4378,7 +4381,7 @@
                 <NoWarn>2</NoWarn>
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
+                <ClangAsOpt>0</ClangAsOpt>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -4477,7 +4480,7 @@
                 <NoWarn>2</NoWarn>
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
+                <ClangAsOpt>0</ClangAsOpt>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -4526,8 +4529,7 @@
       <TargetName>rom_lib</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pArmCC>6120000::V6.12::.\ARMCLANG</pArmCC>
-      <pCCUsed>6120000::V6.12::.\ARMCompiler6.12</pCCUsed>
+      <pCCUsed>6150000::V6.15::ARMCLANG</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -4702,6 +4704,7 @@
             <uocXRam>0</uocXRam>
             <RvdsVP>2</RvdsVP>
             <RvdsMve>0</RvdsMve>
+            <RvdsCdeCp>0</RvdsCdeCp>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -4829,7 +4832,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>2</Optim>
             <oTime>1</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -4853,7 +4856,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>-fms-extensions -Wno-microsoft-anon-tag -Wno-nonportable-include-path -Wno-tautological-constant-out-of-range-compare</MiscControls>
-              <Define>_MSC_VER __USE_LCD  USE_JEG  __USER_DEFINED_APP_CFG_H__ GLCD_MIRROR_Y=1 JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE=ENABLED JEG_USE_FRAME_SYNC_UP_FLAG=ENABLED JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE=32 JEG_USE_EXTRA_16BIT_BUS_ACCESS=ENABLED JEG_USE_DMA_MEMORY_COPY_ACCELERATION=ENABLED</Define>
+              <Define>_MSC_VER __USE_LCD  USE_JEG  __USER_DEFINED_APP_CFG_H__ GLCD_MIRROR_Y=1 JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE=ENABLED JEG_USE_FRAME_SYNC_UP_FLAG=ENABLED JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE=32 JEG_USE_EXTRA_16BIT_BUS_ACCESS=ENABLED JEG_USE_DMA_MEMORY_COPY_ACCELERATION=ENABLED,__PLOOC_I_KNOW_BLACK_BOX_IS_INCOMPATIBLE_WITH_OTHER_TEMPLATES__,__USER_APP_CFG_H__=\"../example/app_cfg.h\"</Define>
               <Undefine></Undefine>
               <IncludePath>..\..\app_platform;..\..\jeg</IncludePath>
             </VariousControls>
@@ -4868,7 +4871,7 @@
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <useXO>0</useXO>
-            <uClangAs>0</uClangAs>
+            <ClangAsOpt>4</ClangAsOpt>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -4957,7 +4960,7 @@
                 <NoWarn>2</NoWarn>
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
+                <ClangAsOpt>0</ClangAsOpt>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -5117,7 +5120,7 @@
                 <NoWarn>2</NoWarn>
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
+                <ClangAsOpt>0</ClangAsOpt>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -5426,7 +5429,7 @@
                 <NoWarn>2</NoWarn>
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
+                <ClangAsOpt>0</ClangAsOpt>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -5631,7 +5634,7 @@
                 <NoWarn>2</NoWarn>
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
+                <ClangAsOpt>0</ClangAsOpt>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -5816,7 +5819,7 @@
                 <NoWarn>2</NoWarn>
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
+                <ClangAsOpt>0</ClangAsOpt>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -6097,7 +6100,7 @@
                 <NoWarn>2</NoWarn>
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
+                <ClangAsOpt>0</ClangAsOpt>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -6186,7 +6189,7 @@
                 <NoWarn>2</NoWarn>
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
+                <ClangAsOpt>0</ClangAsOpt>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -6285,7 +6288,7 @@
                 <NoWarn>2</NoWarn>
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
+                <ClangAsOpt>0</ClangAsOpt>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -6386,7 +6389,7 @@
                 <NoWarn>2</NoWarn>
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
+                <ClangAsOpt>0</ClangAsOpt>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -6403,7 +6406,7 @@
       <TargetName>V2M-MPS3-jeg</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>6140000::V6.14::ARMCLANG</pCCUsed>
+      <pCCUsed>6150000::V6.15::ARMCLANG</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -6445,7 +6448,7 @@
           <OutputName>game</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
-          <CreateHexFile>1</CreateHexFile>
+          <CreateHexFile>0</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
           <ListingPath>.\Out\</ListingPath>
@@ -6577,7 +6580,8 @@
             <hadXRAM>0</hadXRAM>
             <uocXRam>0</uocXRam>
             <RvdsVP>3</RvdsVP>
-            <RvdsMve>3</RvdsMve>
+            <RvdsMve>2</RvdsMve>
+            <RvdsCdeCp>0</RvdsCdeCp>
             <hadIRAM2>1</hadIRAM2>
             <hadIROM2>1</hadIROM2>
             <StupSel>8</StupSel>
@@ -6729,7 +6733,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>-Omax -fms-extensions -Wno-microsoft-anon-tag -Wno-nonportable-include-path -Wno-tautological-constant-out-of-range-compare</MiscControls>
-              <Define>__USE_MPS3__,__USE_COMPILER_SPECIFIED_CMSIS_PATH__ _MSC_VER USE_JEG  __USER_DEFINED_APP_CFG_H__ GLCD_MIRROR_Y=1 JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE=ENABLED JEG_USE_FRAME_SYNC_UP_FLAG=ENABLED JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE=32 JEG_USE_EXTRA_16BIT_BUS_ACCESS=ENABLED JEG_USE_DMA_MEMORY_COPY_ACCELERATION=ENABLED,EXTERANL_DELAY_MS_DECLARE="extern void delay_ms(uint32_t);"</Define>
+              <Define>__USE_MPS3__,__USE_COMPILER_SPECIFIED_CMSIS_PATH__ _MSC_VER USE_JEG  __USER_DEFINED_APP_CFG_H__ GLCD_MIRROR_Y=0, JEG_USE_EXTERNAL_DRAW_PIXEL_INTERFACE=ENABLED JEG_USE_FRAME_SYNC_UP_FLAG=ENABLED JEG_MAX_ALLOWED_SPRITES_ON_SINGLE_SCANLINE=32 JEG_USE_EXTRA_16BIT_BUS_ACCESS=ENABLED JEG_USE_DMA_MEMORY_COPY_ACCELERATION=ENABLED,EXTERANL_DELAY_MS_DECLARE="extern void delay_ms(uint32_t);",__PLOOC_I_KNOW_BLACK_BOX_IS_INCOMPATIBLE_WITH_OTHER_TEMPLATES__,__USER_APP_CFG_H__=\"../example/app_cfg.h\"</Define>
               <Undefine></Undefine>
               <IncludePath>..\..\app_platform;..\..\jeg</IncludePath>
             </VariousControls>
@@ -6744,7 +6748,7 @@
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <useXO>0</useXO>
-            <uClangAs>1</uClangAs>
+            <ClangAsOpt>2</ClangAsOpt>
             <VariousControls>
               <MiscControls>-masm=armasm -mfpu=none -mcpu=cortex-m4</MiscControls>
               <Define></Define>
@@ -6924,7 +6928,7 @@
                 <NoWarn>2</NoWarn>
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
+                <ClangAsOpt>0</ClangAsOpt>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -7420,7 +7424,7 @@
                 <NoWarn>2</NoWarn>
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
+                <ClangAsOpt>0</ClangAsOpt>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -7733,26 +7737,6 @@
               <FileName>Super_Tank.s</FileName>
               <FileType>2</FileType>
               <FilePath>..\..\LiteNES\roms\Super_Tank.s</FilePath>
-            </File>
-            <File>
-              <FileName>Road Fighter.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>..\..\LiteNES\roms\Road Fighter.s</FilePath>
-            </File>
-            <File>
-              <FileName>Super_Mario_Bros.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>..\..\LiteNES\roms\Super_Mario_Bros.s</FilePath>
-            </File>
-            <File>
-              <FileName>Contra.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>..\..\LiteNES\roms\Contra.s</FilePath>
-            </File>
-            <File>
-              <FileName>nes_rom_lib.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>.\Out\nes_rom_lib.lib</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>2</UseCPPCompiler>
@@ -7770,8 +7754,161 @@
                   <IncludeLibraryModules></IncludeLibraryModules>
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
-                <FileArmAds/>
+                <FileArmAds>
+                  <Aads>
+                    <interw>2</interw>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <thumb>2</thumb>
+                    <SplitLS>2</SplitLS>
+                    <SwStkChk>2</SwStkChk>
+                    <NoWarn>2</NoWarn>
+                    <uSurpInc>2</uSurpInc>
+                    <useXO>2</useXO>
+                    <ClangAsOpt>0</ClangAsOpt>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Aads>
+                </FileArmAds>
               </FileOption>
+            </File>
+            <File>
+              <FileName>Road Fighter.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\..\LiteNES\roms\Road Fighter.s</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>0</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Aads>
+                    <interw>2</interw>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <thumb>2</thumb>
+                    <SplitLS>2</SplitLS>
+                    <SwStkChk>2</SwStkChk>
+                    <NoWarn>2</NoWarn>
+                    <uSurpInc>2</uSurpInc>
+                    <useXO>2</useXO>
+                    <ClangAsOpt>0</ClangAsOpt>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Aads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+            <File>
+              <FileName>Super_Mario_Bros.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\..\LiteNES\roms\Super_Mario_Bros.s</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>0</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Aads>
+                    <interw>2</interw>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <thumb>2</thumb>
+                    <SplitLS>2</SplitLS>
+                    <SwStkChk>2</SwStkChk>
+                    <NoWarn>2</NoWarn>
+                    <uSurpInc>2</uSurpInc>
+                    <useXO>2</useXO>
+                    <ClangAsOpt>0</ClangAsOpt>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Aads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+            <File>
+              <FileName>Contra.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\..\LiteNES\roms\Contra.s</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>0</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Aads>
+                    <interw>2</interw>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <thumb>2</thumb>
+                    <SplitLS>2</SplitLS>
+                    <SwStkChk>2</SwStkChk>
+                    <NoWarn>2</NoWarn>
+                    <uSurpInc>2</uSurpInc>
+                    <useXO>2</useXO>
+                    <ClangAsOpt>0</ClangAsOpt>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Aads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+            <File>
+              <FileName>nes_rom_lib.lib</FileName>
+              <FileType>4</FileType>
+              <FilePath>.\Out\nes_rom_lib.lib</FilePath>
             </File>
           </Files>
         </Group>
@@ -7836,7 +7973,7 @@
                 <NoWarn>2</NoWarn>
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
+                <ClangAsOpt>0</ClangAsOpt>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -7925,7 +8062,7 @@
                 <NoWarn>2</NoWarn>
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
+                <ClangAsOpt>0</ClangAsOpt>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -8050,7 +8187,7 @@
                 <NoWarn>2</NoWarn>
                 <uSurpInc>2</uSurpInc>
                 <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
+                <ClangAsOpt>0</ClangAsOpt>
                 <VariousControls>
                   <MiscControls></MiscControls>
                   <Define></Define>
@@ -8415,32 +8552,32 @@
       </file>
       <file attr="config" category="header" name="CMSIS\Driver\Config\RTE_Device.h" version="1.4.0">
         <instance index="0">RTE\Device\STM32F746NGHx\RTE_Device.h</instance>
-        <component Capiversion="1.0.0" Cclass="Device" Cgroup="STM32Cube Framework" Csub="Classic" Cvendor="Keil" Cversion="1.2.7" condition="STM32F7 Framework Classic"/>
-        <package name="STM32F7xx_DFP" schemaVersion="1.6.0" url="https://www.keil.com/pack/" vendor="Keil" version="2.12.0"/>
+        <component Capiversion="1.0.0" Cclass="Device" Cgroup="STM32Cube Framework" Csub="Classic" Cvendor="Keil" Cversion="1.2.8" condition="STM32F7 Framework Classic"/>
+        <package name="STM32F7xx_DFP" schemaVersion="1.6.3" url="http://www.keil.com/pack/" vendor="Keil" version="2.13.0"/>
         <targetInfos>
           <targetInfo name="STM32F746-Discovery-Lib"/>
         </targetInfos>
       </file>
       <file attr="config" category="source" condition="STM32F746_ARMCC" name="Drivers\CMSIS\Device\ST\STM32F7xx\Source\Templates\arm\startup_stm32f746xx.s" version="1.2.0">
         <instance index="0">RTE\Device\STM32F746NGHx\startup_stm32f746xx.s</instance>
-        <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.2.4" condition="STM32F7 CMSIS"/>
-        <package name="STM32F7xx_DFP" schemaVersion="1.6.0" url="https://www.keil.com/pack/" vendor="Keil" version="2.12.0"/>
+        <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.2.5" condition="STM32F7 CMSIS"/>
+        <package name="STM32F7xx_DFP" schemaVersion="1.6.3" url="http://www.keil.com/pack/" vendor="Keil" version="2.13.0"/>
         <targetInfos>
           <targetInfo name="STM32F746-Discovery-Lib"/>
         </targetInfos>
       </file>
       <file attr="config" category="header" name="MDK\Templates\Inc\stm32f7xx_hal_conf.h" version="1.2.0">
         <instance index="0">RTE\Device\STM32F746NGHx\stm32f7xx_hal_conf.h</instance>
-        <component Capiversion="1.0.0" Cclass="Device" Cgroup="STM32Cube Framework" Csub="Classic" Cvendor="Keil" Cversion="1.2.7" condition="STM32F7 Framework Classic"/>
-        <package name="STM32F7xx_DFP" schemaVersion="1.6.0" url="https://www.keil.com/pack/" vendor="Keil" version="2.12.0"/>
+        <component Capiversion="1.0.0" Cclass="Device" Cgroup="STM32Cube Framework" Csub="Classic" Cvendor="Keil" Cversion="1.2.8" condition="STM32F7 Framework Classic"/>
+        <package name="STM32F7xx_DFP" schemaVersion="1.6.3" url="http://www.keil.com/pack/" vendor="Keil" version="2.13.0"/>
         <targetInfos>
           <targetInfo name="STM32F746-Discovery-Lib"/>
         </targetInfos>
       </file>
       <file attr="config" category="source" name="Drivers\CMSIS\Device\ST\STM32F7xx\Source\Templates\system_stm32f7xx.c" version="1.2.0">
         <instance index="0">RTE\Device\STM32F746NGHx\system_stm32f7xx.c</instance>
-        <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.2.4" condition="STM32F7 CMSIS"/>
-        <package name="STM32F7xx_DFP" schemaVersion="1.6.0" url="https://www.keil.com/pack/" vendor="Keil" version="2.12.0"/>
+        <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.2.5" condition="STM32F7 CMSIS"/>
+        <package name="STM32F7xx_DFP" schemaVersion="1.6.3" url="http://www.keil.com/pack/" vendor="Keil" version="2.13.0"/>
         <targetInfos>
           <targetInfo name="STM32F746-Discovery-Lib"/>
         </targetInfos>
