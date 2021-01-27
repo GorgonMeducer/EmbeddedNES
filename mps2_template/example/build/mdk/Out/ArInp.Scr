@@ -1,0 +1,5 @@
+--create .\Out\nes_rom_lib.lib
+.\out\super_tank.o
+".\out\road fighter.o"
+.\out\super_mario_bros.o
+.\out\contra.o
